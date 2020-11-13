@@ -1,0 +1,1 @@
+const KEY_BUFFER_SIZE = 32;
