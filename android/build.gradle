@@ -26,8 +26,19 @@ android {
 
     defaultConfig {
         minSdkVersion 16
+        externalNativeBuild {
+            cmake {
+                abiFilters 'arm64-v8a'
+            }
+        }
     }
     lintOptions {
         disable 'InvalidPackage'
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
     }
 }

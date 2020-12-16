@@ -51,7 +51,13 @@ class MinaSDK {
     return dartPublicKeyBuffer;
   }
 
-  static signPayment() {
+  static signPayment(
+
+    ) {
+
+  }
+
+  static signDelegation() {
 
   }
 
@@ -72,7 +78,7 @@ class MinaSDK {
     return dartSignatureBuffer;
   }
 
-  static verifyMessage() {
-
+  static bool verifyMessage() {
+    return false;
   }
 }

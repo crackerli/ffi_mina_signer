@@ -1,0 +1,16 @@
+{
+  "buildFiles": [
+    "/Users/crackerli/github/ffi_mina_signer/android/CMakeLists.txt"
+  ],
+  "cleanCommands": [
+    "/Users/crackerli/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/crackerli/github/ffi_mina_signer/android/.cxx/cmake/debug/armeabi-v7a --target clean"
+  ],
+  "libraries": {
+    "mina_signer-Debug-arm64-v8a": {
+      "artifactName": "mina_signer",
+      "buildCommand": "/Users/crackerli/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/crackerli/github/ffi_mina_signer/android/.cxx/cmake/debug/armeabi-v7a --target mina_signer",
+      "abi": "arm64-v8a",
+      "output": "/Users/crackerli/github/ffi_mina_signer/example/build/ffi_mina_signer/intermediates/cmake/debug/obj/armeabi-v7a/libmina_signer.so"
+    }
+  }
+}

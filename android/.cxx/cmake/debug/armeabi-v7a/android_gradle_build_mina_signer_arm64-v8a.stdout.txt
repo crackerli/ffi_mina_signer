@@ -1,0 +1,27 @@
+[1/3] Building C object CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/pasta_fp.c.o
+[2/3] Building C object CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/pasta_fq.c.o
+FAILED: /Users/crackerli/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang  --target=armv7-none-linux-androideabi16 --gcc-toolchain=/Users/crackerli/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/crackerli/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dmina_signer_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC -MD -MT CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/pasta_fp.c.o -MF CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/pasta_fp.c.o.d -o CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/pasta_fp.c.o   -c /Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/pasta_fp.c
+/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/pasta_fp.c:21:16: error: __int128 is not supported on this target
+typedef signed __int128 fiat_pasta_fp_int128;
+               ^
+/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/pasta_fp.c:22:18: error: __int128 is not supported on this target
+typedef unsigned __int128 fiat_pasta_fp_uint128;
+                 ^
+/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/pasta_fp.c:2140:25: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+      printf("0x%lx, ", x[j]);
+                ~~~     ^~~~
+                %llx
+1 warning and 2 errors generated.
+FAILED: /Users/crackerli/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang  --target=armv7-none-linux-androideabi16 --gcc-toolchain=/Users/crackerli/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/crackerli/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dmina_signer_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC -MD -MT CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/pasta_fq.c.o -MF CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/pasta_fq.c.o.d -o CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/pasta_fq.c.o   -c /Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/pasta_fq.c
+/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/pasta_fq.c:21:16: error: __int128 is not supported on this target
+typedef signed __int128 fiat_pasta_fq_int128;
+               ^
+/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/pasta_fq.c:22:18: error: __int128 is not supported on this target
+typedef unsigned __int128 fiat_pasta_fq_uint128;
+                 ^
+/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/pasta_fq.c:2048:25: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+      printf("0x%lx, ", x[j]);
+                ~~~     ^~~~
+                %llx
+1 warning and 2 errors generated.
+ninja: build stopped: subcommand failed.

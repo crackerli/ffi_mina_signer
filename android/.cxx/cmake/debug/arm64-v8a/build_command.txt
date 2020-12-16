@@ -1,0 +1,14 @@
+Executable : /Users/crackerli/Library/Android/sdk/cmake/3.6.4111459/bin/cmake
+arguments : 
+-H/Users/crackerli/github/ffi_mina_signer/android
+-B/Users/crackerli/github/ffi_mina_signer/android/.cxx/cmake/debug/arm64-v8a
+-DANDROID_ABI=arm64-v8a
+-DANDROID_PLATFORM=android-16
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/Users/crackerli/github/ffi_mina_signer/example/build/ffi_mina_signer/intermediates/cmake/debug/obj/arm64-v8a
+-DCMAKE_BUILD_TYPE=Debug
+-DANDROID_NDK=/Users/crackerli/Library/Android/sdk/ndk/22.0.6917172
+-DCMAKE_TOOLCHAIN_FILE=/Users/crackerli/Library/Android/sdk/ndk/22.0.6917172/build/cmake/android.toolchain.cmake
+-DCMAKE_MAKE_PROGRAM=/Users/crackerli/Library/Android/sdk/cmake/3.6.4111459/bin/ninja
+-GAndroid Gradle - Ninja
+jvmArgs : 
+

@@ -1,3 +1,4 @@
+import 'package:ffi_mina_signer/mina_signer_native.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -13,12 +14,20 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
+// Scalar priv_key = { 0xca14d6eed923f6e3, 0x61185a1b5e29e6b2, 0xe26d38de9c30753b, 0x3fdf0efb0a5714 };
+
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
 
   @override
   void initState() {
     super.initState();
+//    nativeSignDelegation();
+//   String address = getAddress();
+//   print('================= $address =======================');
+//    testBase58Enc();
+//    testInvalidBase58Enc();
+    signUserCommand();
     initPlatformState();
   }
 
