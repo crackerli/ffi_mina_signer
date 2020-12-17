@@ -1,1 +1,37 @@
-ninja: no work to do.
+[1/2] Building C object CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/porting.c.o
+/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/porting.c:83:33: warning: incompatible pointer types passing 'uint8_t *' (aka 'unsigned char *') to parameter of type 'const uint64_t *' (aka 'const unsigned long *') [-Wincompatible-pointer-types]
+    affine_scalar_mul(&pub_key, sk, &AFFINE_ONE);
+                                ^~
+/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/crypto.h:116:48: note: passing argument to parameter 'k' here
+void affine_scalar_mul(Affine *r, const Scalar k, const Affine *p);
+                                               ^
+/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/porting.c:121:61: warning: format specifies type 'int' but the argument has type 'Currency' (aka 'unsigned long') [-Wformat]
+    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "fee=%d", fee);
+                                                       ~~   ^~~
+                                                       %lu
+/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/porting.c:122:67: warning: format specifies type 'int' but the argument has type 'TokenId' (aka 'unsigned long') [-Wformat]
+    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "fee_token=%d", fee_token);
+                                                             ~~   ^~~~~~~~~
+                                                             %lu
+/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/porting.c:125:66: warning: format specifies type 'int' but the argument has type 'TokenId' (aka 'unsigned long') [-Wformat]
+    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "token_id=%d", token_id);
+                                                            ~~   ^~~~~~~~
+                                                            %lu
+/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/porting.c:126:64: warning: format specifies type 'int' but the argument has type 'Currency' (aka 'unsigned long') [-Wformat]
+    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "amount=%d", amount);
+                                                          ~~   ^~~~~~
+                                                          %lu
+/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/porting.c:153:26: warning: incompatible pointer types passing 'uint8_t *' (aka 'unsigned char *') to parameter of type 'const uint64_t *' (aka 'const unsigned long *') [-Wincompatible-pointer-types]
+    scalar_copy(kp.priv, sk);
+                         ^~
+/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/crypto.h:107:41: note: passing argument to parameter 'a' here
+void scalar_copy(Scalar c, const Scalar a);
+                                        ^
+/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/porting.c:154:30: warning: incompatible pointer types passing 'uint8_t *' (aka 'unsigned char *') to parameter of type 'const uint64_t *' (aka 'const unsigned long *') [-Wincompatible-pointer-types]
+    generate_pubkey(&kp.pub, sk);
+                             ^~
+/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/crypto.h:120:52: note: passing argument to parameter 'priv_key' here
+void generate_pubkey(Affine *pub_key, const Scalar priv_key);
+                                                   ^
+7 warnings generated.
+[2/2] Linking C shared library /Users/crackerli/github/ffi_mina_signer/example/build/ffi_mina_signer/intermediates/cmake/debug/obj/arm64-v8a/libmina_signer.so

@@ -26,6 +26,13 @@ class PublicKey {
   }
 }
 
+class Signature {
+  final String rx;
+  final String s;
+
+  Signature(this.rx, this.s);
+}
+
 class PrivateKey {
   Uint8List sk; // 32 bytes list, little endian
 }

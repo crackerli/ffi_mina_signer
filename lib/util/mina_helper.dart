@@ -38,4 +38,17 @@ class MinaHelper {
 
     return result;
   }
+
+  // Copy string to native heap, add ending 0 for C
+  static Pointer<Uint8> copyStringToPointer(Uint8List bytes) {
+    final length = bytes.lengthInBytes;
+    final result = allocate<Uint8>(count: length + 1);
+
+    for (var i = 0; i < length; ++i) {
+      result[i] = bytes[i];
+    }
+    result[length] = 0;
+
+    return result;
+  }
 }

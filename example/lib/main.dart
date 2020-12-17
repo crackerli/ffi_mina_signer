@@ -30,7 +30,9 @@ class _MyAppState extends State<MyApp> {
 //    testInvalidBase58Enc();
 //    signUserCommand();
 //    testUint64();
-    testGetAddressFromSecretKey();
+//    testGetAddressFromSecretKey();
+    testSignTransaction();
+//    testSignDelegation();
     initPlatformState();
   }
 

@@ -4,8 +4,10 @@ import 'package:base58check/base58.dart';
 import 'package:ffi/ffi.dart';
 import 'package:ffi_mina_signer/types/key_types.dart';
 import 'package:ffi_mina_signer/util/mina_helper.dart';
+import 'constant.dart';
 import 'global/global.dart';
 import 'libmina_signer_binding.dart';
+import 'types/key_types.dart';
 
 // Get compressed public key from secret key
 CompressedPublicKey getCompressedPubicKey(Uint8List sk) {
@@ -50,27 +52,73 @@ String getAddressFromSecretKey(Uint8List sk) {
   return getAddressFromPublicKey(compressedPublicKey);
 }
 
-void signUserCommand() {
-  String memo = 'this is a memo';
-  String feePayerAddress = 'B62qiy32p8kAKnny8ZFwoMhYpBppM1DWVCqAPBYNcXnsAHhnfAAuXgg';
-  String senderAddress = 'B62qiy32p8kAKnny8ZFwoMhYpBppM1DWVCqAPBYNcXnsAHhnfAAuXgg';
-  String receiverAddress = 'B62qrcFstkpqXww1EkSGrqMCwCNho86kuqBd4FrAAUsPxNKdiPzAUsy';
-  int fee = 3;
-  int feeToken = 1;
-  int nonce = 200;
-  int validUntil = 10000;
-  int tokenId = 1;
-  int amount = 42;
-  int txType = 0;
-  int tokenLocked = 0;
-  final field = allocate<Uint8>(count: 78);
-  final scalar = allocate<Uint8>(count: 78);
+Signature signTransaction(
+    Uint8List sk,
+    String memo,
+    String feePayerAddress,
+    String senderAddress,
+    String receiverAddress,
+    int fee,
+    int feeToken,
+    int nonce,
+    int validUntil,
+    int tokenId,
+    int amount,
+    int tokenLocked
+    ) {
+  return _signUserCommand(sk, memo, feePayerAddress,
+      senderAddress, receiverAddress, fee, feeToken,
+      nonce, validUntil, tokenId, amount, TRANSACTION_TYPE, tokenLocked);
+}
+
+Signature signDelegation(
+    Uint8List sk,
+    String memo,
+    String feePayerAddress,
+    String senderAddress,
+    String receiverAddress,
+    int fee,
+    int feeToken,
+    int nonce,
+    int validUntil,
+    int tokenId,
+    int tokenLocked
+    ) {
+  return _signUserCommand(sk, memo, feePayerAddress,
+      senderAddress, receiverAddress, fee, feeToken,
+      nonce, validUntil, tokenId, 0, DELEGATION_TYPE, tokenLocked);
+}
+
+// Sign user command
+Signature _signUserCommand(
+    Uint8List sk,
+    String memo,
+    String feePayerAddress,
+    String senderAddress,
+    String receiverAddress,
+    int fee,
+    int feeToken,
+    int nonce,
+    int validUntil,
+    int tokenId,
+    int amount,
+    int txType,
+    int tokenLocked
+    ) {
+  final field = allocate<Uint8>(count: SIGNATURE_FIELD_LENGTH);
+  final scalar = allocate<Uint8>(count: SIGNATURE_SCALAR_LENGTH);
+  final skPointer = MinaHelper.copyBytesToPointer(sk);
+  final memoPointer = MinaHelper.copyStringToPointer(MinaHelper.stringToBytesUtf8(memo));
+  final feePayerPointer = MinaHelper.copyStringToPointer(MinaHelper.stringToBytesUtf8(feePayerAddress));
+  final senderPointer = MinaHelper.copyStringToPointer(MinaHelper.stringToBytesUtf8(senderAddress));
+  final receiverPointer = MinaHelper.copyStringToPointer(MinaHelper.stringToBytesUtf8(receiverAddress));
 
   signUserCommandFunc(
-      MinaHelper.copyBytesToPointer(MinaHelper.stringToBytesUtf8(memo)),
-      MinaHelper.copyBytesToPointer(MinaHelper.stringToBytesUtf8(feePayerAddress)),
-      MinaHelper.copyBytesToPointer(MinaHelper.stringToBytesUtf8(senderAddress)),
-      MinaHelper.copyBytesToPointer(MinaHelper.stringToBytesUtf8(receiverAddress)),
+      skPointer,
+      memoPointer,
+      feePayerPointer,
+      senderPointer,
+      receiverPointer,
       fee,
       feeToken,
       nonce,
@@ -83,12 +131,24 @@ void signUserCommand() {
       scalar
   );
 
-  print('===== field: ${MinaHelper.byteToBigInt(field.asTypedList(78))}');
+  // Drop the ending 0 byte of C char string
+  int endIndex;
+  Uint8List fieldList = field.asTypedList(SIGNATURE_FIELD_LENGTH);
+  endIndex = fieldList.indexOf(0);
+  String fieldStr = String.fromCharCodes(fieldList.sublist(0, endIndex));
+  Uint8List scalarList = scalar.asTypedList(SIGNATURE_SCALAR_LENGTH);
+  endIndex = scalarList.indexOf(0);
+  String scalarStr = String.fromCharCodes(scalarList.sublist(0, endIndex));
 
-  String string = String.fromCharCodes(field.asTypedList(77));
-  print('===== field: $string');
-  String string1 = String.fromCharCodes(scalar.asTypedList(77));
-  print('===== field: $string1');
+  free(field);
+  free(scalar);
+  free(skPointer);
+  free(memoPointer);
+  free(feePayerPointer);
+  free(senderPointer);
+  free(receiverPointer);
+
+  return Signature(fieldStr, scalarStr);
 }
 
 

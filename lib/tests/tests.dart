@@ -40,5 +40,53 @@ void testGetAddressFromSecretKey() {
   sk[24] = 0x14; sk[25] = 0x57; sk[26] = 0x0a; sk[27] = 0xfb; sk[28] = 0x0e; sk[29] = 0xdf; sk[30] = 0x3f; sk[31] = 0x00;
 
   String address = getAddressFromSecretKey(sk);
-  print('~~~~~~~~~~~~~~~~~~~ $address ~~~~~~~~~~~~~~~~~~~~~~~~');
+  print('----------------------- $address -----------------------');
+}
+
+void testSignTransaction() {
+  Uint8List sk = Uint8List(32);
+  sk[0]  = 0xe3; sk[1]  = 0xf6; sk[2]  = 0x23; sk[3]  = 0xd9; sk[4]  = 0xee; sk[5]  = 0xd6; sk[6]  = 0x14; sk[7]  = 0xca;
+  sk[8]  = 0xb2; sk[9]  = 0xe6; sk[10] = 0x29; sk[11] = 0x5e; sk[12] = 0x1b; sk[13] = 0x5a; sk[14] = 0x18; sk[15] = 0x61;
+  sk[16] = 0x3b; sk[17] = 0x75; sk[18] = 0x30; sk[19] = 0x9c; sk[20] = 0xde; sk[21] = 0x38; sk[22] = 0x6d; sk[23] = 0xe2;
+  sk[24] = 0x14; sk[25] = 0x57; sk[26] = 0x0a; sk[27] = 0xfb; sk[28] = 0x0e; sk[29] = 0xdf; sk[30] = 0x3f; sk[31] = 0x00;
+  String memo = 'this is a memo';
+  String feePayerAddress = 'B62qiy32p8kAKnny8ZFwoMhYpBppM1DWVCqAPBYNcXnsAHhnfAAuXgg';
+  String senderAddress = 'B62qiy32p8kAKnny8ZFwoMhYpBppM1DWVCqAPBYNcXnsAHhnfAAuXgg';
+  String receiverAddress = 'B62qrcFstkpqXww1EkSGrqMCwCNho86kuqBd4FrAAUsPxNKdiPzAUsy';
+  int fee = 3;
+  int feeToken = 1;
+  int nonce = 200;
+  int validUntil = 10000;
+  int tokenId = 1;
+  int amount = 42;
+  int tokenLocked = 0;
+
+  Signature signature = signTransaction(sk, memo, feePayerAddress,
+      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, amount, tokenLocked);
+  print('---------------------- signature rx=${signature.rx} ------------------');
+  print('---------------------- signature s=${signature.s} ------------------');
+}
+
+void testSignDelegation() {
+  Uint8List sk = Uint8List(32);
+  sk[0]  = 0xe3; sk[1]  = 0xf6; sk[2]  = 0x23; sk[3]  = 0xd9; sk[4]  = 0xee; sk[5]  = 0xd6; sk[6]  = 0x14; sk[7]  = 0xca;
+  sk[8]  = 0xb2; sk[9]  = 0xe6; sk[10] = 0x29; sk[11] = 0x5e; sk[12] = 0x1b; sk[13] = 0x5a; sk[14] = 0x18; sk[15] = 0x61;
+  sk[16] = 0x3b; sk[17] = 0x75; sk[18] = 0x30; sk[19] = 0x9c; sk[20] = 0xde; sk[21] = 0x38; sk[22] = 0x6d; sk[23] = 0xe2;
+  sk[24] = 0x14; sk[25] = 0x57; sk[26] = 0x0a; sk[27] = 0xfb; sk[28] = 0x0e; sk[29] = 0xdf; sk[30] = 0x3f; sk[31] = 0x00;
+  String memo = 'more delegates, more fun';
+  String feePayerAddress = 'B62qiy32p8kAKnny8ZFwoMhYpBppM1DWVCqAPBYNcXnsAHhnfAAuXgg';
+  String senderAddress = 'B62qiy32p8kAKnny8ZFwoMhYpBppM1DWVCqAPBYNcXnsAHhnfAAuXgg';
+  String receiverAddress = 'B62qkfHpLpELqpMK6ZvUTJ5wRqKDRF3UHyJ4Kv3FU79Sgs4qpBnx5RR';
+  int fee = 3;
+  int feeToken = 1;
+  int nonce = 10;
+  int validUntil = 4000;
+  int tokenId = 1;
+  int tokenLocked = 0;
+
+  Signature signature = signDelegation(sk, memo, feePayerAddress, senderAddress,
+      receiverAddress, fee, feeToken, nonce, validUntil, tokenId, tokenLocked);
+
+  print('---------------------- signature rx=${signature.rx} ------------------');
+  print('---------------------- signature s=${signature.s} ------------------');
 }

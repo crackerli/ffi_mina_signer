@@ -40,31 +40,6 @@ static void print_uint64_t(uint64_t w) {
   __android_log_print(ANDROID_LOG_DEBUG, "MinaKeys", "field byte = %x", (uint8_t)(w >>  56));
 }
 
-void native_derive_public_key(uint8_t *sk, uint8_t *x, uint8_t *isOdd) {
-    uint64_t tmp[4];
-    uint64_t tmp_sk[4];
-    Affine pub_key;
-
-    memset(tmp, 0, sizeof(tmp));
-    memset(tmp_sk, 0, sizeof(tmp_sk));
-    memset(&pub_key, 0, sizeof(pub_key));
-    memcpy(tmp_sk, sk, 32);
-
-    affine_scalar_mul(&pub_key, tmp_sk, &AFFINE_ONE);
-    // 1. copy x coordinate
-    fiat_pasta_fp_from_montgomery(tmp, pub_key.x);
-    copy64_big_endian(x,      tmp[0]);
-    copy64_big_endian(x + 8,  tmp[1]);
-    copy64_big_endian(x + 16, tmp[2]);
-    copy64_big_endian(x + 24, tmp[3]);
-    print_uint64_t(tmp[3]);
-
-    // 2. copy parity
-    memset(tmp, 0, sizeof(tmp));
-    fiat_pasta_fp_from_montgomery(tmp, pub_key.y);
-    isOdd[0] = tmp[0] & 0x01;
-}
-
 static void read_public_key_compressed(Compressed* out, char* pubkeyBase58) {
   size_t pubkeyBytesLen = 40;
   unsigned char pubkeyBytes[40];
@@ -98,7 +73,29 @@ static void prepare_memo(uint8_t* out, char* s) {
   }
 }
 
+void native_derive_public_key(uint8_t *sk, uint8_t *x, uint8_t *isOdd) {
+    uint64_t tmp[4];
+    Affine pub_key;
+
+    memset(tmp, 0, sizeof(tmp));
+    memset(&pub_key, 0, sizeof(pub_key));
+
+    affine_scalar_mul(&pub_key, sk, &AFFINE_ONE);
+    // 1. copy x coordinate
+    fiat_pasta_fp_from_montgomery(tmp, pub_key.x);
+    copy64_big_endian(x,      tmp[0]);
+    copy64_big_endian(x + 8,  tmp[1]);
+    copy64_big_endian(x + 16, tmp[2]);
+    copy64_big_endian(x + 24, tmp[3]);
+
+    // 2. copy parity
+    memset(tmp, 0, sizeof(tmp));
+    fiat_pasta_fp_from_montgomery(tmp, pub_key.y);
+    isOdd[0] = tmp[0] & 0x01;
+}
+
 void native_sign_user_command(
+    uint8_t *sk,
     char *memo,
     char *fee_payer_address,
     char *sender_address,
@@ -115,8 +112,19 @@ void native_sign_user_command(
     char *out_scalar
 ) {
     Transaction txn;
-Scalar priv_key = { 0xca14d6eed923f6e3, 0x61185a1b5e29e6b2, 0xe26d38de9c30753b, 0x3fdf0efb0a5714 };
+
     prepare_memo(txn.memo, memo);
+    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "memo1=%s", memo);
+    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "fee_payer_address=%s", fee_payer_address);
+    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "sender_address=%s", sender_address);
+    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "receiver_address=%s", receiver_address);
+    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "fee=%d", fee);
+    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "fee_token=%d", fee_token);
+    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "nonce=%d", nonce);
+    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "valid_until=%d", valid_until);
+    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "token_id=%d", token_id);
+    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "amount=%d", amount);
+    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "token_locked=%d", token_locked);
 
     txn.fee = fee;
     txn.fee_token = fee_token;
@@ -128,22 +136,22 @@ Scalar priv_key = { 0xca14d6eed923f6e3, 0x61185a1b5e29e6b2, 0xe26d38de9c30753b, 
         txn.tag[0] = 0;
         txn.tag[1] = 0;
         txn.tag[2] = 0;
+        txn.amount = amount;
     } else {
         txn.tag[0] = 0;
         txn.tag[1] = 0;
         txn.tag[2] = 1;
+        txn.amount = 0;
     }
 
     read_public_key_compressed(&txn.source_pk, sender_address);
     read_public_key_compressed(&txn.receiver_pk, receiver_address);
     txn.token_id = token_id;
-    txn.amount = amount;
     txn.token_locked = false;
 
     Keypair kp;
-    scalar_copy(kp.priv, priv_key);
-    generate_pubkey(&kp.pub, priv_key);
-    fiat_pasta_fp_print(kp.pub.x);
+    scalar_copy(kp.priv, sk);
+    generate_pubkey(&kp.pub, sk);
 
     Signature sig;
     sign(&sig, &kp, &txn);
@@ -151,42 +159,11 @@ Scalar priv_key = { 0xca14d6eed923f6e3, 0x61185a1b5e29e6b2, 0xe26d38de9c30753b, 
     char field_str[DIGITS] = { 0 };
     char scalar_str[DIGITS] = { 0 };
     uint64_t tmp[4];
+    memset(tmp, 0, sizeof(tmp));
     fiat_pasta_fp_from_montgomery(tmp, sig.rx);
     bigint_to_string(out_field, tmp);
 
     memset(tmp, 0, sizeof(tmp));
     fiat_pasta_fq_from_montgomery(tmp, sig.s);
     bigint_to_string(out_scalar, tmp);
-
-    printf("{ publicKey: '%s',\n", fee_payer_address);
-    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "publicKey: '%s', \n", fee_payer_address);
-    printf("  signature:\n");
-    printf("   { field:\n");
-    printf("      '%s',\n", out_field);
-    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "native field: '%s', \n", out_field);
-    printf("     scalar:\n");
-    printf("      '%s' },\n", out_scalar);
-    printf("  payload:\n");
-    printf("   { to: '%s',\n", receiver_address);
-    printf("     from: '%s',\n", sender_address);
-    printf("     fee: '%lu',\n", txn.fee);
-    printf("     amount: '%lu',\n", txn.amount);
-    printf("     nonce: '%u',\n", txn.nonce);
-    printf("     memo: '%s',\n", txn.memo); // TODO: This should actually be b58 encoded
-    printf("     validUntil: '%u' } }\n", txn.valid_until);
-
-    printf("\npayment signature only:\n");
-
-    char buf[DIGITS] = { 0 };
-
-    fiat_pasta_fp_from_montgomery(tmp, sig.rx);
-    bigint_to_string(buf, tmp);
-    printf("field = %s\n", buf);
-__android_log_print(ANDROID_LOG_DEBUG, "CK1", "field: '%s', \n", buf);
-    for (size_t i = 0; i < DIGITS; ++i) { buf[i] = 0; }
-
-    fiat_pasta_fq_from_montgomery(tmp, sig.s);
-    bigint_to_string(buf, tmp);
-    printf("scalar = %s\n", buf);
-    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "scalar: '%s', \n", buf);
 }

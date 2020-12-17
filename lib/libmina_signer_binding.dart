@@ -65,24 +65,9 @@ final NativeDerivePublicKey pubkeyFunc = libMinaSigner
     .lookup<NativeFunction<native_derive_publickey>>('native_derive_public_key')
     .asFunction<NativeDerivePublicKey>();
 
-// char *memo,
-// char *fee_payer_address,
-// char *sender_address;
-// char *receiver_address;
-// Currency fee,
-//     TokenId fee_token,
-// Nonce nonce,
-//     GlobalSlot valid_until,
-// Tag tag,
-//     TokenId token_id,
-// Currency amount,
-//     bool token_locked,
-// uint8_t transaction_type, // 0 for transaction, 1 for delegation
-//     char *out_field,
-// char *out_scalar
-
 // C publickey function - void dart_publickey(unsigned char *sk, unsigned char *pk);
 typedef sign_user_command_func = Void Function(
+    Pointer<Uint8> sk,
     Pointer<Uint8> memo,
     Pointer<Uint8> feePayerAddress,
     Pointer<Uint8> senderAddress,
@@ -100,6 +85,7 @@ typedef sign_user_command_func = Void Function(
     );
 
 typedef SignUserCommand = void Function(
+    Pointer<Uint8> sk,
     Pointer<Uint8> memo,
     Pointer<Uint8> feePayerAddress,
     Pointer<Uint8> senderAddress,
