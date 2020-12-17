@@ -73,12 +73,6 @@
 				
 				{
 					"flags" : "  --target=aarch64-none-linux-android21 --gcc-toolchain=/Users/crackerli/Library/Android/sdk/ndk/22.0.6917172/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/crackerli/Library/Android/sdk/ndk/22.0.6917172/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dmina_signer_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC      -c ",
-					"src" : "/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/signer.c",
-					"workingDirectory" : "/Users/crackerli/github/ffi_mina_signer/android/.cxx/cmake/debug/arm64-v8a"
-				},
-				
-				{
-					"flags" : "  --target=aarch64-none-linux-android21 --gcc-toolchain=/Users/crackerli/Library/Android/sdk/ndk/22.0.6917172/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/crackerli/Library/Android/sdk/ndk/22.0.6917172/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dmina_signer_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC      -c ",
 					"src" : "/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/utils.c",
 					"workingDirectory" : "/Users/crackerli/github/ffi_mina_signer/android/.cxx/cmake/debug/arm64-v8a"
 				}

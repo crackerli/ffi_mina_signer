@@ -1,9 +1,10 @@
-import 'package:ffi_mina_signer/mina_signer_native.dart';
+import 'package:ffi_mina_signer/mina_signer_sdk.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:ffi_mina_signer/ffi_mina_signer.dart';
+import 'package:ffi_mina_signer/tests/tests.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,7 +28,9 @@ class _MyAppState extends State<MyApp> {
 //   print('================= $address =======================');
 //    testBase58Enc();
 //    testInvalidBase58Enc();
-    signUserCommand();
+//    signUserCommand();
+//    testUint64();
+    testGetAddressFromSecretKey();
     initPlatformState();
   }
 

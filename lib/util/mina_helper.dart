@@ -27,7 +27,8 @@ class MinaHelper {
     return utf8.decode(bytes);
   }
 
-  static Pointer<Uint8> bytesToPointer(Uint8List bytes) {
+  // Copy byte array to native heap
+  static Pointer<Uint8> copyBytesToPointer(Uint8List bytes) {
     final length = bytes.lengthInBytes;
     final result = allocate<Uint8>(count: length);
 

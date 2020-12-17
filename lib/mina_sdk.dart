@@ -2,7 +2,7 @@ import 'dart:ffi';
 import 'dart:typed_data';
 import 'package:ffi/ffi.dart';
 import 'constant.dart';
-import 'mina_signer_native.dart';
+import 'libmina_signer_binding.dart';
 
 class MinaSDK {
 
@@ -36,19 +36,19 @@ class MinaSDK {
 
   // Generate public key with C code.
   static Uint8List getPublicKey(Uint8List privateKey) {
-    // Copy the private key data to native heap
-    final nativePrivateKeyBuffer = _copyBytesToPointer(privateKey);
-
-    // Native buffer to store the generated public key
-    final nativePublicKeyBuffer = allocate<Uint8>(count: KEY_BUFFER_SIZE);
-
-    nativeGenPublicKey(nativePrivateKeyBuffer, nativePublicKeyBuffer);
-
-    // Copy the native allocated buffer to Dart heap
-    Uint8List dartPublicKeyBuffer = Uint8List.fromList(nativePublicKeyBuffer.asTypedList(KEY_BUFFER_SIZE));
-    free(nativePrivateKeyBuffer);
-    free(nativePublicKeyBuffer);
-    return dartPublicKeyBuffer;
+    // // Copy the private key data to native heap
+    // final nativePrivateKeyBuffer = _copyBytesToPointer(privateKey);
+    //
+    // // Native buffer to store the generated public key
+    // final nativePublicKeyBuffer = allocate<Uint8>(count: KEY_BUFFER_SIZE);
+    //
+    // nativeGenPublicKey(nativePrivateKeyBuffer, nativePublicKeyBuffer);
+    //
+    // // Copy the native allocated buffer to Dart heap
+    // Uint8List dartPublicKeyBuffer = Uint8List.fromList(nativePublicKeyBuffer.asTypedList(KEY_BUFFER_SIZE));
+    // free(nativePrivateKeyBuffer);
+    // free(nativePublicKeyBuffer);
+    // return dartPublicKeyBuffer;
   }
 
   static signPayment(

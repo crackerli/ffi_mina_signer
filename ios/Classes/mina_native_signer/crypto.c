@@ -33,7 +33,6 @@
 #include "pasta_fp.h"
 #include "pasta_fq.h"
 #include "blake2.h"
-#include <android/log.h>
 
 // a = 0, b = 5
 static const Field GROUP_COEFF_B = {
@@ -630,105 +629,10 @@ void generate_keypair(Keypair *keypair, uint32_t account)
     return;
 }
 
-///////////////////////////////////////////////////////////////////////////////////
-#if 0
-static BLAKE2_INLINE void store64( void *dst, uint64_t w )
-{
-#if defined(NATIVE_LITTLE_ENDIAN)
-  memcpy(dst, &w, sizeof w);
-#else
-  uint8_t *p = ( uint8_t * )dst;
-  p[0] = (uint8_t)(w >>  0);
-  p[1] = (uint8_t)(w >>  8);
-  p[2] = (uint8_t)(w >> 16);
-  p[3] = (uint8_t)(w >> 24);
-  p[4] = (uint8_t)(w >> 32);
-  p[5] = (uint8_t)(w >> 40);
-  p[6] = (uint8_t)(w >> 48);
-  p[7] = (uint8_t)(w >> 56);
-#endif
-}
-#endif
-
-void copy64_big_endian(uint8_t *dst, uint64_t w) {
-  uint8_t *p = ( uint8_t * )dst;
-  p[0] = (uint8_t)(w >>  0);
-  p[1] = (uint8_t)(w >>  8);
-  p[2] = (uint8_t)(w >> 16);
-  p[3] = (uint8_t)(w >> 24);
-  p[4] = (uint8_t)(w >> 32);
-  p[5] = (uint8_t)(w >> 40);
-  p[6] = (uint8_t)(w >> 48);
-  p[7] = (uint8_t)(w >> 56);
-}
-
-Scalar global_priv_key = { 0xca14d6eed923f6e3, 0x61185a1b5e29e6b2, 0xe26d38de9c30753b, 0x3fdf0efb0a5714 };
-Keypair global_keypair;
-Affine global_pubkey;
-
-static void print_uint64_t(uint64_t w) {
-  __android_log_print(ANDROID_LOG_DEBUG, "CK1", "field byte = %x", (uint8_t)(w >>  0));
-  __android_log_print(ANDROID_LOG_DEBUG, "CK1", "field byte = %x", (uint8_t)(w >>  8));
-  __android_log_print(ANDROID_LOG_DEBUG, "CK1", "field byte = %x", (uint8_t)(w >>  16));
-  __android_log_print(ANDROID_LOG_DEBUG, "CK1", "field byte = %x", (uint8_t)(w >>  24));
-  __android_log_print(ANDROID_LOG_DEBUG, "CK1", "field byte = %x", (uint8_t)(w >>  32));
-  __android_log_print(ANDROID_LOG_DEBUG, "CK1", "field byte = %x", (uint8_t)(w >>  40));
-  __android_log_print(ANDROID_LOG_DEBUG, "CK1", "field byte = %x", (uint8_t)(w >>  48));
-  __android_log_print(ANDROID_LOG_DEBUG, "CK1", "field byte = %x", (uint8_t)(w >>  56));
-}
-
-void native_generate_global_keypair(uint8_t *x, uint8_t *y) {
-    affine_scalar_mul(&global_pubkey, global_priv_key, &AFFINE_ONE);
-    //copy data byte by byte
-    // 1. copy x
-    uint64_t tmp[4];
-    fiat_pasta_fp_from_montgomery(tmp, global_pubkey.x);
-    copy64_big_endian(x,      tmp[0]);
-    copy64_big_endian(x + 8,  tmp[1]);
-    copy64_big_endian(x + 16, tmp[2]);
-    copy64_big_endian(x + 24, tmp[3]);
-    print_uint64_t(tmp[3]);
-    // 2. copy y
-    //memset(str, 0, sizeof(str));
-    memset(tmp, 0, sizeof(tmp));
-    fiat_pasta_fp_from_montgomery(tmp, global_pubkey.y);
-    y[0] = tmp[0] & 0x01;
-//    copy64_big_endian(y,      tmp[0]);
-//    copy64_big_endian(y + 8,  tmp[1]);
-//    copy64_big_endian(y + 16, tmp[2]);
-//    copy64_big_endian(y + 24, tmp[3]);
-//    print_uint64_t(tmp[0]);
-//    print_uint64_t(tmp[1]);
-//    print_uint64_t(tmp[2]);
-//    print_uint64_t(tmp[3]);
-}
-/////////////////////////////////////////////////////////////////////////////////////
-
 void generate_pubkey(Affine *pub_key, const Scalar priv_key)
 {
     affine_scalar_mul(pub_key, priv_key, &AFFINE_ONE);
 }
-
-///////////////////////////////////////////////////////////////////////////////////////
-char global_address[MINA_ADDRESS_LEN];
-int get_address(char *address, size_t len, const Affine *pub_key) {
-    if(len != MINA_ADDRESS_LEN) {
-        return -1;
-    }
-
-    struct bytes {
-        uint8_t version;
-        uint8_t payload[35];
-        uint8_t checksum[4];
-    } raw;
-
-    raw.version    = 0xcb;
-    raw.payload[0] = 0x01;
-    raw.payload[1] = 0x01;
-
-    return 0;
-}
-///////////////////////////////////////////////////////////////////////////////////////////
 
 void message_derive(Scalar out, const Keypair *kp, const ROInput *msg)
 {
