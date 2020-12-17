@@ -1,12 +1,12 @@
 # ninja log v5
-3	84	0	CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/utils.c.o	27a1934e044dc43b
-1	96	0	CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/base10.c.o	b053a8d0084b19f9
-2	102	0	CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/poseidon.c.o	dc86c9255723c994
-2	106	0	CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/porting.c.o	8a8b7581e6bf9fba
-1	110	0	CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/main.c.o	e4cc080103f1eb76
-1	113	0	CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/base58.c.o	6ff99bcee308a0c6
-1	145	0	CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/crypto.c.o	3acc524f5a8b823c
-2	162	0	CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/pasta_fq.c.o	e7b3c7d6449c32dc
-2	174	0	CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/pasta_fp.c.o	4be1403810f8ecdb
-1	207	0	CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/blake2b-ref.c.o	832248a641fce718
-207	243	0	/Users/crackerli/github/ffi_mina_signer/example/build/ffi_mina_signer/intermediates/cmake/debug/obj/arm64-v8a/libmina_signer.so	b24c0cb1c4180757
+3	80	0	CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/utils.c.o	27a1934e044dc43b
+0	96	0	CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/base10.c.o	b053a8d0084b19f9
+3	107	0	CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/poseidon.c.o	dc86c9255723c994
+2	108	0	CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/porting.c.o	8a8b7581e6bf9fba
+1	112	0	CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/main.c.o	e4cc080103f1eb76
+0	124	0	CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/base58.c.o	6ff99bcee308a0c6
+1	157	0	CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/crypto.c.o	3acc524f5a8b823c
+2	177	0	CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/pasta_fq.c.o	e7b3c7d6449c32dc
+2	194	0	CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/pasta_fp.c.o	4be1403810f8ecdb
+1	224	0	CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/blake2b-ref.c.o	832248a641fce718
+224	260	0	/Users/crackerli/github/ffi_mina_signer/example/build/ffi_mina_signer/intermediates/cmake/debug/obj/arm64-v8a/libmina_signer.so	b24c0cb1c4180757

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.6)
-set(CMAKE_ANDROID_ARCH_ABI arm64-v8a)
+# set(CMAKE_ANDROID_ARCH_ABI arm64-v8a)
 
 file(GLOB Mina_Signer_SOURCES ../ios/Classes/mina_native_signer/*.c)
 file(GLOB Mina_Signer_HEADER ../ios/Classes/mina_native_signer/*.h)

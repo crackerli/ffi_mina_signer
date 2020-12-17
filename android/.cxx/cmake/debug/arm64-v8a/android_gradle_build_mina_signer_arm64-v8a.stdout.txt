@@ -1,16 +1,1 @@
-[1/11] Building C object CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/base10.c.o
-[2/11] Building C object CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/base58.c.o
-[3/11] Building C object CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/blake2b-ref.c.o
-[4/11] Building C object CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/crypto.c.o
-[5/11] Building C object CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/main.c.o
-[6/11] Building C object CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/pasta_fp.c.o
-[7/11] Building C object CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/pasta_fq.c.o
-[8/11] Building C object CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/porting.c.o
-[9/11] Building C object CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/poseidon.c.o
-[10/11] Building C object CMakeFiles/mina_signer.dir/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/utils.c.o
-/Users/crackerli/github/ffi_mina_signer/ios/Classes/mina_native_signer/main.c:277:65: warning: format specifies type 'unsigned int' but the argument has type 'uint64_t' (aka 'unsigned long') [-Wformat]
- __android_log_print(ANDROID_LOG_DEBUG, "CK1", "field111 = %x", (kp.pub.x)[0]);
-                                                           ~~   ^~~~~~~~~~~~~
-                                                           %lx
-1 warning generated.
-[11/11] Linking C shared library /Users/crackerli/github/ffi_mina_signer/example/build/ffi_mina_signer/intermediates/cmake/debug/obj/arm64-v8a/libmina_signer.so
+ninja: no work to do.
