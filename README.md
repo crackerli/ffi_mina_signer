@@ -2,6 +2,12 @@
 
 A Flutter Plugin To Operate Key Pairs Of Mina Protocol, With C Code Support
 
+## How to use
+1. public APIs are described in mina_signer_sdk.dart
+2. Data switch between Dart and C heap should follow below conventions:
+   a) Common memory data use Uint8List in Dart, and mapping to uint8_t* in C
+   b) String passing should be utf8 encoded, and add ending 0 for C string usage.
+
 ## Getting Started
 
 This project is a starting point for a Flutter
