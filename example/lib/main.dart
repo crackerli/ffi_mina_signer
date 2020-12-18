@@ -1,9 +1,7 @@
-import 'package:ffi_mina_signer/mina_signer_sdk.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-
+import 'package:ffi_mina_signer/sdk/ffi_mina_signer.dart';
 import 'package:flutter/services.dart';
-import 'package:ffi_mina_signer/ffi_mina_signer.dart';
 import 'package:ffi_mina_signer/tests/tests.dart';
 
 void main() {
@@ -31,8 +29,9 @@ class _MyAppState extends State<MyApp> {
 //    signUserCommand();
 //    testUint64();
 //    testGetAddressFromSecretKey();
-    testSignTransaction();
+//    testSignTransaction();
 //    testSignDelegation();
+    testBIP44();
     initPlatformState();
   }
 

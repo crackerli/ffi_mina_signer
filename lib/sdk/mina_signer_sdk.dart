@@ -4,10 +4,10 @@ import 'package:base58check/base58.dart';
 import 'package:ffi/ffi.dart';
 import 'package:ffi_mina_signer/types/key_types.dart';
 import 'package:ffi_mina_signer/util/mina_helper.dart';
-import 'constant.dart';
-import 'global/global.dart';
+import '../constant.dart';
+import '../global/global.dart';
 import 'libmina_signer_binding.dart';
-import 'types/key_types.dart';
+import '../types/key_types.dart';
 
 // Get compressed public key from secret key
 CompressedPublicKey getCompressedPubicKey(Uint8List sk) {

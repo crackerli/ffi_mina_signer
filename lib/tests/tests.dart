@@ -1,9 +1,15 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:base58check/base58.dart';
+import 'package:convert/convert.dart';
+import 'package:ffi_mina_signer/encrypt/crypter.dart';
 import 'package:ffi_mina_signer/global/global.dart';
-import 'package:ffi_mina_signer/mina_signer_sdk.dart';
+import 'package:ffi_mina_signer/sdk/mina_signer_sdk.dart';
 import 'package:ffi_mina_signer/types/key_types.dart';
+import 'package:bip39/bip39.dart' as bip39;
+import 'package:bitcoin_bip32/bitcoin_bip32.dart';
+import 'package:ffi_mina_signer/util/mina_helper.dart';
 
 void testBase58Enc() {
   //0f 48 c6 5b d2 5f 85 f3 e4 ea 4e fe be b7 5b 79 7b d7 43 60 3b e0 4b 4e ad 84 56 98 b7 6b d3 31
@@ -89,4 +95,30 @@ void testSignDelegation() {
 
   print('---------------------- signature rx=${signature.rx} ------------------');
   print('---------------------- signature s=${signature.s} ------------------');
+}
+
+void testBIP44() async {
+  var mnemonic = bip39.generateMnemonic();
+  print('---------------- $mnemonic ----------------------');
+  String seed = bip39.mnemonicToSeedHex(mnemonic);
+  Uint8List seedBytes = MinaHelper.hexToBytes(
+      seed);
+//   m / purpose' / coin_type' / account' / change / address_index
+  Chain chain = Chain.seed(hex.encode(utf8.encode(seed)));
+  ExtendedPrivateKey key = chain.forPath("m/44'/12586'/0'/0/0");
+  print('======================== $key ====================');
+
+  // Encrypting and decrypting a seed
+  Uint8List encrypted = MinaCryptor.encrypt(seed, 'thisisastrongpassword');
+  print('encrypted=$encrypted');
+  // String representation:
+  String encryptedSeedHex = MinaHelper.byteToHex(encrypted);
+  // Decrypting (if incorrect password, will throw an exception)
+  Uint8List decrypted = MinaCryptor.decrypt(
+      MinaHelper.hexToBytes(encryptedSeedHex), 'thisisastrongpassword');
+  print('decrypted = ${MinaHelper.byteToHex(decrypted)}');
+  //NanoHelpers.byteToHex(seed)
+  print('origin = ${MinaHelper.byteToHex(seedBytes)}');
+//  String recoveredSeed = bip39.entropyToMnemonic(MinaHelper.byteToHex(decrypted));
+//  print('[[[[[[[[[[[[[[[  $recoveredSeed  ]]]]]]]]]]]]]]]');
 }

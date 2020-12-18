@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ffi';
 import 'dart:typed_data';
 import 'package:ffi/ffi.dart';
+import 'package:hex/hex.dart';
 
 class MinaHelper {
   /// Decode a BigInt from bytes in big-endian encoding.
@@ -50,5 +51,40 @@ class MinaHelper {
     result[length] = 0;
 
     return result;
+  }
+
+  static Uint8List reverse(Uint8List bytes) {
+    Uint8List reversed = Uint8List(bytes.length);
+    for (int i = bytes.length; i > 0; i--) {
+      reversed[bytes.length - i] = bytes[i - 1];
+    }
+    return reversed;
+  }
+
+  /// Converts a hex string to a Uint8List
+  static Uint8List hexToBytes(String hex) {
+    return Uint8List.fromList(HEX.decode(hex));
+  }
+
+  /// Converts a Uint8List to a hex string
+  static String byteToHex(Uint8List bytes) {
+    return HEX.encode(bytes).toUpperCase();
+  }
+
+  /// Convert a bigint to a byte array
+  static Uint8List bigIntToBytes(BigInt bigInt) {
+    return hexToBytes(bigInt.toRadixString(16).padLeft(32, "0"));
+  }
+
+  /// Concatenates one or more byte arrays
+  ///
+  /// @param {List<Uint8List>} bytes
+  /// @returns {Uint8List}
+  static Uint8List concat(List<Uint8List> bytes) {
+    String hex = '';
+    bytes.forEach((v) {
+      hex += byteToHex(v);
+    });
+    return hexToBytes(hex);
   }
 }

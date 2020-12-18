@@ -13,6 +13,8 @@ dependencies:
   base58check: ^1.0.1
   convert: ^2.1.0
   ffi: ^0.1.3
+  bitcoin_bip32: ^0.1.1
+  bip39: ^1.0.3
   flutter:
     sdk: flutter
 

@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ffi_mina_signer/ffi_mina_signer.dart';
+import 'package:ffi_mina_signer/sdk/ffi_mina_signer.dart';
 
 void main() {
   const MethodChannel channel = MethodChannel('ffi_mina_signer');
