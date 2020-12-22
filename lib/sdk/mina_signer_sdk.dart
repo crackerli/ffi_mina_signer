@@ -53,7 +53,7 @@ CompressedPublicKey getCompressedPubicKey(Uint8List sk) {
   final isOdd = allocate<Uint8>(count: 1);
   final skPointer = MinaHelper.copyBytesToPointer(sk);
 
-  publicKeyFuncMontgomery(skPointer, x, isOdd);
+  publicKeyFunc(skPointer, x, isOdd);
 
   CompressedPublicKey rawPublicKey = CompressedPublicKey(x.asTypedList(32), isOdd.asTypedList(1));
   free(x);

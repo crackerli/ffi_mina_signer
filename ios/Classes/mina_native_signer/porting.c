@@ -113,7 +113,33 @@ void native_derive_public_key_non_mongomery(uint8_t *sk, uint8_t *x, uint8_t *is
     native_derive_public_key_montgomery(tmp, x, isOdd);
 }
 
-void native_sign_user_command(
+// Secret key is not of montgomery curve
+void native_sign_user_command_non_montgomery(
+    uint8_t *sk,
+    char *memo,
+    char *fee_payer_address,
+    char *sender_address,
+    char *receiver_address,
+    Currency fee,
+    TokenId fee_token,
+    Nonce nonce,
+    GlobalSlot valid_until,
+    TokenId token_id,
+    Currency amount,
+    bool token_locked,
+    uint8_t transaction_type, // 0 for transaction, 1 for delegation
+    char *out_field,
+    char *out_scalar
+) {
+    // Convert sk to montgomery first
+    uint64_t tmp[4];
+    memset(tmp, 0, sizeof(tmp));
+    fiat_pasta_fq_to_montgomery(tmp, sk);
+    native_sign_user_command_montgomery(sk, memo, fee_payer_address, sender_address,
+      receiver_address, fee, fee_token, nonce, valid_until, token_id, amount, token_locked, transaction_type, out_field, out_scalar);
+}
+
+void native_sign_user_command_montgomery(
     uint8_t *sk,
     char *memo,
     char *fee_payer_address,
