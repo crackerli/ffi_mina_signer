@@ -1,16 +1,42 @@
-import 'dart:convert';
 import 'dart:ffi';
 import 'dart:typed_data';
 import 'package:base58check/base58.dart';
 import 'package:bitcoin_bip32/bitcoin_bip32.dart';
 import 'package:convert/convert.dart';
 import 'package:ffi/ffi.dart';
+import 'package:ffi_mina_signer/encrypt/crypter.dart';
 import 'package:ffi_mina_signer/types/key_types.dart';
 import 'package:ffi_mina_signer/util/mina_helper.dart';
 import '../constant.dart';
 import '../global/global.dart';
 import 'libmina_signer_binding.dart';
 import '../types/key_types.dart';
+import 'package:bip39/bip39.dart' as bip39;
+
+// Return a string of 12 words joined with space
+String generateSeed() {
+  var mnemonic = bip39.generateMnemonic();
+  return mnemonic;
+}
+
+Uint8List mnemonicToSeed(String mnemonic) {
+  return bip39.mnemonicToSeed(mnemonic);
+}
+
+// Encrypt the seed, then we can store them in our disk space
+String encryptSeed(Uint8List seed, String password) {
+  Uint8List encrypted = MinaCryptor.encrypt(seed, password);
+  // String representation:
+  String encryptedSeedHex = MinaHelper.byteToHex(encrypted);
+  return encryptedSeedHex;
+}
+
+Uint8List decryptSeed(String encryptedSeedHex, String password) {
+  Uint8List decrypted = MinaCryptor.decrypt(
+      MinaHelper.hexToBytes(encryptedSeedHex), password);
+
+  return decrypted;
+}
 
 // Use seed to generate account private key, according to HD wallet spec
 Uint8List generatePrivateKey(Uint8List seed, int account) {

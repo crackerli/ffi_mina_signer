@@ -7,8 +7,8 @@ import 'package:ffi_mina_signer/encrypt/crypter.dart';
 import 'package:ffi_mina_signer/global/global.dart';
 import 'package:ffi_mina_signer/sdk/mina_signer_sdk.dart';
 import 'package:ffi_mina_signer/types/key_types.dart';
-import 'package:bip39/bip39.dart' as bip39;
 import 'package:bitcoin_bip32/bitcoin_bip32.dart';
+import 'package:bip39/bip39.dart' as bip39;
 import 'package:ffi_mina_signer/util/mina_helper.dart';
 
 void testBase58Enc() {
@@ -107,7 +107,6 @@ void testBIP44() async {
   Chain chain = Chain.seed(hex.encode(MinaHelper.hexToBytes(seed)));
   Chain chain1 = Chain.seed(hex.encode(seed1));
   ExtendedPrivateKey key = chain.forPath("m/44'/12586'/0'/0/0");
-//  ExtendedPublicKey pubkey = chain.forPath("M/44'/12586'/0'/0/0");
   ExtendedPrivateKey key10 = chain.forPath("m/44'/12586'/0'/0/0");
   ExtendedPrivateKey key1 = chain1.forPath("m/44'/12586'/0'/0/0");
   print('======================== key = $key ====================');
