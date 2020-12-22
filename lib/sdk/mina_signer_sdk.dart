@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'dart:ffi';
 import 'dart:typed_data';
 import 'package:base58check/base58.dart';
+import 'package:bitcoin_bip32/bitcoin_bip32.dart';
+import 'package:convert/convert.dart';
 import 'package:ffi/ffi.dart';
 import 'package:ffi_mina_signer/types/key_types.dart';
 import 'package:ffi_mina_signer/util/mina_helper.dart';
@@ -8,6 +11,38 @@ import '../constant.dart';
 import '../global/global.dart';
 import 'libmina_signer_binding.dart';
 import '../types/key_types.dart';
+
+// Use seed to generate account private key, according to HD wallet spec
+Uint8List generatePrivateKey(Uint8List seed, int account) {
+//   m / purpose' / coin_type' / account' / change / address_index
+  Chain chain = Chain.seed(hex.encode(seed));
+  ExtendedPrivateKey extendedPrivateKey = chain.forPath("m/44'/$MINA_COIN_TYPE'/$account'/0/0");
+  // Decode the BigInt of seed to big-endian Uint8List
+  Uint8List actualKey = MinaHelper.bigIntToBytes(extendedPrivateKey.key);
+  // Make sure the private key is in [0, p)
+  //
+  // Note: Mina does rejection sampling to obtain a private key in
+  // [0, p), where the field modulus
+  //
+  //     p = 28948022309329048855892746252171976963363056481941560715954676764349967630337
+  //
+  // Due to constraints, this implementation take a different
+  // approach and just unsets the top two bits of the 256bit bip44
+  // secret, so
+  //
+  //     max = 28948022309329048855892746252171976963317496166410141009864396001978282409983.
+  //
+  // If p < max then we could still generate invalid private keys
+  // (although it's highly unlikely), but
+  //
+  //     p - max = 45560315531419706090280762371685220354
+  //
+  // Thus, we cannot generate invalid private keys and instead lose an
+  // insignificant amount of entropy.
+  actualKey[0] &= 0x3f; // Drop top two bits
+  // The bit integer store in dart vm with big endian, convert it to little endian for C usage
+  return MinaHelper.reverse(actualKey);
+}
 
 // Get compressed public key from secret key
 CompressedPublicKey getCompressedPubicKey(Uint8List sk) {

@@ -83,10 +83,13 @@ void native_derive_public_key(uint8_t *sk, uint8_t *x, uint8_t *isOdd) {
     affine_scalar_mul(&pub_key, sk, &AFFINE_ONE);
     // 1. copy x coordinate
     fiat_pasta_fp_from_montgomery(tmp, pub_key.x);
+    /*
     copy64_big_endian(x,      tmp[0]);
     copy64_big_endian(x + 8,  tmp[1]);
     copy64_big_endian(x + 16, tmp[2]);
     copy64_big_endian(x + 24, tmp[3]);
+    */
+    memcpy(x, (uint8_t*)tmp, sizeof(tmp));
 
     // 2. copy parity
     memset(tmp, 0, sizeof(tmp));

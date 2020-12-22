@@ -40,3 +40,7 @@ class PrivateKey {
 class Address {
   String address;
 }
+
+class Account {
+
+}

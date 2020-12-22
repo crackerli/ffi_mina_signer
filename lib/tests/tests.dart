@@ -101,12 +101,19 @@ void testBIP44() async {
   var mnemonic = bip39.generateMnemonic();
   print('---------------- $mnemonic ----------------------');
   String seed = bip39.mnemonicToSeedHex(mnemonic);
-  Uint8List seedBytes = MinaHelper.hexToBytes(
-      seed);
+  Uint8List seed1 = bip39.mnemonicToSeed(mnemonic);
+  Uint8List seedBytes = MinaHelper.hexToBytes(seed);
 //   m / purpose' / coin_type' / account' / change / address_index
-  Chain chain = Chain.seed(hex.encode(utf8.encode(seed)));
+  Chain chain = Chain.seed(hex.encode(MinaHelper.hexToBytes(seed)));
+  Chain chain1 = Chain.seed(hex.encode(seed1));
   ExtendedPrivateKey key = chain.forPath("m/44'/12586'/0'/0/0");
-  print('======================== $key ====================');
+//  ExtendedPublicKey pubkey = chain.forPath("M/44'/12586'/0'/0/0");
+  ExtendedPrivateKey key10 = chain.forPath("m/44'/12586'/0'/0/0");
+  ExtendedPrivateKey key1 = chain1.forPath("m/44'/12586'/0'/0/0");
+  print('======================== key = $key ====================');
+  print('======================== key10 = $key10 ====================');
+  print('======================== key1 = $key1 ====================');
+  print('======================== pubkey = ${key1.publicKey()} ====================');
 
   // Encrypting and decrypting a seed
   Uint8List encrypted = MinaCryptor.encrypt(seed, 'thisisastrongpassword');
