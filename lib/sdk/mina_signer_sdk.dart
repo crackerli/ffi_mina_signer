@@ -41,6 +41,9 @@ Uint8List generatePrivateKey(Uint8List seed, int account) {
   // insignificant amount of entropy.
   actualKey[0] &= 0x3f; // Drop top two bits
   // The bit integer store in dart vm with big endian, convert it to little endian for C usage
+
+  // Pay attention, this Uint8List is not a montgomery number, before using, a call to
+  // fiat_pasta_fq_to_montgomery should happen
   return MinaHelper.reverse(actualKey);
 }
 
@@ -50,7 +53,7 @@ CompressedPublicKey getCompressedPubicKey(Uint8List sk) {
   final isOdd = allocate<Uint8>(count: 1);
   final skPointer = MinaHelper.copyBytesToPointer(sk);
 
-  pubkeyFunc(skPointer, x, isOdd);
+  publicKeyFuncMontgomery(skPointer, x, isOdd);
 
   CompressedPublicKey rawPublicKey = CompressedPublicKey(x.asTypedList(32), isOdd.asTypedList(1));
   free(x);

@@ -59,11 +59,17 @@ final SignDelegation nativeSignDelegation = libMinaSigner
     .lookup<NativeFunction<sign_delegation_func>>('native_signDelegation')
     .asFunction();
 
-typedef native_derive_publickey = Void Function(Pointer<Uint8> sk, Pointer<Uint8> x, Pointer<Uint8> isOdd);
-typedef NativeDerivePublicKey = void Function(Pointer<Uint8> sk, Pointer<Uint8> x, Pointer<Uint8> isOdd);
-final NativeDerivePublicKey pubkeyFunc = libMinaSigner
-    .lookup<NativeFunction<native_derive_publickey>>('native_derive_public_key')
-    .asFunction<NativeDerivePublicKey>();
+typedef native_derive_public_key_montgomery = Void Function(Pointer<Uint8> sk, Pointer<Uint8> x, Pointer<Uint8> isOdd);
+typedef NativeDerivePublicKeyMontgomery = void Function(Pointer<Uint8> sk, Pointer<Uint8> x, Pointer<Uint8> isOdd);
+final NativeDerivePublicKeyMontgomery publicKeyFuncMontgomery = libMinaSigner
+    .lookup<NativeFunction<native_derive_public_key_montgomery>>('native_derive_public_key_montgomery')
+    .asFunction<NativeDerivePublicKeyMontgomery>();
+
+typedef native_derive_public_key_non_montgomery = Void Function(Pointer<Uint8> sk, Pointer<Uint8> x, Pointer<Uint8> isOdd);
+typedef NativeDerivePublicKeyNonMontgomery = void Function(Pointer<Uint8> sk, Pointer<Uint8> x, Pointer<Uint8> isOdd);
+final NativeDerivePublicKeyNonMontgomery publicKeyFuncNonMontgomery = libMinaSigner
+    .lookup<NativeFunction<native_derive_public_key_non_montgomery>>('native_derive_public_key_non_montgomery')
+    .asFunction<NativeDerivePublicKeyNonMontgomery>();
 
 // C publickey function - void dart_publickey(unsigned char *sk, unsigned char *pk);
 typedef sign_user_command_func = Void Function(

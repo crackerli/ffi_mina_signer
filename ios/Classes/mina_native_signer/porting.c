@@ -5,6 +5,7 @@
 #include "libbase58.h"
 #include "base10.h"
 #include <android/log.h>
+#include "porting.h"
 
 // Copy g_generator from crypto.c, this let the code merge from Izaak easy
 // g_generator = (1 : 12418654782883325593414442427049395787963493412651469444558597405572177144507)
@@ -73,7 +74,7 @@ static void prepare_memo(uint8_t* out, char* s) {
   }
 }
 
-void native_derive_public_key(uint8_t *sk, uint8_t *x, uint8_t *isOdd) {
+void native_derive_public_key_montgomery(uint8_t *sk, uint8_t *x, uint8_t *isOdd) {
     uint64_t tmp[4];
     Affine pub_key;
 
@@ -95,6 +96,15 @@ void native_derive_public_key(uint8_t *sk, uint8_t *x, uint8_t *isOdd) {
     memset(tmp, 0, sizeof(tmp));
     fiat_pasta_fp_from_montgomery(tmp, pub_key.y);
     isOdd[0] = tmp[0] & 0x01;
+}
+
+// Secret key is not of montgomery curve
+void native_derive_public_key_non_mongomery(uint8_t *sk, uint8_t *x, uint8_t *isOdd) {
+    // Convert sk to montgomery first
+    uint64_t tmp[4];
+    memset(tmp, 0, sizeof(tmp));
+    fiat_pasta_fq_to_montgomery(tmp, sk);
+    native_derive_public_key_montgomery(tmp, x, isOdd);
 }
 
 void native_sign_user_command(
