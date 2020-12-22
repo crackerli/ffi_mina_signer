@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.6)
 # set(CMAKE_ANDROID_ARCH_ABI arm64-v8a)
 
+# option (ANDROID_LIB "Build lib for android platform" ON)
+add_definitions(-D ANDROID_LIB)
+
 file(GLOB Mina_Signer_SOURCES ../ios/Classes/mina_native_signer/*.c)
 file(GLOB Mina_Signer_HEADER ../ios/Classes/mina_native_signer/*.h)
 

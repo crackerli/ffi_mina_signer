@@ -4,7 +4,9 @@
 #include "crypto.h"
 #include "libbase58.h"
 #include "base10.h"
+#ifdef ANDROID_LIB
 #include <android/log.h>
+#endif
 #include "porting.h"
 
 // Copy g_generator from crypto.c, this let the code merge from Izaak easy
@@ -31,14 +33,18 @@ void copy64_big_endian(uint8_t *dst, uint64_t w) {
 }
 
 static void print_uint64_t(uint64_t w) {
-  __android_log_print(ANDROID_LOG_DEBUG, "MinaKeys", "field byte = %x", (uint8_t)(w >>  0));
-  __android_log_print(ANDROID_LOG_DEBUG, "MinaKeys", "field byte = %x", (uint8_t)(w >>  8));
-  __android_log_print(ANDROID_LOG_DEBUG, "MinaKeys", "field byte = %x", (uint8_t)(w >>  16));
-  __android_log_print(ANDROID_LOG_DEBUG, "MinaKeys", "field byte = %x", (uint8_t)(w >>  24));
-  __android_log_print(ANDROID_LOG_DEBUG, "MinaKeys", "field byte = %x", (uint8_t)(w >>  32));
-  __android_log_print(ANDROID_LOG_DEBUG, "MinaKeys", "field byte = %x", (uint8_t)(w >>  40));
-  __android_log_print(ANDROID_LOG_DEBUG, "MinaKeys", "field byte = %x", (uint8_t)(w >>  48));
-  __android_log_print(ANDROID_LOG_DEBUG, "MinaKeys", "field byte = %x", (uint8_t)(w >>  56));
+#ifdef ANDROID_LIB
+  __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "field byte = %x", (uint8_t)(w >>  0));
+  __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "field byte = %x", (uint8_t)(w >>  8));
+  __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "field byte = %x", (uint8_t)(w >>  16));
+  __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "field byte = %x", (uint8_t)(w >>  24));
+  __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "field byte = %x", (uint8_t)(w >>  32));
+  __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "field byte = %x", (uint8_t)(w >>  40));
+  __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "field byte = %x", (uint8_t)(w >>  48));
+  __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "field byte = %x", (uint8_t)(w >>  56));
+#else
+  UNUSED(w);
+#endif
 }
 
 static void read_public_key_compressed(Compressed* out, char* pubkeyBase58) {
@@ -127,17 +133,19 @@ void native_sign_user_command(
     Transaction txn;
 
     prepare_memo(txn.memo, memo);
-    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "memo1=%s", memo);
-    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "fee_payer_address=%s", fee_payer_address);
-    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "sender_address=%s", sender_address);
-    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "receiver_address=%s", receiver_address);
-    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "fee=%d", fee);
-    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "fee_token=%d", fee_token);
-    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "nonce=%d", nonce);
-    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "valid_until=%d", valid_until);
-    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "token_id=%d", token_id);
-    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "amount=%d", amount);
-    __android_log_print(ANDROID_LOG_DEBUG, "CK1", "token_locked=%d", token_locked);
+    #ifdef ANDROID_LIB
+    __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "memo=%s", memo);
+    __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "fee_payer_address=%s", fee_payer_address);
+    __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "sender_address=%s", sender_address);
+    __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "receiver_address=%s", receiver_address);
+    __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "fee=%d", fee);
+    __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "fee_token=%d", fee_token);
+    __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "nonce=%d", nonce);
+    __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "valid_until=%d", valid_until);
+    __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "token_id=%d", token_id);
+    __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "amount=%d", amount);
+    __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "token_locked=%d", token_locked);
+    #endif
 
     txn.fee = fee;
     txn.fee_token = fee_token;

@@ -25,4 +25,6 @@ void native_sign_user_command(
     char *out_scalar
 );
 
+const char* NATIVE_TAG = "MinaKeys";
+
 #endif //FFI_MINA_SIGNER_PORTING_H
