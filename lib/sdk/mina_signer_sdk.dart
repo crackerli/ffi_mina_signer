@@ -14,7 +14,7 @@ import '../types/key_types.dart';
 import 'package:bip39/bip39.dart' as bip39;
 
 // Return a string of 12 words joined with space
-String generateSeed() {
+String generateMnemonic() {
   var mnemonic = bip39.generateMnemonic();
   return mnemonic;
 }
