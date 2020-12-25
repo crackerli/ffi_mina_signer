@@ -105,7 +105,7 @@ void native_derive_public_key_montgomery(uint8_t *sk, uint8_t *x, uint8_t *isOdd
 }
 
 // Secret key is not of montgomery curve
-void native_derive_public_key_non_mongomery(uint8_t *sk, uint8_t *x, uint8_t *isOdd) {
+void native_derive_public_key_non_montgomery(uint8_t *sk, uint8_t *x, uint8_t *isOdd) {
     // Convert sk to montgomery first
     uint64_t tmp[4];
     memset(tmp, 0, sizeof(tmp));
@@ -135,7 +135,7 @@ void native_sign_user_command_non_montgomery(
     uint64_t tmp[4];
     memset(tmp, 0, sizeof(tmp));
     fiat_pasta_fq_to_montgomery(tmp, sk);
-    native_sign_user_command_montgomery(sk, memo, fee_payer_address, sender_address,
+    native_sign_user_command_montgomery(tmp, memo, fee_payer_address, sender_address,
       receiver_address, fee, fee_token, nonce, valid_until, token_id, amount, token_locked, transaction_type, out_field, out_scalar);
 }
 
@@ -207,8 +207,18 @@ void native_sign_user_command_montgomery(
     char scalar_str[DIGITS] = { 0 };
     uint64_t tmp[4];
     memset(tmp, 0, sizeof(tmp));
+    /*
+    print_uint64_t((sig.rx)[0]);
+    print_uint64_t((sig.rx)[1]);
+    print_uint64_t((sig.rx)[2]);
+    print_uint64_t((sig.rx)[3]);
+    */
     fiat_pasta_fp_from_montgomery(tmp, sig.rx);
     bigint_to_string(out_field, tmp);
+        print_uint64_t((sig.rx)[0]);
+        print_uint64_t((sig.rx)[1]);
+        print_uint64_t((sig.rx)[2]);
+        print_uint64_t((sig.rx)[3]);
 
     memset(tmp, 0, sizeof(tmp));
     fiat_pasta_fq_from_montgomery(tmp, sig.s);

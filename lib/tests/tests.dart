@@ -73,6 +73,31 @@ void testSignTransaction() {
   print('---------------------- signature s=${signature.s} ------------------');
 }
 
+void testSignTransaction1() {
+  // Uint8List sk = Uint8List(32);
+  // sk[0]  = 0xe3; sk[1]  = 0xf6; sk[2]  = 0x23; sk[3]  = 0xd9; sk[4]  = 0xee; sk[5]  = 0xd6; sk[6]  = 0x14; sk[7]  = 0xca;
+  // sk[8]  = 0xb2; sk[9]  = 0xe6; sk[10] = 0x29; sk[11] = 0x5e; sk[12] = 0x1b; sk[13] = 0x5a; sk[14] = 0x18; sk[15] = 0x61;
+  // sk[16] = 0x3b; sk[17] = 0x75; sk[18] = 0x30; sk[19] = 0x9c; sk[20] = 0xde; sk[21] = 0x38; sk[22] = 0x6d; sk[23] = 0xe2;
+  // sk[24] = 0x14; sk[25] = 0x57; sk[26] = 0x0a; sk[27] = 0xfb; sk[28] = 0x0e; sk[29] = 0xdf; sk[30] = 0x3f; sk[31] = 0x00;
+  Uint8List sk = MinaHelper.hexToBytes('3c041039ac9ac5dea94330115aacf6d4780f08d7299a84a6ee2b62599cebb5e6');
+  String memo = 'Hello Mina!';
+  String feePayerAddress = 'B62qrGaXh9wekfwaA2yzUbhbvFYynkmBkhYLV36dvy5AkRvgeQnY6vx';
+  String senderAddress = 'B62qrGaXh9wekfwaA2yzUbhbvFYynkmBkhYLV36dvy5AkRvgeQnY6vx';
+  String receiverAddress = 'B62qpaDc8nfu4a7xghkEni8u2rBjx7EH95MFeZAhTgGofopaxFjdS7P';
+  int fee = 2000000000;
+  int feeToken = 1;
+  int nonce = 16;
+  int validUntil = 271828;
+  int tokenId = 1;
+  int amount = 1729000000000;
+  int tokenLocked = 0;
+
+  Signature signature = signTransaction(sk, memo, feePayerAddress,
+      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, amount, tokenLocked);
+  print('---------------------- signature rx=${signature.rx} ------------------');
+  print('---------------------- signature s=${signature.s} ------------------');
+}
+
 void testSignDelegation() {
   Uint8List sk = Uint8List(32);
   sk[0]  = 0xe3; sk[1]  = 0xf6; sk[2]  = 0x23; sk[3]  = 0xd9; sk[4]  = 0xee; sk[5]  = 0xd6; sk[6]  = 0x14; sk[7]  = 0xca;
@@ -127,4 +152,54 @@ void testBIP44() async {
   print('origin = ${MinaHelper.byteToHex(seedBytes)}');
 //  String recoveredSeed = bip39.entropyToMnemonic(MinaHelper.byteToHex(decrypted));
 //  print('[[[[[[[[[[[[[[[  $recoveredSeed  ]]]]]]]]]]]]]]]');
+}
+
+testAccount0BE() {
+  Uint8List sk = Uint8List(32);
+  sk[0] = 0x3c; sk[1] = 0x04; sk[2] = 0x10; sk[3] = 0x39; sk[4] = 0xac; sk[5] = 0x9a; sk[6] = 0xc5; sk[7] = 0xde;
+  sk[8] = 0xa9; sk[9] = 0x43; sk[10] = 0x30; sk[11] = 0x11; sk[12] = 0x5a; sk[13] = 0xac; sk[14] = 0xf6; sk[15] = 0xd4;
+  sk[16] = 0x78; sk[17] = 0x0f; sk[18] = 0x08; sk[19] = 0xd7; sk[20] = 0x29; sk[21] = 0x9a; sk[22] = 0x84; sk[23] = 0xa6;
+  sk[24] = 0xee; sk[25] = 0x2b; sk[26] = 0x62; sk[27] = 0x59; sk[28] = 0x9c; sk[29] = 0xeb; sk[30] = 0xb5; sk[31] = 0xe6;
+
+  String address = getAddressFromSecretKey(MinaHelper.reverse(sk));
+  print('=================== $address ================');
+}
+
+testAccount0BigInteger() {
+  BigInt sk = BigInt.parse('27145950286090989573235160126994188021722699404890955797699008383743072908774');
+//  BigInt sk1 = 27145950286090989573235160126994188021722699404890955797699008383743072908774;
+  Uint8List skList = MinaHelper.bigIntToBytes(sk);
+
+  String address = getAddressFromSecretKey(MinaHelper.reverse(skList));
+  print('=================== $address ================');
+}
+
+testAccount1BE() {
+  Uint8List sk = MinaHelper.hexToBytes('06270f74f8a6f2529f492a3bf112a3806e91e62b8fc3f247569e9a43ba9e8d6e');
+  String address = getAddressFromSecretKey(MinaHelper.reverse(sk));
+  print('=================== $address ================');
+}
+
+testAccount2BE() {
+  Uint8List sk = MinaHelper.hexToBytes('2943fbbbcf63025456cfcebae3f481462b1e720d0c7d2a10d113fb6b1847cb3d');
+  String address = getAddressFromSecretKey(MinaHelper.reverse(sk));
+  print('=================== $address ================');
+}
+
+testAccount3BE() {
+  Uint8List sk = MinaHelper.hexToBytes('03e97cbf15dba6da23616785886f8cb4ce9ced51f0140261332ee063bb7f17d3');
+  String address = getAddressFromSecretKey(MinaHelper.reverse(sk));
+  print('=================== $address ================');
+}
+
+testAccount49370BE() {
+  Uint8List sk = MinaHelper.hexToBytes('02989a314a65930de289a5578daa03c3410b177e009121574d8730bf8644ab9f');
+  String address = getAddressFromSecretKey(MinaHelper.reverse(sk));
+  print('=================== $address ================');
+}
+
+testAccount12586BE() {
+  Uint8List sk = MinaHelper.hexToBytes('1f2c90f146d1035280364cb1a01a89e7586a340972936abd5d72307a0674549c');
+  String address = getAddressFromSecretKey(MinaHelper.reverse(sk));
+  print('=================== $address ================');
 }

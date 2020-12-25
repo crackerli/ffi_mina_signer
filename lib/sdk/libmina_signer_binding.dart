@@ -62,7 +62,7 @@ final SignDelegation nativeSignDelegation = libMinaSigner
 typedef native_derive_public_key = Void Function(Pointer<Uint8> sk, Pointer<Uint8> x, Pointer<Uint8> isOdd);
 typedef NativeDerivePublicKey = void Function(Pointer<Uint8> sk, Pointer<Uint8> x, Pointer<Uint8> isOdd);
 final NativeDerivePublicKey publicKeyFunc = libMinaSigner
-    .lookup<NativeFunction<native_derive_public_key>>('native_derive_public_key_montgomery')
+    .lookup<NativeFunction<native_derive_public_key>>('native_derive_public_key_non_montgomery')
     .asFunction<NativeDerivePublicKey>();
 
 // typedef native_derive_public_key_non_montgomery = Void Function(Pointer<Uint8> sk, Pointer<Uint8> x, Pointer<Uint8> isOdd);
@@ -108,5 +108,5 @@ typedef SignUserCommand = void Function(
     Pointer<Uint8> field
     );
 final SignUserCommand signUserCommandFunc = libMinaSigner
-    .lookup<NativeFunction<sign_user_command_func>>('native_sign_user_command_montgomery')
+    .lookup<NativeFunction<sign_user_command_func>>('native_sign_user_command_non_montgomery')
     .asFunction<SignUserCommand>();
