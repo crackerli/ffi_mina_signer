@@ -33,14 +33,21 @@ class Signature {
   Signature(this.rx, this.s);
 }
 
-class PrivateKey {
-  Uint8List sk; // 32 bytes list, little endian
-}
+class Transaction {
+  Uint8List sk;
+  String memo;
+  String feePayerAddress;
+  String senderAddress;
+  String receiverAddress;
+  int fee;
+  int feeToken;
+  int nonce;
+  int validUntil;
+  int tokenId;
+  int amount;
+  int txType;
+  int tokenLocked;
 
-class Address {
-  String address;
-}
-
-class Account {
-
+  Transaction(this.sk, this.memo, this.feePayerAddress, this.senderAddress, this.receiverAddress, this.fee, this.feeToken,
+      this.nonce, this.validUntil, this.tokenId, this.amount, this.txType, this.tokenLocked);
 }

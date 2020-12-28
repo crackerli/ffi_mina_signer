@@ -7,6 +7,7 @@ import 'package:ffi/ffi.dart';
 import 'package:ffi_mina_signer/encrypt/crypter.dart';
 import 'package:ffi_mina_signer/types/key_types.dart';
 import 'package:ffi_mina_signer/util/mina_helper.dart';
+import 'package:flutter/foundation.dart';
 import '../constant.dart';
 import '../global/global.dart';
 import 'libmina_signer_binding.dart';
@@ -116,7 +117,7 @@ String getAddressFromSecretKey(Uint8List sk) {
   return getAddressFromPublicKey(compressedPublicKey);
 }
 
-Signature signTransaction(
+Future<Signature> signPayment(
     Uint8List sk,
     String memo,
     String feePayerAddress,
@@ -129,13 +130,13 @@ Signature signTransaction(
     int tokenId,
     int amount,
     int tokenLocked
-    ) {
-  return _signUserCommand(sk, memo, feePayerAddress,
-      senderAddress, receiverAddress, fee, feeToken,
-      nonce, validUntil, tokenId, amount, TRANSACTION_TYPE, tokenLocked);
+    ) async {
+  Transaction transaction = Transaction(sk, memo, feePayerAddress, senderAddress, receiverAddress,
+      fee, feeToken, nonce, validUntil, tokenId, amount, TRANSACTION_TYPE, tokenLocked);
+  return await compute(_signUserCommand, transaction);
 }
 
-Signature signDelegation(
+Future<Signature> signDelegation (
     Uint8List sk,
     String memo,
     String feePayerAddress,
@@ -147,35 +148,21 @@ Signature signDelegation(
     int validUntil,
     int tokenId,
     int tokenLocked
-    ) {
-  return _signUserCommand(sk, memo, feePayerAddress,
-      senderAddress, receiverAddress, fee, feeToken,
-      nonce, validUntil, tokenId, 0, DELEGATION_TYPE, tokenLocked);
+    ) async {
+  Transaction transaction = Transaction(sk, memo, feePayerAddress, senderAddress, receiverAddress,
+      fee, feeToken, nonce, validUntil, tokenId, 0, DELEGATION_TYPE, tokenLocked);
+  return await compute(_signUserCommand, transaction);
 }
 
 // Sign user command
-Signature _signUserCommand(
-    Uint8List sk,
-    String memo,
-    String feePayerAddress,
-    String senderAddress,
-    String receiverAddress,
-    int fee,
-    int feeToken,
-    int nonce,
-    int validUntil,
-    int tokenId,
-    int amount,
-    int txType,
-    int tokenLocked
-    ) {
+Signature _signUserCommand(Transaction transaction) {
   final field = allocate<Uint8>(count: SIGNATURE_FIELD_LENGTH);
   final scalar = allocate<Uint8>(count: SIGNATURE_SCALAR_LENGTH);
-  final skPointer = MinaHelper.copyBytesToPointer(sk);
-  final memoPointer = MinaHelper.copyStringToPointer(MinaHelper.stringToBytesUtf8(memo));
-  final feePayerPointer = MinaHelper.copyStringToPointer(MinaHelper.stringToBytesUtf8(feePayerAddress));
-  final senderPointer = MinaHelper.copyStringToPointer(MinaHelper.stringToBytesUtf8(senderAddress));
-  final receiverPointer = MinaHelper.copyStringToPointer(MinaHelper.stringToBytesUtf8(receiverAddress));
+  final skPointer = MinaHelper.copyBytesToPointer(transaction.sk);
+  final memoPointer = MinaHelper.copyStringToPointer(MinaHelper.stringToBytesUtf8(transaction.memo));
+  final feePayerPointer = MinaHelper.copyStringToPointer(MinaHelper.stringToBytesUtf8(transaction.feePayerAddress));
+  final senderPointer = MinaHelper.copyStringToPointer(MinaHelper.stringToBytesUtf8(transaction.senderAddress));
+  final receiverPointer = MinaHelper.copyStringToPointer(MinaHelper.stringToBytesUtf8(transaction.receiverAddress));
 
   signUserCommandFunc(
       skPointer,
@@ -183,14 +170,14 @@ Signature _signUserCommand(
       feePayerPointer,
       senderPointer,
       receiverPointer,
-      fee,
-      feeToken,
-      nonce,
-      validUntil,
-      tokenId,
-      amount,
-      tokenLocked,
-      txType,
+      transaction.fee,
+      transaction.feeToken,
+      transaction.nonce,
+      transaction.validUntil,
+      transaction.tokenId,
+      transaction.amount,
+      transaction.tokenLocked,
+      transaction.txType,
       field,
       scalar
   );
