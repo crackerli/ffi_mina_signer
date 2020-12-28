@@ -157,7 +157,9 @@ Future<Signature> signDelegation (
 // Sign user command
 Signature _signUserCommand(Transaction transaction) {
   final field = allocate<Uint8>(count: SIGNATURE_FIELD_LENGTH);
+  final fieldLength = allocate<Uint8>(count: 1);
   final scalar = allocate<Uint8>(count: SIGNATURE_SCALAR_LENGTH);
+  final scalarLength = allocate<Uint8>(count: 1);
   final skPointer = MinaHelper.copyBytesToPointer(transaction.sk);
   final memoPointer = MinaHelper.copyStringToPointer(MinaHelper.stringToBytesUtf8(transaction.memo));
   final feePayerPointer = MinaHelper.copyStringToPointer(MinaHelper.stringToBytesUtf8(transaction.feePayerAddress));
@@ -179,17 +181,18 @@ Signature _signUserCommand(Transaction transaction) {
       transaction.tokenLocked,
       transaction.txType,
       field,
-      scalar
+      fieldLength,
+      scalar,
+      scalarLength
   );
 
-  // Drop the ending 0 bytes of C char string
-  int endIndex;
+  // Read Dart string from C string
   Uint8List fieldList = field.asTypedList(SIGNATURE_FIELD_LENGTH);
-  endIndex = fieldList.indexOf(0);
-  String fieldStr = String.fromCharCodes(fieldList.sublist(0, endIndex));
+  Uint8List fieldLengthList = fieldLength.asTypedList(1);
+  String fieldStr = String.fromCharCodes(fieldList.sublist(0, fieldLengthList[0]));
   Uint8List scalarList = scalar.asTypedList(SIGNATURE_SCALAR_LENGTH);
-  endIndex = scalarList.indexOf(0);
-  String scalarStr = String.fromCharCodes(scalarList.sublist(0, endIndex));
+  Uint8List scalarLengthList = scalarLength.asTypedList(1);
+  String scalarStr = String.fromCharCodes(scalarList.sublist(0, scalarLengthList[0]));
 
   free(field);
   free(scalar);
@@ -198,6 +201,8 @@ Signature _signUserCommand(Transaction transaction) {
   free(feePayerPointer);
   free(senderPointer);
   free(receiverPointer);
+  free(fieldLength);
+  free(scalarLength);
 
   return Signature(fieldStr, scalarStr);
 }

@@ -129,14 +129,17 @@ void native_sign_user_command_non_montgomery(
     bool token_locked,
     uint8_t transaction_type, // 0 for transaction, 1 for delegation
     char *out_field,
-    char *out_scalar
+    uint8_t *field_length,
+    char *out_scalar,
+    uint8_t *scalar_length
 ) {
     // Convert sk to montgomery first
     uint64_t tmp[4];
     memset(tmp, 0, sizeof(tmp));
     fiat_pasta_fq_to_montgomery(tmp, sk);
     native_sign_user_command_montgomery(tmp, memo, fee_payer_address, sender_address,
-      receiver_address, fee, fee_token, nonce, valid_until, token_id, amount, token_locked, transaction_type, out_field, out_scalar);
+      receiver_address, fee, fee_token, nonce, valid_until,
+      token_id, amount, token_locked, transaction_type, out_field, field_length, out_scalar, scalar_length);
 }
 
 void native_sign_user_command_montgomery(
@@ -154,7 +157,9 @@ void native_sign_user_command_montgomery(
     bool token_locked,
     uint8_t transaction_type, // 0 for transaction, 1 for delegation
     char *out_field,
-    char *out_scalar
+    uint8_t *field_length,
+    char *out_scalar,
+    uint8_t *scalar_length
 ) {
     Transaction txn;
 
@@ -210,8 +215,9 @@ void native_sign_user_command_montgomery(
 
     fiat_pasta_fp_from_montgomery(tmp, sig.rx);
     bigint_to_string(out_field, tmp);
-
+    field_length[0] = strlen(out_field);
     memset(tmp, 0, sizeof(tmp));
     fiat_pasta_fq_from_montgomery(tmp, sig.s);
     bigint_to_string(out_scalar, tmp);
+    scalar_length[0] = strlen(out_scalar);
 }

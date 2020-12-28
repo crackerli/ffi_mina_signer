@@ -86,8 +86,10 @@ typedef sign_user_command_func = Void Function(
     Uint64 amount,
     Uint8 tokenLocked,
     Uint8 txType,
+    Pointer<Uint8> field,
+    Pointer<Uint8> fieldLength,
     Pointer<Uint8> scalar,
-    Pointer<Uint8> field
+    Pointer<Uint8> scalarLength,
     );
 
 typedef SignUserCommand = void Function(
@@ -104,8 +106,10 @@ typedef SignUserCommand = void Function(
     int amount,
     int tokenLocked,
     int txType,
+    Pointer<Uint8> field,
+    Pointer<Uint8> fieldLength,
     Pointer<Uint8> scalar,
-    Pointer<Uint8> field
+    Pointer<Uint8> scalarLength,
     );
 final SignUserCommand signUserCommandFunc = libMinaSigner
     .lookup<NativeFunction<sign_user_command_func>>('native_sign_user_command_non_montgomery')

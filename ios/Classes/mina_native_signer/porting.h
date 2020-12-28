@@ -22,7 +22,9 @@ void native_sign_user_command(
     bool token_locked,
     uint8_t transaction_type, // 0 for transaction, 1 for delegation
     char *out_field,
-    char *out_scalar
+    uint8_t *field_length,
+    char *out_scalar,
+    uint8_t *scalar_length
 );
 
 void native_sign_user_command_montgomery(
@@ -40,7 +42,9 @@ void native_sign_user_command_montgomery(
     bool token_locked,
     uint8_t transaction_type, // 0 for transaction, 1 for delegation
     char *out_field,
-    char *out_scalar
+    uint8_t *field_length,
+    char *out_scalar,
+    uint8_t *scalar_length
 );
 
 void native_sign_user_command_non_montgomery(
@@ -58,7 +62,9 @@ void native_sign_user_command_non_montgomery(
     bool token_locked,
     uint8_t transaction_type, // 0 for transaction, 1 for delegation
     char *out_field,
-    char *out_scalar
+    uint8_t *field_length,
+    char *out_scalar,
+    uint8_t *scalar_length
 );
 
 const char* NATIVE_TAG = "MinaKeys";
