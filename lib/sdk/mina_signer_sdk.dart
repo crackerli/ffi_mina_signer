@@ -195,7 +195,7 @@ Signature _signUserCommand(
       scalar
   );
 
-  // Drop the ending 0 byte of C char string
+  // Drop the ending 0 bytes of C char string
   int endIndex;
   Uint8List fieldList = field.asTypedList(SIGNATURE_FIELD_LENGTH);
   endIndex = fieldList.indexOf(0);

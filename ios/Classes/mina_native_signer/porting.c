@@ -164,12 +164,12 @@ void native_sign_user_command_montgomery(
     __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "fee_payer_address=%s", fee_payer_address);
     __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "sender_address=%s", sender_address);
     __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "receiver_address=%s", receiver_address);
-    __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "fee=%d", fee);
-    __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "fee_token=%d", fee_token);
-    __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "nonce=%d", nonce);
-    __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "valid_until=%d", valid_until);
-    __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "token_id=%d", token_id);
-    __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "amount=%d", amount);
+    __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "fee=%lu", fee);
+    __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "fee_token=%lu", fee_token);
+    __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "nonce=%lu", nonce);
+    __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "valid_until=%lu", valid_until);
+    __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "token_id=%lu", token_id);
+    __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "amount=%lu", amount);
     __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "token_locked=%d", token_locked);
     #endif
 
@@ -207,18 +207,9 @@ void native_sign_user_command_montgomery(
     char scalar_str[DIGITS] = { 0 };
     uint64_t tmp[4];
     memset(tmp, 0, sizeof(tmp));
-    /*
-    print_uint64_t((sig.rx)[0]);
-    print_uint64_t((sig.rx)[1]);
-    print_uint64_t((sig.rx)[2]);
-    print_uint64_t((sig.rx)[3]);
-    */
+
     fiat_pasta_fp_from_montgomery(tmp, sig.rx);
     bigint_to_string(out_field, tmp);
-        print_uint64_t((sig.rx)[0]);
-        print_uint64_t((sig.rx)[1]);
-        print_uint64_t((sig.rx)[2]);
-        print_uint64_t((sig.rx)[3]);
 
     memset(tmp, 0, sizeof(tmp));
     fiat_pasta_fq_from_montgomery(tmp, sig.s);

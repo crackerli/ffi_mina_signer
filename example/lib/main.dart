@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:ffi_mina_signer/sdk/ffi_mina_signer.dart';
 import 'package:flutter/services.dart';
-import 'package:ffi_mina_signer/tests/tests.dart';
+import 'test/tests.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,23 +21,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-//    nativeSignDelegation();
-//   String address = getAddress();
-//   print('================= $address =======================');
-//    testBase58Enc();
-//    testInvalidBase58Enc();
-//    signUserCommand();
-//    testUint64();
-//    testGetAddressFromSecretKey();
-//    testSignTransaction();
-//    testSignDelegation();
-//    testBIP44();
-//    testAccount0BE();
-//    testAccount0BigInteger();
-//    testAccount3BE();
-//    testAccount49370BE();
-//    testAccount12586BE();
-    testSignTransaction1();
+    test();
+    testSignDelegation1();
     initPlatformState();
   }
 
@@ -73,5 +58,15 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
+  }
+
+  test() {
+    testAccount0BitInteger();
+    testAccount0BE();
+    testAccount1BE();
+    testAccount2BE();
+    testAccount3BE();
+    testAccount49370BE();
+    testAccount12586BE();
   }
 }
