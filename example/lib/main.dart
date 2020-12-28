@@ -13,17 +13,14 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-// Scalar priv_key = { 0xca14d6eed923f6e3, 0x61185a1b5e29e6b2, 0xe26d38de9c30753b, 0x3fdf0efb0a5714 };
-
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
 
   @override
   void initState() {
     super.initState();
-    test();
-    testSignDelegation1();
-    initPlatformState();
+//    testSignDelegation1();
+//    initPlatformState();
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -51,22 +48,22 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('Mina Signer example app'),
         ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
-        ),
+        body: Column(
+          children: [
+            Text('testAccount0BigInteger passed: ${testAccount0BitInteger()}'),
+            Text('testAccount0BE passed: ${testAccount0BE()}'),
+            Text('testAccount1BE passed: ${testAccount1BE()}'),
+            Text('testAccount2BE passed: ${testAccount2BE()}'),
+            Text('testAccount49370BE passed: ${testAccount49370BE()}'),
+            Text('testAccount12586BE passed: ${testAccount12586BE()}'),
+            Text('testSignTransaction0 passed: ${testSignTransaction0()}'),
+            Text('testSignTransaction1 passed: ${testSignTransaction1()}'),
+            Text('testSignTransaction2 passed: ${testSignTransaction2()}'),
+          ],
+        )
       ),
     );
-  }
-
-  test() {
-    testAccount0BitInteger();
-    testAccount0BE();
-    testAccount1BE();
-    testAccount2BE();
-    testAccount3BE();
-    testAccount49370BE();
-    testAccount12586BE();
   }
 }
