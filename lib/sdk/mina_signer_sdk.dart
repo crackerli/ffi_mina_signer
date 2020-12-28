@@ -43,7 +43,7 @@ Uint8List decryptSeed(String encryptedSeedHex, String password) {
 Uint8List generatePrivateKey(Uint8List seed, int account) {
 //   m / purpose' / coin_type' / account' / change / address_index
   Chain chain = Chain.seed(hex.encode(seed));
-  ExtendedPrivateKey extendedPrivateKey = chain.forPath("m/44'/$MINA_COIN_TYPE'/$account'/0/0");
+  ExtendedPrivateKey extendedPrivateKey = chain.forPath("m/44'/$MINA_COIN_TYPE'/$account'/0'/0'");
   // Decode the BigInt of seed to big-endian Uint8List
   Uint8List actualKey = MinaHelper.bigIntToBytes(extendedPrivateKey.key);
   // Make sure the private key is in [0, p)
@@ -71,7 +71,8 @@ Uint8List generatePrivateKey(Uint8List seed, int account) {
 
   // Pay attention, this Uint8List is not a montgomery number, before using, a call to
   // fiat_pasta_fq_to_montgomery should happen
-  return MinaHelper.reverse(actualKey);
+  // Little-endian convert should happend before pass this private key to C layer
+  return actualKey;
 }
 
 // Get compressed public key from secret key

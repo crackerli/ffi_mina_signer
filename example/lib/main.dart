@@ -109,12 +109,11 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Column(
           children: [
-            Text('testAccount0BigInteger passed: ${testAccount0BitInteger()}'),
-            Text('testAccount0BE passed: ${testAccount0BE()}'),
-            Text('testAccount1BE passed: ${testAccount1BE()}'),
-            Text('testAccount2BE passed: ${testAccount2BE()}'),
-            Text('testAccount49370BE passed: ${testAccount49370BE()}'),
-            Text('testAccount12586BE passed: ${testAccount12586BE()}'),
+            Text('testAccount0 passed: ${testAccount0()}'),
+            Text('testAccount1 passed: ${testAccount1()}'),
+            Text('testAccount2BE passed: ${testAccount2()}'),
+            Text('testAccount49370BE passed: ${testAccount49370()}'),
+            Text('testAccount12586BE passed: ${testAccount12586()}'),
             Text('testSignPayment0 passed: $_testSignPayment0Ret'),
             Text('testSignPayment1 passed: $_testSignPayment1Ret'),
             Text('testSignPayment2 passed: $_testSignPayment2Ret'),

@@ -11,6 +11,9 @@ import 'package:bitcoin_bip32/bitcoin_bip32.dart';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:ffi_mina_signer/util/mina_helper.dart';
 
+const String _LedgerTestWords =
+  "course grief vintage slim tell hospital car maze model style elegant kitchen state purpose matrix gas grid enable frown road goddess glove canyon key";
+
 void testBase58Enc() {
   //0f 48 c6 5b d2 5f 85 f3 e4 ea 4e fe be b7 5b 79 7b d7 43 60 3b e0 4b 4e ad 84 56 98 b7 6b d3 31
   Uint8List src = Uint8List(36);
@@ -100,7 +103,7 @@ Future<void> testSignDelegation() async {
 void testBIP44() async {
   var mnemonic = bip39.generateMnemonic();
   print('---------------- $mnemonic ----------------------');
-  String seed = bip39.mnemonicToSeedHex(mnemonic);
+  String seed = bip39.mnemonicToSeedHex(_LedgerTestWords);//bip39.mnemonicToSeedHex(mnemonic);
   Uint8List seed1 = bip39.mnemonicToSeed(mnemonic);
   Uint8List seedBytes = MinaHelper.hexToBytes(seed);
 //   m / purpose' / coin_type' / account' / change / address_index
@@ -123,67 +126,62 @@ void testBIP44() async {
 }
 
 /// Result public key should be: B62qrGaXh9wekfwaA2yzUbhbvFYynkmBkhYLV36dvy5AkRvgeQnY6vx
-bool testAccount0BitInteger() {
-  BigInt sk = BigInt.parse('27145950286090989573235160126994188021722699404890955797699008383743072908774');
-  Uint8List skList = MinaHelper.bigIntToBytes(sk);
-
-  String address = getAddressFromSecretKey(MinaHelper.reverse(skList));
+bool testAccount0() {
+  Uint8List seed = bip39.mnemonicToSeed(_LedgerTestWords);
+  Uint8List account0Priv = generatePrivateKey(seed, 0);
+  String address = getAddressFromSecretKey(MinaHelper.reverse(account0Priv));
   bool testRet = 'B62qrGaXh9wekfwaA2yzUbhbvFYynkmBkhYLV36dvy5AkRvgeQnY6vx' == address;
-  print('=================== testAccount0BitInteger passed: $testRet ================');
-  return testRet;
-}
-
-/// Result public key should be: B62qrGaXh9wekfwaA2yzUbhbvFYynkmBkhYLV36dvy5AkRvgeQnY6vx
-bool testAccount0BE() {
-  Uint8List sk = MinaHelper.hexToBytes('3c041039ac9ac5dea94330115aacf6d4780f08d7299a84a6ee2b62599cebb5e6');
-  String address = getAddressFromSecretKey(MinaHelper.reverse(sk));
-  bool testRet = 'B62qrGaXh9wekfwaA2yzUbhbvFYynkmBkhYLV36dvy5AkRvgeQnY6vx' == address;
-  print('=================== testAccount0BE passed: $testRet ================');
+  print('=================== testAccount0 passed: $testRet ================');
   return testRet;
 }
 
 /// Result public key should be: B62qpaDc8nfu4a7xghkEni8u2rBjx7EH95MFeZAhTgGofopaxFjdS7P
-bool testAccount1BE() {
-  Uint8List sk = MinaHelper.hexToBytes('06270f74f8a6f2529f492a3bf112a3806e91e62b8fc3f247569e9a43ba9e8d6e');
-  String address = getAddressFromSecretKey(MinaHelper.reverse(sk));
+bool testAccount1() {
+  Uint8List seed = bip39.mnemonicToSeed(_LedgerTestWords);
+  Uint8List account1Priv = generatePrivateKey(seed, 1);
+  String address = getAddressFromSecretKey(MinaHelper.reverse(account1Priv));
   bool testRet = 'B62qpaDc8nfu4a7xghkEni8u2rBjx7EH95MFeZAhTgGofopaxFjdS7P' == address;
-  print('=================== testAccount1BE passed: $testRet ================');
+  print('=================== testAccount1 passed: $testRet ================');
   return testRet;
 }
 
 /// Result public key should be: B62qpkf1jH9sqtZy4kAJHgdChfuRX7SPqoX4Q2ZjJH2YDNWUUd92bxo
-bool testAccount2BE() {
-  Uint8List sk = MinaHelper.hexToBytes('2943fbbbcf63025456cfcebae3f481462b1e720d0c7d2a10d113fb6b1847cb3d');
-  String address = getAddressFromSecretKey(MinaHelper.reverse(sk));
+bool testAccount2() {
+  Uint8List seed = bip39.mnemonicToSeed(_LedgerTestWords);
+  Uint8List account2Priv = generatePrivateKey(seed, 2);
+  String address = getAddressFromSecretKey(MinaHelper.reverse(account2Priv));
   bool testRet = 'B62qpkf1jH9sqtZy4kAJHgdChfuRX7SPqoX4Q2ZjJH2YDNWUUd92bxo' == address;
-  print('=================== testAccount2BE passed: $testRet ================');
+  print('=================== testAccount2 passed: $testRet ================');
   return testRet;
 }
 
 /// Result public key should be: B62qnpUj6EJGNvhJFMEAmM6skJRg1H37hVsHvPHMXhHeCXfKhSWGkGN
-bool testAccount3BE() {
-  Uint8List sk = MinaHelper.hexToBytes('03e97cbf15dba6da23616785886f8cb4ce9ced51f0140261332ee063bb7f17d3');
-  String address = getAddressFromSecretKey(MinaHelper.reverse(sk));
+bool testAccount3() {
+  Uint8List seed = bip39.mnemonicToSeed(_LedgerTestWords);
+  Uint8List account3Priv = generatePrivateKey(seed, 3);
+  String address = getAddressFromSecretKey(MinaHelper.reverse(account3Priv));
   bool testRet = 'B62qnpUj6EJGNvhJFMEAmM6skJRg1H37hVsHvPHMXhHeCXfKhSWGkGN' == address;
-  print('=================== testAccount3BE passed: $testRet ================');
+  print('=================== testAccount3 passed: $testRet ================');
   return testRet;
 }
 
 /// Result public key should be: B62qq8DZP9h5cCKr6ecXY3MqVz1oQuEzJMyZLCbEukCJGS9SuVXK33o
-bool testAccount49370BE() {
-  Uint8List sk = MinaHelper.hexToBytes('02989a314a65930de289a5578daa03c3410b177e009121574d8730bf8644ab9f');
-  String address = getAddressFromSecretKey(MinaHelper.reverse(sk));
+bool testAccount49370() {
+  Uint8List seed = bip39.mnemonicToSeed(_LedgerTestWords);
+  Uint8List account49370Priv = generatePrivateKey(seed, 49370);
+  String address = getAddressFromSecretKey(MinaHelper.reverse(account49370Priv));
   bool testRet = 'B62qq8DZP9h5cCKr6ecXY3MqVz1oQuEzJMyZLCbEukCJGS9SuVXK33o' == address;
-  print('=================== testAccount49370BE passed: $testRet ================');
+  print('=================== testAccount49370 passed: $testRet ================');
   return testRet;
 }
 
 /// Result public key should be: B62qnWKWnUmj3mxUx4UcnQGMMsqwNkHUdgzvhto6Je3LwKSRb7dYqm9
-bool testAccount12586BE() {
-  Uint8List sk = MinaHelper.hexToBytes('1f2c90f146d1035280364cb1a01a89e7586a340972936abd5d72307a0674549c');
-  String address = getAddressFromSecretKey(MinaHelper.reverse(sk));
+bool testAccount12586() {
+  Uint8List seed = bip39.mnemonicToSeed(_LedgerTestWords);
+  Uint8List account12586Priv = generatePrivateKey(seed, 12586);
+  String address = getAddressFromSecretKey(MinaHelper.reverse(account12586Priv));
   bool testRet = 'B62qnWKWnUmj3mxUx4UcnQGMMsqwNkHUdgzvhto6Je3LwKSRb7dYqm9' == address;
-  print('=================== testAccount12586BE passed: $testRet ================');
+  print('=================== testAccount12586 passed: $testRet ================');
   return testRet;
 }
 
