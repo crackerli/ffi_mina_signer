@@ -126,60 +126,60 @@ void testBIP44() async {
 }
 
 /// Result public key should be: B62qrGaXh9wekfwaA2yzUbhbvFYynkmBkhYLV36dvy5AkRvgeQnY6vx
-bool testAccount0() {
+Future<bool> testAccount0() async {
   Uint8List seed = bip39.mnemonicToSeed(_LedgerTestWords);
   Uint8List account0Priv = generatePrivateKey(seed, 0);
-  String address = getAddressFromSecretKey(MinaHelper.reverse(account0Priv));
+  String address = await getAddressFromSecretKeyAsync(MinaHelper.reverse(account0Priv));
   bool testRet = 'B62qrGaXh9wekfwaA2yzUbhbvFYynkmBkhYLV36dvy5AkRvgeQnY6vx' == address;
   print('=================== testAccount0 passed: $testRet ================');
   return testRet;
 }
 
 /// Result public key should be: B62qpaDc8nfu4a7xghkEni8u2rBjx7EH95MFeZAhTgGofopaxFjdS7P
-bool testAccount1() {
+Future<bool> testAccount1() async {
   Uint8List seed = bip39.mnemonicToSeed(_LedgerTestWords);
   Uint8List account1Priv = generatePrivateKey(seed, 1);
-  String address = getAddressFromSecretKey(MinaHelper.reverse(account1Priv));
+  String address = await getAddressFromSecretKeyAsync(MinaHelper.reverse(account1Priv));
   bool testRet = 'B62qpaDc8nfu4a7xghkEni8u2rBjx7EH95MFeZAhTgGofopaxFjdS7P' == address;
   print('=================== testAccount1 passed: $testRet ================');
   return testRet;
 }
 
 /// Result public key should be: B62qpkf1jH9sqtZy4kAJHgdChfuRX7SPqoX4Q2ZjJH2YDNWUUd92bxo
-bool testAccount2() {
+Future<bool> testAccount2() async {
   Uint8List seed = bip39.mnemonicToSeed(_LedgerTestWords);
   Uint8List account2Priv = generatePrivateKey(seed, 2);
-  String address = getAddressFromSecretKey(MinaHelper.reverse(account2Priv));
+  String address = await getAddressFromSecretKeyAsync(MinaHelper.reverse(account2Priv));
   bool testRet = 'B62qpkf1jH9sqtZy4kAJHgdChfuRX7SPqoX4Q2ZjJH2YDNWUUd92bxo' == address;
   print('=================== testAccount2 passed: $testRet ================');
   return testRet;
 }
 
 /// Result public key should be: B62qnpUj6EJGNvhJFMEAmM6skJRg1H37hVsHvPHMXhHeCXfKhSWGkGN
-bool testAccount3() {
+Future<bool> testAccount3() async {
   Uint8List seed = bip39.mnemonicToSeed(_LedgerTestWords);
   Uint8List account3Priv = generatePrivateKey(seed, 3);
-  String address = getAddressFromSecretKey(MinaHelper.reverse(account3Priv));
+  String address = await getAddressFromSecretKeyAsync(MinaHelper.reverse(account3Priv));
   bool testRet = 'B62qnpUj6EJGNvhJFMEAmM6skJRg1H37hVsHvPHMXhHeCXfKhSWGkGN' == address;
   print('=================== testAccount3 passed: $testRet ================');
   return testRet;
 }
 
 /// Result public key should be: B62qq8DZP9h5cCKr6ecXY3MqVz1oQuEzJMyZLCbEukCJGS9SuVXK33o
-bool testAccount49370() {
+Future<bool> testAccount49370() async {
   Uint8List seed = bip39.mnemonicToSeed(_LedgerTestWords);
   Uint8List account49370Priv = generatePrivateKey(seed, 49370);
-  String address = getAddressFromSecretKey(MinaHelper.reverse(account49370Priv));
+  String address = await getAddressFromSecretKeyAsync(MinaHelper.reverse(account49370Priv));
   bool testRet = 'B62qq8DZP9h5cCKr6ecXY3MqVz1oQuEzJMyZLCbEukCJGS9SuVXK33o' == address;
   print('=================== testAccount49370 passed: $testRet ================');
   return testRet;
 }
 
 /// Result public key should be: B62qnWKWnUmj3mxUx4UcnQGMMsqwNkHUdgzvhto6Je3LwKSRb7dYqm9
-bool testAccount12586() {
+Future<bool> testAccount12586() async {
   Uint8List seed = bip39.mnemonicToSeed(_LedgerTestWords);
   Uint8List account12586Priv = generatePrivateKey(seed, 12586);
-  String address = getAddressFromSecretKey(MinaHelper.reverse(account12586Priv));
+  String address = await getAddressFromSecretKeyAsync(MinaHelper.reverse(account12586Priv));
   bool testRet = 'B62qnWKWnUmj3mxUx4UcnQGMMsqwNkHUdgzvhto6Je3LwKSRb7dYqm9' == address;
   print('=================== testAccount12586 passed: $testRet ================');
   return testRet;

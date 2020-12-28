@@ -18,6 +18,12 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    testAccount0Async();
+    testAccount1Async();
+    testAccount2Async();
+    testAccount3Async();
+    testAccount49370Async();
+    testAccount12586Async();
     testSignPayment0Async();
     testSignPayment1Async();
     testSignPayment2Async();
@@ -27,7 +33,61 @@ class _MyAppState extends State<MyApp> {
     testSignDelegation2Async();
     testSignDelegation3Async();
   }
-  
+
+  bool _testAccount0Ret = false;
+  Future<void> testAccount0Async() async {
+    bool testAccount0Ret = await testAccount0();
+    if (!mounted) return;
+    setState(() {
+      _testAccount0Ret = testAccount0Ret;
+    });
+  }
+
+  bool _testAccount1Ret = false;
+  Future<void> testAccount1Async() async {
+    bool testAccount1Ret = await testAccount1();
+    if (!mounted) return;
+    setState(() {
+      _testAccount1Ret = testAccount1Ret;
+    });
+  }
+
+  bool _testAccount2Ret = false;
+  Future<void> testAccount2Async() async {
+    bool testAccount2Ret = await testAccount2();
+    if (!mounted) return;
+    setState(() {
+      _testAccount2Ret = testAccount2Ret;
+    });
+  }
+
+  bool _testAccount3Ret = false;
+  Future<void> testAccount3Async() async {
+    bool testAccount3Ret = await testAccount3();
+    if (!mounted) return;
+    setState(() {
+      _testAccount3Ret = testAccount3Ret;
+    });
+  }
+
+  bool _testAccount49370Ret = false;
+  Future<void> testAccount49370Async() async {
+    bool testAccount49370Ret = await testAccount49370();
+    if (!mounted) return;
+    setState(() {
+      _testAccount49370Ret = testAccount49370Ret;
+    });
+  }
+
+  bool _testAccount12586Ret = false;
+  Future<void> testAccount12586Async() async {
+    bool testAccount12586Ret = await testAccount12586();
+    if (!mounted) return;
+    setState(() {
+      _testAccount12586Ret = testAccount12586Ret;
+    });
+  }
+
   bool _testSignPayment0Ret = false;
   Future<void> testSignPayment0Async() async {
     bool testSignPayment0Ret = await testSignPayment0();
@@ -109,11 +169,12 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Column(
           children: [
-            Text('testAccount0 passed: ${testAccount0()}'),
-            Text('testAccount1 passed: ${testAccount1()}'),
-            Text('testAccount2BE passed: ${testAccount2()}'),
-            Text('testAccount49370BE passed: ${testAccount49370()}'),
-            Text('testAccount12586BE passed: ${testAccount12586()}'),
+            Text('testAccount0 passed: $_testAccount0Ret'),
+            Text('testAccount1 passed: $_testAccount1Ret'),
+            Text('testAccount2BE passed: $_testAccount2Ret'),
+            Text('testAccount2BE passed: $_testAccount3Ret'),
+            Text('testAccount49370BE passed: $_testAccount49370Ret'),
+            Text('testAccount12586BE passed: $_testAccount12586Ret'),
             Text('testSignPayment0 passed: $_testSignPayment0Ret'),
             Text('testSignPayment1 passed: $_testSignPayment1Ret'),
             Text('testSignPayment2 passed: $_testSignPayment2Ret'),

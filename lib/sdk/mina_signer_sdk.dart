@@ -118,6 +118,11 @@ String getAddressFromSecretKey(Uint8List sk) {
   return getAddressFromPublicKey(compressedPublicKey);
 }
 
+// Get address from secret key
+Future<String> getAddressFromSecretKeyAsync(Uint8List sk) async {
+  return await compute(getAddressFromSecretKey, sk);
+}
+
 Future<Signature> signPayment(
     Uint8List sk,
     String memo,
