@@ -20,7 +20,8 @@ String generateMnemonic() {
   return mnemonic;
 }
 
-Uint8List mnemonicToSeed(String mnemonic) {
+Future<Uint8List> mnemonicToSeed(String mnemonic) async {
+  return await compute(bip39.mnemonicToSeed, mnemonic);
   return bip39.mnemonicToSeed(mnemonic);
 }
 
