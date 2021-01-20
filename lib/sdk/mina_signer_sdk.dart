@@ -22,7 +22,10 @@ String generateMnemonic() {
 
 Future<Uint8List> mnemonicToSeed(String mnemonic) async {
   return await compute(bip39.mnemonicToSeed, mnemonic);
-  return bip39.mnemonicToSeed(mnemonic);
+}
+
+bool validateMnemonic(String mnemonic) {
+  return bip39.validateMnemonic(mnemonic);
 }
 
 // Encrypt the seed, then we can store them in our disk space
