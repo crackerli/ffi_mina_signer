@@ -62,12 +62,12 @@ Future<void> testSignTransaction() async {
   String feePayerAddress = 'B62qiy32p8kAKnny8ZFwoMhYpBppM1DWVCqAPBYNcXnsAHhnfAAuXgg';
   String senderAddress = 'B62qiy32p8kAKnny8ZFwoMhYpBppM1DWVCqAPBYNcXnsAHhnfAAuXgg';
   String receiverAddress = 'B62qrcFstkpqXww1EkSGrqMCwCNho86kuqBd4FrAAUsPxNKdiPzAUsy';
-  int fee = 3;
-  int feeToken = 1;
+  BigInt fee = BigInt.from(3);
+  BigInt feeToken = BigInt.from(1);
   int nonce = 200;
   int validUntil = 10000;
-  int tokenId = 1;
-  int amount = 42;
+  BigInt tokenId = BigInt.from(1);
+  BigInt amount = BigInt.from(42);
   int tokenLocked = 0;
 
   Signature signature = await signPayment(sk, memo, feePayerAddress,
@@ -86,11 +86,11 @@ Future<void> testSignDelegation() async {
   String feePayerAddress = 'B62qiy32p8kAKnny8ZFwoMhYpBppM1DWVCqAPBYNcXnsAHhnfAAuXgg';
   String senderAddress = 'B62qiy32p8kAKnny8ZFwoMhYpBppM1DWVCqAPBYNcXnsAHhnfAAuXgg';
   String receiverAddress = 'B62qkfHpLpELqpMK6ZvUTJ5wRqKDRF3UHyJ4Kv3FU79Sgs4qpBnx5RR';
-  int fee = 3;
-  int feeToken = 1;
+  BigInt fee = BigInt.from(3);
+  BigInt feeToken = BigInt.from(1);
   int nonce = 10;
   int validUntil = 4000;
-  int tokenId = 1;
+  BigInt tokenId = BigInt.from(1);
   int tokenLocked = 0;
 
   Signature signature = await signDelegation(sk, memo, feePayerAddress, senderAddress,
@@ -191,12 +191,12 @@ Future<bool> testSignPayment0() async {
   String feePayerAddress = 'B62qrGaXh9wekfwaA2yzUbhbvFYynkmBkhYLV36dvy5AkRvgeQnY6vx';
   String senderAddress = 'B62qrGaXh9wekfwaA2yzUbhbvFYynkmBkhYLV36dvy5AkRvgeQnY6vx';
   String receiverAddress = 'B62qpaDc8nfu4a7xghkEni8u2rBjx7EH95MFeZAhTgGofopaxFjdS7P';
-  int fee = 2000000000;
-  int feeToken = 1;
+  BigInt fee = BigInt.from(2000000000);
+  BigInt feeToken = BigInt.from(1);
   int nonce = 16;
   int validUntil = 271828;
-  int tokenId = 1;
-  int amount = 1729000000000;
+  BigInt tokenId = BigInt.from(1);
+  BigInt amount = BigInt.from(1729000000000);
   int tokenLocked = 0;
 
   Signature signature = await signPayment(MinaHelper.reverse(sk), memo, feePayerAddress,
@@ -214,12 +214,12 @@ Future<bool> testSignPayment1() async {
   String feePayerAddress = 'B62qnWKWnUmj3mxUx4UcnQGMMsqwNkHUdgzvhto6Je3LwKSRb7dYqm9';
   String senderAddress = 'B62qnWKWnUmj3mxUx4UcnQGMMsqwNkHUdgzvhto6Je3LwKSRb7dYqm9';
   String receiverAddress = 'B62qpkf1jH9sqtZy4kAJHgdChfuRX7SPqoX4Q2ZjJH2YDNWUUd92bxo';
-  int fee = 1618033988;
-  int feeToken = 1;
+  BigInt fee = BigInt.from(1618033988);
+  BigInt feeToken = BigInt.from(1);
   int nonce = 0;
   int validUntil = 4294967295;
-  int tokenId = 1;
-  int amount = 314159265359;
+  BigInt tokenId = BigInt.from(1);
+  BigInt amount = BigInt.from(314159265359);
   int tokenLocked = 0;
 
   Signature signature = await signPayment(MinaHelper.reverse(sk), memo, feePayerAddress,
@@ -237,12 +237,12 @@ Future<bool> testSignPayment2() async {
   String feePayerAddress = 'B62qnWKWnUmj3mxUx4UcnQGMMsqwNkHUdgzvhto6Je3LwKSRb7dYqm9';
   String senderAddress = 'B62qnWKWnUmj3mxUx4UcnQGMMsqwNkHUdgzvhto6Je3LwKSRb7dYqm9';
   String receiverAddress = 'B62qnpUj6EJGNvhJFMEAmM6skJRg1H37hVsHvPHMXhHeCXfKhSWGkGN';
-  int fee = 100000;
-  int feeToken = 1;
+  BigInt fee = BigInt.from(100000);
+  BigInt feeToken = BigInt.from(1);
   int nonce = 5687;
   int validUntil = 4294967295;
-  int tokenId = 1;
-  int amount = 271828182845904;
+  BigInt tokenId = BigInt.from(1);
+  BigInt amount = BigInt.from(271828182845904);
   int tokenLocked = 0;
 
   Signature signature = await signPayment(MinaHelper.reverse(sk), memo, feePayerAddress,
@@ -260,12 +260,12 @@ Future<bool> testSignPayment3() async {
   String feePayerAddress = 'B62qnpUj6EJGNvhJFMEAmM6skJRg1H37hVsHvPHMXhHeCXfKhSWGkGN';
   String senderAddress = 'B62qnpUj6EJGNvhJFMEAmM6skJRg1H37hVsHvPHMXhHeCXfKhSWGkGN';
   String receiverAddress = 'B62qrGaXh9wekfwaA2yzUbhbvFYynkmBkhYLV36dvy5AkRvgeQnY6vx';
-  int fee = 2000000000;
-  int feeToken = 1;
+  BigInt fee = BigInt.from(2000000000);
+  BigInt feeToken = BigInt.from(1);
   int nonce = 0;
   int validUntil = 1982;
-  int tokenId = 1;
-  int amount = 0;
+  BigInt tokenId = BigInt.from(1);
+  BigInt amount = BigInt.from(0);
   int tokenLocked = 0;
 
   Signature signature = await signPayment(MinaHelper.reverse(sk), memo, feePayerAddress,
@@ -283,11 +283,11 @@ Future<bool> testSignDelegation0() async {
   String feePayerAddress = 'B62qrGaXh9wekfwaA2yzUbhbvFYynkmBkhYLV36dvy5AkRvgeQnY6vx';
   String senderAddress = 'B62qrGaXh9wekfwaA2yzUbhbvFYynkmBkhYLV36dvy5AkRvgeQnY6vx';
   String receiverAddress = 'B62qpaDc8nfu4a7xghkEni8u2rBjx7EH95MFeZAhTgGofopaxFjdS7P';
-  int fee = 2000000000;
-  int feeToken = 1;
+  BigInt fee = BigInt.from(2000000000);
+  BigInt feeToken = BigInt.from(1);
   int nonce = 16;
   int validUntil = 1337;
-  int tokenId = 1;
+  BigInt tokenId = BigInt.from(1);
   int tokenLocked = 0;
 
   Signature signature = await signDelegation(MinaHelper.reverse(sk), memo, feePayerAddress,
@@ -305,11 +305,11 @@ Future<bool> testSignDelegation1() async {
   String feePayerAddress = 'B62qq8DZP9h5cCKr6ecXY3MqVz1oQuEzJMyZLCbEukCJGS9SuVXK33o';
   String senderAddress = 'B62qq8DZP9h5cCKr6ecXY3MqVz1oQuEzJMyZLCbEukCJGS9SuVXK33o';
   String receiverAddress = 'B62qrGaXh9wekfwaA2yzUbhbvFYynkmBkhYLV36dvy5AkRvgeQnY6vx';
-  int fee = 2000000000;
-  int feeToken = 1;
+  BigInt fee = BigInt.from(2000000000);
+  BigInt feeToken = BigInt.from(1);
   int nonce = 0;
   int validUntil = 4294967295;
-  int tokenId = 1;
+  BigInt tokenId = BigInt.from(1);
   int tokenLocked = 0;
 
   Signature signature = await signDelegation(MinaHelper.reverse(sk), memo, feePayerAddress,
@@ -327,11 +327,11 @@ Future<bool> testSignDelegation2() async {
   String feePayerAddress = 'B62qnWKWnUmj3mxUx4UcnQGMMsqwNkHUdgzvhto6Je3LwKSRb7dYqm9';
   String senderAddress = 'B62qnWKWnUmj3mxUx4UcnQGMMsqwNkHUdgzvhto6Je3LwKSRb7dYqm9';
   String receiverAddress = 'B62qq8DZP9h5cCKr6ecXY3MqVz1oQuEzJMyZLCbEukCJGS9SuVXK33o';
-  int fee = 42000000000;
-  int feeToken = 1;
+  BigInt fee = BigInt.from(42000000000);
+  BigInt feeToken = BigInt.from(1);
   int nonce = 1;
   int validUntil = 4294967295;
-  int tokenId = 1;
+  BigInt tokenId = BigInt.from(1);
   int tokenLocked = 0;
 
   Signature signature = await signDelegation(MinaHelper.reverse(sk), memo, feePayerAddress,
@@ -349,11 +349,11 @@ Future<bool> testSignDelegation3() async {
   String feePayerAddress = 'B62qpkf1jH9sqtZy4kAJHgdChfuRX7SPqoX4Q2ZjJH2YDNWUUd92bxo';
   String senderAddress = 'B62qpkf1jH9sqtZy4kAJHgdChfuRX7SPqoX4Q2ZjJH2YDNWUUd92bxo';
   String receiverAddress = 'B62qpaDc8nfu4a7xghkEni8u2rBjx7EH95MFeZAhTgGofopaxFjdS7P';
-  int fee = 1202056900;
-  int feeToken = 1;
+  BigInt fee = BigInt.from(1202056900);
+  BigInt feeToken = BigInt.from(1);
   int nonce = 0;
   int validUntil = 577216;
-  int tokenId = 1;
+  BigInt tokenId = BigInt.from(1);
   int tokenLocked = 0;
 
   Signature signature = await signDelegation(MinaHelper.reverse(sk), memo, feePayerAddress,

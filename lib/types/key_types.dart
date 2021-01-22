@@ -39,12 +39,12 @@ class Transaction {
   String feePayerAddress;
   String senderAddress;
   String receiverAddress;
-  int fee;
-  int feeToken;
+  BigInt fee;
+  BigInt feeToken;
   int nonce;
   int validUntil;
-  int tokenId;
-  int amount;
+  BigInt tokenId;
+  BigInt amount;
   int txType;
   int tokenLocked;
 

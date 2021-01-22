@@ -128,39 +128,39 @@ Future<String> getAddressFromSecretKeyAsync(Uint8List sk) async {
 }
 
 Future<Signature> signPayment(
-    Uint8List sk,
-    String memo,
-    String feePayerAddress,
-    String senderAddress,
-    String receiverAddress,
-    int fee,
-    int feeToken,
-    int nonce,
-    int validUntil,
-    int tokenId,
-    int amount,
-    int tokenLocked
-    ) async {
+  Uint8List sk,
+  String memo,
+  String feePayerAddress,
+  String senderAddress,
+  String receiverAddress,
+  BigInt fee,
+  BigInt feeToken,
+  int nonce,
+  int validUntil,
+  BigInt tokenId,
+  BigInt amount,
+  int tokenLocked
+  ) async {
   Transaction transaction = Transaction(sk, memo, feePayerAddress, senderAddress, receiverAddress,
-      fee, feeToken, nonce, validUntil, tokenId, amount, TRANSACTION_TYPE, tokenLocked);
+    fee, feeToken, nonce, validUntil, tokenId, amount, TRANSACTION_TYPE, tokenLocked);
   return await compute(_signUserCommand, transaction);
 }
 
 Future<Signature> signDelegation (
-    Uint8List sk,
-    String memo,
-    String feePayerAddress,
-    String senderAddress,
-    String receiverAddress,
-    int fee,
-    int feeToken,
-    int nonce,
-    int validUntil,
-    int tokenId,
-    int tokenLocked
-    ) async {
+  Uint8List sk,
+  String memo,
+  String feePayerAddress,
+  String senderAddress,
+  String receiverAddress,
+  BigInt fee,
+  BigInt feeToken,
+  int nonce,
+  int validUntil,
+  BigInt tokenId,
+  int tokenLocked
+  ) async {
   Transaction transaction = Transaction(sk, memo, feePayerAddress, senderAddress, receiverAddress,
-      fee, feeToken, nonce, validUntil, tokenId, 0, DELEGATION_TYPE, tokenLocked);
+    fee, feeToken, nonce, validUntil, tokenId, BigInt.from(0), DELEGATION_TYPE, tokenLocked);
   return await compute(_signUserCommand, transaction);
 }
 
@@ -175,25 +175,33 @@ Signature _signUserCommand(Transaction transaction) {
   final feePayerPointer = MinaHelper.copyStringToPointer(MinaHelper.stringToBytesUtf8(transaction.feePayerAddress));
   final senderPointer = MinaHelper.copyStringToPointer(MinaHelper.stringToBytesUtf8(transaction.senderAddress));
   final receiverPointer = MinaHelper.copyStringToPointer(MinaHelper.stringToBytesUtf8(transaction.receiverAddress));
+  Uint8List feeBytes = MinaHelper.reverse(MinaHelper.uint64ToBytes(transaction.fee));
+  final feePointer = MinaHelper.copyBytesToPointer(feeBytes);
+  Uint8List feeTokenBytes = MinaHelper.reverse(MinaHelper.uint64ToBytes(transaction.feeToken));
+  final feeTokenPointer = MinaHelper.copyBytesToPointer(feeTokenBytes);
+  Uint8List amountBytes = MinaHelper.reverse(MinaHelper.uint64ToBytes(transaction.amount));
+  final amountPointer = MinaHelper.copyBytesToPointer(amountBytes);
+  Uint8List tokenIdBytes = MinaHelper.reverse(MinaHelper.uint64ToBytes(transaction.tokenId));
+  final tokenIdPointer = MinaHelper.copyBytesToPointer(tokenIdBytes);
 
   signUserCommandFunc(
-      skPointer,
-      memoPointer,
-      feePayerPointer,
-      senderPointer,
-      receiverPointer,
-      transaction.fee,
-      transaction.feeToken,
-      transaction.nonce,
-      transaction.validUntil,
-      transaction.tokenId,
-      transaction.amount,
-      transaction.tokenLocked,
-      transaction.txType,
-      field,
-      fieldLength,
-      scalar,
-      scalarLength
+    skPointer,
+    memoPointer,
+    feePayerPointer,
+    senderPointer,
+    receiverPointer,
+    feePointer,
+    feeTokenPointer,
+    transaction.nonce,
+    transaction.validUntil,
+    tokenIdPointer,
+    amountPointer,
+    transaction.tokenLocked,
+    transaction.txType,
+    field,
+    fieldLength,
+    scalar,
+    scalarLength
   );
 
   // Read Dart string from C string
@@ -213,6 +221,10 @@ Signature _signUserCommand(Transaction transaction) {
   free(receiverPointer);
   free(fieldLength);
   free(scalarLength);
+  free(feePointer);
+  free(feeTokenPointer);
+  free(amountPointer);
+  free(tokenIdPointer);
 
   return Signature(fieldStr, scalarStr);
 }

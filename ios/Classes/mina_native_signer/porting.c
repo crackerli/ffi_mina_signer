@@ -120,12 +120,12 @@ void native_sign_user_command_non_montgomery(
     char *fee_payer_address,
     char *sender_address,
     char *receiver_address,
-    Currency fee,
-    TokenId fee_token,
+    uint8_t *fee,
+    uint8_t *fee_token,
     Nonce nonce,
     GlobalSlot valid_until,
-    TokenId token_id,
-    Currency amount,
+    uint8_t *token_id,
+    uint8_t *amount,
     bool token_locked,
     uint8_t transaction_type, // 0 for transaction, 1 for delegation
     char *out_field,
@@ -135,11 +135,25 @@ void native_sign_user_command_non_montgomery(
 ) {
     // Convert sk to montgomery first
     uint64_t tmp[4];
+    Currency amount64;
+    Currency fee64;
+    TokenId fee_token64;
+    TokenId token_id64;
+
     memset(tmp, 0, sizeof(tmp));
+    memset(&amount64, 0, sizeof(amount64));
+    memset(&fee64, 0, sizeof(fee64));
+    memset(&fee_token64, 0, sizeof(fee_token64));
+    memset(&token_id64, 0, sizeof(token_id64));
+
     fiat_pasta_fq_to_montgomery(tmp, sk);
+    memcpy(&amount64, amount, sizeof(amount));
+    memcpy(&fee64, fee, sizeof(fee));
+    memcpy(&fee_token64, fee_token, sizeof(fee_token));
+    memcpy(&token_id64, token_id, sizeof(token_id));
     native_sign_user_command_montgomery(tmp, memo, fee_payer_address, sender_address,
-      receiver_address, fee, fee_token, nonce, valid_until,
-      token_id, amount, token_locked, transaction_type, out_field, field_length, out_scalar, scalar_length);
+      receiver_address, fee64, fee_token64, nonce, valid_until,
+      token_id64, amount64, token_locked, transaction_type, out_field, field_length, out_scalar, scalar_length);
 }
 
 void native_sign_user_command_montgomery(

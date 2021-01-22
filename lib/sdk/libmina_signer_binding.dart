@@ -71,19 +71,18 @@ final NativeDerivePublicKey publicKeyFunc = libMinaSigner
 //     .lookup<NativeFunction<native_derive_public_key_non_montgomery>>('native_derive_public_key_non_montgomery')
 //     .asFunction<NativeDerivePublicKeyNonMontgomery>();
 
-// C publickey function - void dart_publickey(unsigned char *sk, unsigned char *pk);
 typedef sign_user_command_func = Void Function(
     Pointer<Uint8> sk,
     Pointer<Uint8> memo,
     Pointer<Uint8> feePayerAddress,
     Pointer<Uint8> senderAddress,
     Pointer<Uint8> receiverAddress,
-    Uint64 fee,
-    Uint64 feeToken,
+    Pointer<Uint8> fee,  // uint64_t
+    Pointer<Uint8> feeToken, // uint64_t
     Uint32 nonce,
     Uint32 validUntil,
-    Uint64 tokenId,
-    Uint64 amount,
+    Pointer<Uint8> tokenId, // uint64_t
+    Pointer<Uint8> amount, // uint64_t
     Uint8 tokenLocked,
     Uint8 txType,
     Pointer<Uint8> field,
@@ -98,12 +97,12 @@ typedef SignUserCommand = void Function(
     Pointer<Uint8> feePayerAddress,
     Pointer<Uint8> senderAddress,
     Pointer<Uint8> receiverAddress,
-    int fee,
-    int feeToken,
+    Pointer<Uint8> fee, // uint64_t
+    Pointer<Uint8> feeToken, // uint64_t
     int nonce,
     int validUntil,
-    int tokenId,
-    int amount,
+    Pointer<Uint8> tokenId, // uint64_t
+    Pointer<Uint8> amount,  // uint64_t
     int tokenLocked,
     int txType,
     Pointer<Uint8> field,

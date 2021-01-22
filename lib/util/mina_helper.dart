@@ -76,6 +76,48 @@ class MinaHelper {
     return hexToBytes(bigInt.toRadixString(16).padLeft(32, "0"));
   }
 
+  static Uint8List uint64ToBytes(BigInt bigInt) {
+    return hexToBytes(bigInt.toRadixString(16).padLeft(16, "0"));
+  }
+
+  static BigInt _fractionsToNanoMina(String fractions) {
+    BigInt tmp = BigInt.tryParse(fractions);
+    if(fractions.length < 9) {
+      int padding = 9 - fractions.length;
+      BigInt base = BigInt.from(10).pow(padding);
+      return (tmp * base);
+    }
+    return tmp;
+  }
+
+  static BigInt getNanoMinaFromStr(String src) {
+    if(null == src || src.isEmpty) {
+      return BigInt.from(0);
+    }
+
+    // src is a integer
+    if(!src.contains('.')) {
+      return (BigInt.tryParse(src) * BigInt.from(1000000000));
+    }
+
+    int dotIndex = src.indexOf('.');
+    // if src is a integer, and . at the end
+    if(dotIndex == src.length - 1) {
+      return (BigInt.tryParse(src.substring(0, src.length - 1)) * BigInt.from(1000000000));
+    }
+
+    if(dotIndex == 0) {
+      String fractions = src.substring(1, src.length);
+      return _fractionsToNanoMina(fractions);
+    }
+
+    String intStr = src.substring(0, dotIndex);
+    String fractionStr = src.substring(dotIndex + 1, src.length);
+    BigInt intPart = BigInt.tryParse(intStr) * BigInt.from(1000000000);
+    BigInt fractionPart = _fractionsToNanoMina(fractionStr);
+    return intPart + fractionPart;
+  }
+
   /// Concatenates one or more byte arrays
   ///
   /// @param {List<Uint8List>} bytes
