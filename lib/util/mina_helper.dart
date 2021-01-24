@@ -90,7 +90,97 @@ class MinaHelper {
     return tmp;
   }
 
-  static BigInt getNanoMinaFromStr(String src) {
+  static String getMinaStrByNanoNum(BigInt number) {
+    if(null == number) {
+      return '';
+    }
+
+    if(BigInt.from(0) == number) {
+      return '0';
+    }
+
+    BigInt intPart = number ~/ BigInt.from(1000000000);
+    BigInt fractionPart = number - (intPart * BigInt.from(1000000000));
+    if(fractionPart == BigInt.from(0)) {
+      return '$intPart';
+    }
+
+    // Remove tailed zeros of fractions part
+    String fractionStr = fractionPart.toString().padLeft(9, '0');
+    int zeroIndex = fractionStr.length - 1;
+    for(; zeroIndex >= 0; zeroIndex--) {
+      if(fractionStr[zeroIndex] != '0') {
+        break;
+      }
+    }
+
+    String trimmedFractionStr = fractionStr.substring(0, zeroIndex + 1);
+
+    return '$intPart.$trimmedFractionStr';
+  }
+
+  static String getMinaStrByNanoStr(String src) {
+    if(null == src || src.isEmpty) {
+      return '';
+    }
+
+    BigInt number = BigInt.tryParse(src);
+    return getMinaStrByNanoNum(number);
+  }
+/*
+  static String getMinaStrByNanoStr(String src) {
+    if(null == src || src.isEmpty) {
+      return '';
+    }
+
+    // If src string is zero
+    if(BigInt.from(0) == BigInt.tryParse(src)) {
+      return '0';
+    }
+
+    // First, remove leading '0' chars
+    int firstNonZero = 0;
+    for(int i = 0; i < src.length; i++) {
+      if(src[i] == '0') {
+        continue;
+      } else {
+        firstNonZero = i;
+        break;
+      }
+    }
+
+    String tmpStr = src.substring(firstNonZero);
+
+    if(tmpStr.length <= 9) {
+      String fractions = tmpStr.padLeft(9, '0');
+      return '0.$fractions';
+    }
+
+    String intPart = tmpStr.substring(0, tmpStr.length - 9);
+    String fractionPart = tmpStr.substring(tmpStr.length - 9, tmpStr.length);
+    // proceed fraction part to remove '0' chars
+    if(BigInt.from(0) == BigInt.tryParse(fractionPart)) {
+      return '$intPart';
+    } else {
+      int zeroIndex = fractionPart.length;
+      for(int i = fractionPart.length - 1; i > 0; i--) {
+        if(fractionPart[i] == '0') {
+          continue;
+        } else {
+          zeroIndex = i;
+          break;
+        }
+      }
+      String trimmedFraction = fractionPart.substring(0, zeroIndex + 1);
+      return '$intPart.$trimmedFraction';
+    }
+  }
+*/
+  static String getNanoStrByMinaStr(String src) {
+    return getNanoNumByMinaStr(src).toString();
+  }
+
+  static BigInt getNanoNumByMinaStr(String src) {
     if(null == src || src.isEmpty) {
       return BigInt.from(0);
     }

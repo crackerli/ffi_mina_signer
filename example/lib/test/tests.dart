@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:base58check/base58.dart';
@@ -363,4 +362,186 @@ Future<bool> testSignDelegation3() async {
   bool rxRet = signature.rx == '12312170045568262133191740641935826581405327991016510478708928455469559085398';
   bool sRet = signature.s == '8808314428735299562006218168432471183594581012126124120771370508650535502329';
   return rxRet && sRet;
+}
+
+testGetMinaStrByNanoStr0() {
+  String expected = '0.000000006';
+  String calculated = MinaHelper.getMinaStrByNanoStr("6");
+  bool ret = expected == calculated;
+  print('testGetMinaStrByNanoStr0=$ret');
+}
+
+testGetMinaStrByNanoStr1() {
+  String expected = '0.000000016';
+  String calculated = MinaHelper.getMinaStrByNanoStr("16");
+  bool ret = expected == calculated;
+  print('testGetMinaStrByNanoStr1=$ret');
+}
+
+testGetMinaStrByNanoStr2() {
+  String expected = '0.088888816';
+  String calculated = MinaHelper.getMinaStrByNanoStr("88888816");
+  bool ret = expected == calculated;
+  print('testGetMinaStrByNanoStr2=$ret');
+}
+
+testGetMinaStrByNanoStr3() {
+  String expected = '0.788888816';
+  String calculated = MinaHelper.getMinaStrByNanoStr("788888816");
+  bool ret = expected == calculated;
+  print('testGetMinaStrByNanoStr3=$ret');
+}
+
+testGetMinaStrByNanoStr4() {
+  String expected = '1.788888816';
+  String calculated = MinaHelper.getMinaStrByNanoStr("1788888816");
+  bool ret = expected == calculated;
+  print('testGetMinaStrByNanoStr4=$ret');
+}
+
+testGetMinaStrByNanoStr5() {
+  String expected = '21.788888816';
+  String calculated = MinaHelper.getMinaStrByNanoStr("21788888816");
+  bool ret = expected == calculated;
+  print('testGetMinaStrByNanoStr5=$ret');
+}
+
+testGetMinaStrByNanoStr6() {
+  String expected = '100000';
+  String calculated = MinaHelper.getMinaStrByNanoStr("100000000000000");
+  bool ret = expected == calculated;
+  print('testGetMinaStrByNanoStr6=$ret');
+}
+
+testGetMinaStrByNanoStr7() {
+  String expected = '100000.0012';
+  String calculated = MinaHelper.getMinaStrByNanoStr("100000001200000");
+  bool ret = expected == calculated;
+  print('testGetMinaStrByNanoStr7=$ret');
+}
+
+testGetMinaStrByNanoStr8() {
+  String expected = '100001';
+  String calculated = MinaHelper.getMinaStrByNanoStr("100001000000000");
+  bool ret = expected == calculated;
+  print('testGetMinaStrByNanoStr8=$ret');
+}
+
+testGetMinaStrByNanoStr9() {
+  String expected = '0.000000001';
+  String calculated = MinaHelper.getMinaStrByNanoStr("00001");
+  bool ret = expected == calculated;
+  print('testGetMinaStrByNanoStr9=$ret');
+}
+
+testGetMinaStrByNanoStr10() {
+  String expected = '0';
+  String calculated = MinaHelper.getMinaStrByNanoStr("000000");
+  bool ret = expected == calculated;
+  print('testGetMinaStrByNanoStr10=$ret');
+}
+
+testGetMinaStrByNanoStr11() {
+  String expected = '99999999999999999.999999999';
+  String calculated = MinaHelper.getMinaStrByNanoStr("99999999999999999999999999");
+  bool ret = expected == calculated;
+  print('testGetMinaStrByNanoStr11=$ret');
+}
+
+testGetMinaStrByNanoStr12() {
+  String expected = '19999999999999999.9999991';
+  String calculated = MinaHelper.getMinaStrByNanoStr("0019999999999999999999999100");
+  bool ret = expected == calculated;
+  print('testGetMinaStrByNanoStr12=$ret');
+}
+
+testGetMinaStrByNanoStr13() {
+  String expected = '19999999999999999.1';
+  String calculated = MinaHelper.getMinaStrByNanoStr("0019999999999999999100000000");
+  bool ret = expected == calculated;
+  print('testGetMinaStrByNanoStr13=$ret');
+}
+
+testGetNanoNumByMinaStr0() {
+  BigInt expected = BigInt.tryParse('10000000000123456789');
+  BigInt calculated = MinaHelper.getNanoNumByMinaStr('10000000000.123456789');
+  bool ret = expected == calculated;
+  print('testGetNanoNumByMinaStr0: $ret');
+}
+
+testGetNanoNumByMinaStr1() {
+  BigInt expected = BigInt.tryParse('10000000000123456000');
+  BigInt calculated = MinaHelper.getNanoNumByMinaStr('10000000000.123456000');
+  bool ret = expected == calculated;
+  print('testGetNanoNumByMinaStr1: $ret');
+}
+
+testGetNanoNumByMinaStr2() {
+  BigInt expected = BigInt.tryParse('10000000000000000000');
+  BigInt calculated = MinaHelper.getNanoNumByMinaStr('10000000000.');
+  bool ret = expected == calculated;
+  print('testGetNanoNumByMinaStr2: $ret');
+}
+
+testGetNanoNumByMinaStr3() {
+  BigInt expected = BigInt.tryParse('10000000000000000000');
+  BigInt calculated = MinaHelper.getNanoNumByMinaStr('10000000000');
+  bool ret = expected == calculated;
+  print('testGetNanoNumByMinaStr3: $ret');
+}
+
+testGetNanoNumByMinaStr4() {
+  BigInt expected = BigInt.tryParse('9999999999100000000');
+  BigInt calculated = MinaHelper.getNanoNumByMinaStr('9999999999.1');
+  bool ret = expected == calculated;
+  print('testGetNanoNumByMinaStr4: $ret');
+}
+
+testGetNanoNumByMinaStr5() {
+  BigInt expected = BigInt.tryParse('1234500000');
+  BigInt calculated = MinaHelper.getNanoNumByMinaStr('1.2345');
+  bool ret = expected == calculated;
+  print('testGetNanoNumByMinaStr5: $ret');
+}
+
+testGetNanoNumByMinaStr6() {
+  BigInt expected = BigInt.tryParse('60000');
+  BigInt calculated = MinaHelper.getNanoNumByMinaStr('0.00006');
+  bool ret = expected == calculated;
+  print('testGetNanoNumByMinaStr6: $ret');
+}
+
+testGetNanoNumByMinaStr7() {
+  BigInt expected = BigInt.tryParse('6');
+  BigInt calculated = MinaHelper.getNanoNumByMinaStr('0.000000006');
+  bool ret = expected == calculated;
+  print('testGetNanoNumByMinaStr7: $ret');
+}
+
+testGetNanoNumByMinaStr8() {
+  BigInt expected = BigInt.tryParse('6');
+  BigInt calculated = MinaHelper.getNanoNumByMinaStr('.000000006');
+  bool ret = expected == calculated;
+  print('testGetNanoNumByMinaStr8: $ret');
+}
+
+testGetNanoNumByMinaStr9() {
+  BigInt expected = BigInt.tryParse('6000000000');
+  BigInt calculated = MinaHelper.getNanoNumByMinaStr('0000006');
+  bool ret = expected == calculated;
+  print('testGetNanoNumByMinaStr9: $ret');
+}
+
+testGetNanoNumByMinaStr10() {
+  BigInt expected = BigInt.tryParse('6000000000');
+  BigInt calculated = MinaHelper.getNanoNumByMinaStr('0000006.00');
+  bool ret = expected == calculated;
+  print('testGetNanoNumByMinaStr10: $ret');
+}
+
+testGetNanoNumByMinaStr11() {
+  BigInt expected = BigInt.tryParse('110000000');
+  BigInt calculated = MinaHelper.getNanoNumByMinaStr('00.110');
+  bool ret = expected == calculated;
+  print('testGetNanoNumByMinaStr11: $ret');
 }

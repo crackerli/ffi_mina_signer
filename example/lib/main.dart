@@ -32,6 +32,33 @@ class _MyAppState extends State<MyApp> {
     testSignDelegation1Async();
     testSignDelegation2Async();
     testSignDelegation3Async();
+    testGetMinaStrByNanoStr0();
+    testGetMinaStrByNanoStr1();
+    testGetMinaStrByNanoStr2();
+    testGetMinaStrByNanoStr3();
+    testGetMinaStrByNanoStr4();
+    testGetMinaStrByNanoStr5();
+    testGetMinaStrByNanoStr6();
+    testGetMinaStrByNanoStr7();
+    testGetMinaStrByNanoStr8();
+    testGetMinaStrByNanoStr9();
+    testGetMinaStrByNanoStr9();
+    testGetMinaStrByNanoStr10();
+    testGetMinaStrByNanoStr11();
+    testGetMinaStrByNanoStr12();
+    testGetMinaStrByNanoStr13();
+    testGetNanoNumByMinaStr0();
+    testGetNanoNumByMinaStr1();
+    testGetNanoNumByMinaStr2();
+    testGetNanoNumByMinaStr3();
+    testGetNanoNumByMinaStr4();
+    testGetNanoNumByMinaStr5();
+    testGetNanoNumByMinaStr6();
+    testGetNanoNumByMinaStr7();
+    testGetNanoNumByMinaStr8();
+    testGetNanoNumByMinaStr9();
+    testGetNanoNumByMinaStr10();
+    testGetNanoNumByMinaStr11();
   }
 
   bool _testAccount0Ret = false;
