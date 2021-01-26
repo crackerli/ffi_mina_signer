@@ -20,6 +20,8 @@ ios/Classes/mina_native_signer
 ## Extra porting C code:
 porting.c; porting.h
 
+## Test Cases listed in ffi_mina_signer/example/lib/test/tests.dart
+
 ## Getting Started
 
 This project is a starting point for a Flutter
