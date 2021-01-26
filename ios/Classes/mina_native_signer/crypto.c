@@ -26,6 +26,7 @@
 #define INVALID_PARAMETER 1
 
 #include <assert.h>
+#include <inttypes.h>
 
 #include "crypto.h"
 #include "utils.h"
@@ -429,7 +430,13 @@ bool is_odd(const Field y)
 
 void roinput_print_fields(const ROInput *input) {
   for (size_t i = 0; i < LIMBS_PER_FIELD * input->fields_len; ++i) {
-    printf("fs[%lu] = 0x%lx\n", i, input->fields[i]);
+    printf("fs[%zu] = 0x%" PRIx64 "\n", i, input->fields[i]);
+  }
+}
+
+void roinput_print_bits(const ROInput *input) {
+  for (size_t i = 0; i < input->bits_len; ++i) {
+    printf("bs[%zu] = %u\n", i, packed_bit_array_get(input->bits, i));
   }
 }
 
@@ -582,7 +589,7 @@ size_t roinput_to_fields(uint64_t *out, const ROInput *input) {
       size_t in_limb_idx = (i % 64);
       size_t b = packed_bit_array_get(input->bits, bits_consumed + i);
 
-      chunk_non_montgomery[limb_idx] =  chunk_non_montgomery[limb_idx] | (b << in_limb_idx);
+      chunk_non_montgomery[limb_idx] =  chunk_non_montgomery[limb_idx] | (((uint64_t) b) << in_limb_idx);
     }
     fiat_pasta_fp_to_montgomery(next_chunk, chunk_non_montgomery);
 
@@ -676,7 +683,15 @@ void message_derive(Scalar out, const Keypair *kp, const ROInput *msg)
     // take 254 bits / drop the top 2 bits
     packed_bit_array_set(hash_out, 255, 0);
     packed_bit_array_set(hash_out, 254, 0);
-    fiat_pasta_fq_to_montgomery(out, (uint64_t*) hash_out);
+
+    uint64_t tmp[4] = { 0, 0, 0, 0 };
+    for (size_t i = 0; i < 4; ++i) {
+      // 8 bytes
+      for (size_t j = 0; j < 8; ++j) {
+        tmp[i] |= ((uint64_t) hash_out[8*i + j]) << (8 * j);
+      }
+    }
+    fiat_pasta_fq_to_montgomery(out, tmp);
 }
 
 void message_hash(Scalar out, const Affine *pub, const Field rx, const ROInput *msg)
@@ -720,6 +735,106 @@ void message_hash(Scalar out, const Affine *pub, const Field rx, const ROInput *
 
 #define FULL_BITS_LEN (FEE_BITS + TOKEN_ID_BITS + 1 + NONCE_BITS + GLOBAL_SLOT_BITS + MEMO_BITS + TAG_BITS + 1 + 1 + TOKEN_ID_BITS + AMOUNT_BITS + 1)
 #define FULL_BITS_BYTES ((FULL_BITS_LEN + 7) / 8)
+
+void compress(Compressed *compressed, const Affine *pt) {
+  fiat_pasta_fp_copy(compressed->x, pt->x);
+
+  Field y_bigint;
+  fiat_pasta_fp_from_montgomery(y_bigint, pt->y);
+
+  compressed->is_odd = y_bigint[0] & 1;
+}
+
+void decompress(Affine *pt, const Compressed *compressed) {
+  fiat_pasta_fp_copy(pt->x, compressed->x);
+
+  Field x2;
+  fiat_pasta_fp_square(x2, pt->x);
+  Field x3;
+  fiat_pasta_fp_mul(x3, x2, pt->x); // x^3
+  Field y2;
+  fiat_pasta_fp_add(y2, x3, GROUP_COEFF_B);
+
+  Field y_pre;
+  fiat_pasta_fp_sqrt(y_pre, y2);
+  Field y_pre_bigint;
+  fiat_pasta_fp_from_montgomery(y_pre_bigint, y_pre);
+
+  const bool y_pre_odd = (y_pre_bigint[0] & 1);
+  if (y_pre_odd == compressed->is_odd) {
+    fiat_pasta_fp_copy(pt->y, y_pre);
+  } else {
+    fiat_pasta_fp_opp(pt->y, y_pre);
+  }
+}
+
+bool verify(Signature *sig, const Compressed *pub_compressed, const Transaction *transaction)
+{
+    // Convert transaction to ROInput
+    uint64_t input_fields[4 * 3];
+    uint8_t input_bits[FULL_BITS_BYTES];
+    ROInput input;
+    input.fields_capacity = 3;
+    input.bits_capacity = 8 * FULL_BITS_BYTES;
+    input.fields = input_fields;
+    input.bits = input_bits;
+    input.fields_len = 0;
+    input.bits_len = 0;
+
+    roinput_add_field(&input, transaction->fee_payer_pk.x);
+    roinput_add_field(&input, transaction->source_pk.x);
+    roinput_add_field(&input, transaction->receiver_pk.x);
+
+    roinput_add_uint64(&input, transaction->fee);
+    roinput_add_uint64(&input, transaction->fee_token);
+    roinput_add_bit(&input, transaction->fee_payer_pk.is_odd);
+    roinput_add_uint32(&input, transaction->nonce);
+    roinput_add_uint32(&input, transaction->valid_until);
+    roinput_add_bytes(&input, transaction->memo, MEMO_BYTES);
+    for (size_t i = 0; i < 3; ++i) {
+      roinput_add_bit(&input, transaction->tag[i]);
+    }
+    roinput_add_bit(&input, transaction->source_pk.is_odd);
+    roinput_add_bit(&input, transaction->receiver_pk.is_odd);
+    roinput_add_uint64(&input, transaction->token_id);
+    roinput_add_uint64(&input, transaction->amount);
+    roinput_add_bit(&input, transaction->token_locked);
+
+    Affine pub;
+    decompress(&pub, pub_compressed);
+
+    Scalar e;
+    message_hash(e, &pub, sig->rx, &input);
+
+    Group g;
+    affine_to_projective(&g, &AFFINE_ONE);
+
+    Group sg;
+    group_scalar_mul(&sg, sig->s, &g);
+
+    Group pub_proj;
+    affine_to_projective(&pub_proj, &pub);
+    Group epub;
+    group_scalar_mul(&epub, e, &pub_proj);
+
+    Group neg_epub;
+    fiat_pasta_fp_copy(neg_epub.X, epub.X);
+    fiat_pasta_fp_opp(neg_epub.Y, epub.Y);
+    fiat_pasta_fp_copy(neg_epub.Z, epub.Z);
+
+    Group r;
+    group_add(&r, &sg, &neg_epub);
+
+    Affine raff;
+    projective_to_affine(&raff, &r);
+
+    Field ry_bigint;
+    fiat_pasta_fp_from_montgomery(ry_bigint, raff.y);
+
+    const bool ry_even = (ry_bigint[0] & 1) == 0;
+
+    return (ry_even && fiat_pasta_fp_equals(raff.x, sig->rx));
+}
 
 void sign(Signature *sig, const Keypair *kp, const Transaction *transaction)
 {
