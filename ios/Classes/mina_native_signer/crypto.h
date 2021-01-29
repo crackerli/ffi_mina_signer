@@ -45,7 +45,7 @@ typedef bool Tag[3];
 
 typedef uint8_t* PackedBits;
 
-typedef struct group {
+typedef struct group_t {
     Field X;
     Field Y;
     Field Z;

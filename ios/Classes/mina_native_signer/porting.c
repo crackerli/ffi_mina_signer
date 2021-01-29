@@ -43,7 +43,14 @@ static void print_uint64_t(uint64_t w) {
   __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "field byte = %x", (uint8_t)(w >>  48));
   __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "field byte = %x", (uint8_t)(w >>  56));
 #else
-  UNUSED(w);
+  printf("field byte = %x;", (uint8_t)(w >>  0));
+  printf("field byte = %x;", (uint8_t)(w >>  8));
+  printf("field byte = %x;", (uint8_t)(w >>  16));
+  printf("field byte = %x;", (uint8_t)(w >>  24));
+  printf("field byte = %x;", (uint8_t)(w >>  32));
+  printf("field byte = %x;", (uint8_t)(w >>  40));
+  printf("field byte = %x;", (uint8_t)(w >>  48));
+  printf("field byte = %x;", (uint8_t)(w >>  56));
 #endif
 }
 
@@ -190,6 +197,19 @@ void native_sign_user_command_montgomery(
     __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "token_id=%lu", token_id);
     __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "amount=%lu", amount);
     __android_log_print(ANDROID_LOG_DEBUG, NATIVE_TAG, "token_locked=%d", token_locked);
+    #else
+    printf("memo=%s\n", memo);
+    printf("memo=%s\n", memo);
+    printf("fee_payer_address=%s\n", fee_payer_address);
+    printf("sender_address=%s\n", sender_address);
+    printf("receiver_address=%s\n", receiver_address);
+    printf("fee=%lu\n", fee);
+    printf("fee_token=%lu\n", fee_token);
+    printf("nonce=%lu\n", nonce);
+    printf("valid_until=%lu\n", valid_until);
+    printf("token_id=%lu\n", token_id);
+    printf("amount=%lu\n", amount);
+    printf("token_locked=%d\n", token_locked);
     #endif
 
     txn.fee = fee;
