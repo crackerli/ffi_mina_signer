@@ -116,6 +116,35 @@ String getAddressFromPublicKey(CompressedPublicKey compressedPublicKey) {
   return address;
 }
 
+String decodeBase58Check(String encoded) {
+  try {
+    List<int> decodedBytes = Base58Codec(gBase58Alphabet).decode(encoded);
+    if(null == decodedBytes || decodedBytes.length < 8) {
+      // decode failed
+      return encoded;
+    }
+
+    // Remove leading prefix and tailed checksum bytes
+    List<int> contentBytes = decodedBytes.sublist(3, decodedBytes.length - 4);
+
+    int i = 0;
+    for(; i < contentBytes.length; i++) {
+      if(contentBytes[i] == 0) {
+        break;
+      }
+    }
+
+    if(i == 0) {
+      return '';
+    }
+
+    return String.fromCharCodes(contentBytes.sublist(0, i));
+  } catch(e) {
+    // This string maybe not base58check encoded, return the origin source
+    return encoded;
+  }
+}
+
 // Get address from secret key
 String getAddressFromSecretKey(Uint8List sk) {
   CompressedPublicKey compressedPublicKey = getCompressedPubicKey(sk);
