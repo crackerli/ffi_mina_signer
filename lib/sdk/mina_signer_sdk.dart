@@ -138,11 +138,7 @@ String decodeBase58Check(String encoded) {
       return '';
     }
 
-    String utf8Encoded = String.fromCharCodes(contentBytes.sublist(0, i));
-    Uint8List utf8Decoded = MinaHelper.hexToBytes(utf8Encoded);
-
- //   return String.fromCharCodes(contentBytes.sublist(0, i));
-    return MinaHelper.bytesToUtf8String(utf8Decoded);
+    return String.fromCharCodes(contentBytes.sublist(0, i));
   } catch(e) {
     // This string maybe not base58check encoded, return the origin source
     return encoded;
