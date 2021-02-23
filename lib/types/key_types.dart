@@ -33,6 +33,7 @@ class Signature {
   Signature(this.rx, this.s);
 }
 
+// Network ID is not the member of Transaction, however, we use it only in Dart code
 class Transaction {
   Uint8List sk;
   String memo;
@@ -47,7 +48,8 @@ class Transaction {
   BigInt amount;
   int txType;
   int tokenLocked;
+  int networkId;
 
   Transaction(this.sk, this.memo, this.feePayerAddress, this.senderAddress, this.receiverAddress, this.fee, this.feeToken,
-      this.nonce, this.validUntil, this.tokenId, this.amount, this.txType, this.tokenLocked);
+      this.nonce, this.validUntil, this.tokenId, this.amount, this.txType, this.tokenLocked, this.networkId);
 }

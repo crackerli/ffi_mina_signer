@@ -168,10 +168,11 @@ Future<Signature> signPayment(
   int validUntil,
   BigInt tokenId,
   BigInt amount,
-  int tokenLocked
+  int tokenLocked,
+  int networkId
   ) async {
   Transaction transaction = Transaction(sk, memo, feePayerAddress, senderAddress, receiverAddress,
-    fee, feeToken, nonce, validUntil, tokenId, amount, TRANSACTION_TYPE, tokenLocked);
+    fee, feeToken, nonce, validUntil, tokenId, amount, TRANSACTION_TYPE, tokenLocked, networkId);
   return await compute(_signUserCommand, transaction);
 }
 
@@ -186,10 +187,11 @@ Future<Signature> signDelegation (
   int nonce,
   int validUntil,
   BigInt tokenId,
-  int tokenLocked
+  int tokenLocked,
+  int networkId
   ) async {
   Transaction transaction = Transaction(sk, memo, feePayerAddress, senderAddress, receiverAddress,
-    fee, feeToken, nonce, validUntil, tokenId, BigInt.from(0), DELEGATION_TYPE, tokenLocked);
+    fee, feeToken, nonce, validUntil, tokenId, BigInt.from(0), DELEGATION_TYPE, tokenLocked, networkId);
   return await compute(_signUserCommand, transaction);
 }
 
@@ -230,7 +232,8 @@ Signature _signUserCommand(Transaction transaction) {
     field,
     fieldLength,
     scalar,
-    scalarLength
+    scalarLength,
+    transaction.networkId
   );
 
   // Read Dart string from C string

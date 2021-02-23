@@ -13,6 +13,9 @@ import 'package:ffi_mina_signer/util/mina_helper.dart';
 const String _LedgerTestWords =
   "course grief vintage slim tell hospital car maze model style elegant kitchen state purpose matrix gas grid enable frown road goddess glove canyon key";
 
+const MAIN_NET_ID = 1;
+const TEST_NET_ID = 0;
+
 void testBase58Enc() {
   //0f 48 c6 5b d2 5f 85 f3 e4 ea 4e fe be b7 5b 79 7b d7 43 60 3b e0 4b 4e ad 84 56 98 b7 6b d3 31
   Uint8List src = Uint8List(36);
@@ -70,7 +73,7 @@ Future<void> testSignTransaction() async {
   int tokenLocked = 0;
 
   Signature signature = await signPayment(sk, memo, feePayerAddress,
-      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, amount, tokenLocked);
+      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, amount, tokenLocked, TEST_NET_ID);
   print('---------------------- test sign Izzy tx signature rx=${signature.rx} ------------------');
   print('---------------------- test sign Izzy tx signature s=${signature.s} ------------------');
 }
@@ -93,7 +96,7 @@ Future<void> testSignDelegation() async {
   int tokenLocked = 0;
 
   Signature signature = await signDelegation(sk, memo, feePayerAddress, senderAddress,
-      receiverAddress, fee, feeToken, nonce, validUntil, tokenId, tokenLocked);
+      receiverAddress, fee, feeToken, nonce, validUntil, tokenId, tokenLocked, TEST_NET_ID);
 
   print('---------------------- signature rx=${signature.rx} ------------------');
   print('---------------------- signature s=${signature.s} ------------------');
@@ -199,7 +202,7 @@ Future<bool> testSignPayment0() async {
   int tokenLocked = 0;
 
   Signature signature = await signPayment(MinaHelper.reverse(sk), memo, feePayerAddress,
-      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, amount, tokenLocked);
+      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, amount, tokenLocked, TEST_NET_ID);
   print('--signature rx=${signature.rx}--');
   print('--signature s=${signature.s}--');
   bool rxRet = signature.rx == '7978049910726616927075298742385001574587620942310654323357397558995139646406';
@@ -222,7 +225,7 @@ Future<bool> testSignPayment1() async {
   int tokenLocked = 0;
 
   Signature signature = await signPayment(MinaHelper.reverse(sk), memo, feePayerAddress,
-      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, amount, tokenLocked);
+      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, amount, tokenLocked, TEST_NET_ID);
   print('--signature rx=${signature.rx}--');
   print('--signature s=${signature.s}--');
   bool rxRet = signature.rx == '16131108141714490926110640608740233251420702480413004179312159314226811492547';
@@ -245,7 +248,7 @@ Future<bool> testSignPayment2() async {
   int tokenLocked = 0;
 
   Signature signature = await signPayment(MinaHelper.reverse(sk), memo, feePayerAddress,
-      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, amount, tokenLocked);
+      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, amount, tokenLocked, TEST_NET_ID);
   print('--signature rx=${signature.rx}--');
   print('--signature s=${signature.s}--');
   bool rxRet = signature.rx == '19585582528479034482936233270220146871772976333892177877926947867842051902219';
@@ -268,7 +271,7 @@ Future<bool> testSignPayment3() async {
   int tokenLocked = 0;
 
   Signature signature = await signPayment(MinaHelper.reverse(sk), memo, feePayerAddress,
-      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, amount, tokenLocked);
+      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, amount, tokenLocked, TEST_NET_ID);
   print('--signature rx=${signature.rx}--');
   print('--signature s=${signature.s}--');
   bool rxRet = signature.rx == '17066769773105242494055710444509755198478182140018572062281801805371237403781';
@@ -290,7 +293,7 @@ Future<bool> testSignDelegation0() async {
   int tokenLocked = 0;
 
   Signature signature = await signDelegation(MinaHelper.reverse(sk), memo, feePayerAddress,
-      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, tokenLocked);
+      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, tokenLocked, TEST_NET_ID);
   print('--signature rx=${signature.rx}--');
   print('--signature s=${signature.s}--');
   bool rxRet = signature.rx == '21925671315558903310698147703936227434489670233822660143749268383293007278017';
@@ -312,7 +315,7 @@ Future<bool> testSignDelegation1() async {
   int tokenLocked = 0;
 
   Signature signature = await signDelegation(MinaHelper.reverse(sk), memo, feePayerAddress,
-      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, tokenLocked);
+      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, tokenLocked, TEST_NET_ID);
   print('--signature rx=${signature.rx}--');
   print('--signature s=${signature.s}--');
   bool rxRet = signature.rx == '3579580815441305868810118809396705910374864465599837423758687880490203788411';
@@ -334,7 +337,7 @@ Future<bool> testSignDelegation2() async {
   int tokenLocked = 0;
 
   Signature signature = await signDelegation(MinaHelper.reverse(sk), memo, feePayerAddress,
-      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, tokenLocked);
+      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, tokenLocked, TEST_NET_ID);
   print('--signature rx=${signature.rx}--');
   print('--signature s=${signature.s}--');
   bool rxRet = signature.rx == '14463351405460209296167978590678323823732877767282528273954711003700640087512';
@@ -356,11 +359,191 @@ Future<bool> testSignDelegation3() async {
   int tokenLocked = 0;
 
   Signature signature = await signDelegation(MinaHelper.reverse(sk), memo, feePayerAddress,
-      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, tokenLocked);
+      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, tokenLocked, TEST_NET_ID);
   print('--signature rx=${signature.rx}--');
   print('--signature s=${signature.s}--');
   bool rxRet = signature.rx == '17545533880613069373638190106632142626291918606826143776589947452045890400397';
   bool sRet = signature.s == '20174444549893209973127490279511354262195817219708008717243050708318889869065';
+  return rxRet && sRet;
+}
+
+Future<bool> mainSignPayment0() async {
+  Uint8List sk = MinaHelper.hexToBytes('164244176fddb5d769b7de2027469d027ad428fadcc0c02396e6280142efb718');
+  String memo = 'Hello Mina!';
+  String feePayerAddress = 'B62qnzbXmRNo9q32n4SNu2mpB8e7FYYLH8NmaX6oFCBYjjQ8SbD7uzV';
+  String senderAddress = 'B62qnzbXmRNo9q32n4SNu2mpB8e7FYYLH8NmaX6oFCBYjjQ8SbD7uzV';
+  String receiverAddress = 'B62qicipYxyEHu7QjUqS7QvBipTs5CzgkYZZZkPoKVYBu6tnDUcE9Zt';
+  BigInt fee = BigInt.from(2000000000);
+  BigInt feeToken = BigInt.from(1);
+  int nonce = 16;
+  int validUntil = 271828;
+  BigInt tokenId = BigInt.from(1);
+  BigInt amount = BigInt.from(1729000000000);
+  int tokenLocked = 0;
+
+  Signature signature = await signPayment(MinaHelper.reverse(sk), memo, feePayerAddress,
+      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, amount, tokenLocked, MAIN_NET_ID);
+  print('--signature rx=${signature.rx}--');
+  print('--signature s=${signature.s}--');
+  bool rxRet = signature.rx == '8276526809260117790512195323083097599723172589539284431072868903787386281914';
+  bool sRet = signature.s == '27233446627612347914728253543468073697276182353522065760940920054576985339785';
+  return rxRet && sRet;
+}
+
+Future<bool> mainSignPayment1() async {
+  Uint8List sk = MinaHelper.hexToBytes('3414fc16e86e6ac272fda03cf8dcb4d7d47af91b4b726494dab43bf773ce1779');
+  String memo = '';
+  String feePayerAddress = 'B62qoG5Yk4iVxpyczUrBNpwtx2xunhL48dydN53A2VjoRwF8NUTbVr4';
+  String senderAddress = 'B62qoG5Yk4iVxpyczUrBNpwtx2xunhL48dydN53A2VjoRwF8NUTbVr4';
+  String receiverAddress = 'B62qrKG4Z8hnzZqp1AL8WsQhQYah3quN1qUj3SyfJA8Lw135qWWg1mi';
+  BigInt fee = BigInt.from(1618033988);
+  BigInt feeToken = BigInt.from(1);
+  int nonce = 0;
+  int validUntil = 4294967295;
+  BigInt tokenId = BigInt.from(1);
+  BigInt amount = BigInt.from(314159265359);
+  int tokenLocked = 0;
+
+  Signature signature = await signPayment(MinaHelper.reverse(sk), memo, feePayerAddress,
+      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, amount, tokenLocked, MAIN_NET_ID);
+  print('--signature rx=${signature.rx}--');
+  print('--signature s=${signature.s}--');
+  bool rxRet = signature.rx == '14613051242596988656770637753513391185314074765282827070881617003834996187601';
+  bool sRet = signature.s == '28038006398246591393665000827982553467432602907109609190187741883558623068452';
+  return rxRet && sRet;
+}
+
+Future<bool> mainSignPayment2() async {
+  Uint8List sk = MinaHelper.hexToBytes('3414fc16e86e6ac272fda03cf8dcb4d7d47af91b4b726494dab43bf773ce1779');
+  String memo = '01234567890123456789012345678901';
+  String feePayerAddress = 'B62qoG5Yk4iVxpyczUrBNpwtx2xunhL48dydN53A2VjoRwF8NUTbVr4';
+  String senderAddress = 'B62qoG5Yk4iVxpyczUrBNpwtx2xunhL48dydN53A2VjoRwF8NUTbVr4';
+  String receiverAddress = 'B62qoqiAgERjCjXhofXiD7cMLJSKD8hE8ZtMh4jX5MPNgKB4CFxxm1N';
+  BigInt fee = BigInt.from(100000);
+  BigInt feeToken = BigInt.from(1);
+  int nonce = 5687;
+  int validUntil = 4294967295;
+  BigInt tokenId = BigInt.from(1);
+  BigInt amount = BigInt.from(271828182845904);
+  int tokenLocked = 0;
+
+  Signature signature = await signPayment(MinaHelper.reverse(sk), memo, feePayerAddress,
+      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, amount, tokenLocked, MAIN_NET_ID);
+  print('--signature rx=${signature.rx}--');
+  print('--signature s=${signature.s}--');
+  bool rxRet = signature.rx == '3359761404371620319862423170585702274825891891256954464853046980619796441915';
+  bool sRet = signature.s == '12588300415019890195767667277267709442140811932482527859536636240428011582809';
+  return rxRet && sRet;
+}
+
+Future<bool> mainSignPayment3() async {
+  Uint8List sk = MinaHelper.hexToBytes('1dee867358d4000f1dafa5978341fb515f89eeddbe450bd57df091f1e63d4444');
+  String memo = '';
+  String feePayerAddress = 'B62qoqiAgERjCjXhofXiD7cMLJSKD8hE8ZtMh4jX5MPNgKB4CFxxm1N';
+  String senderAddress = 'B62qoqiAgERjCjXhofXiD7cMLJSKD8hE8ZtMh4jX5MPNgKB4CFxxm1N';
+  String receiverAddress = 'B62qnzbXmRNo9q32n4SNu2mpB8e7FYYLH8NmaX6oFCBYjjQ8SbD7uzV';
+  BigInt fee = BigInt.from(2000000000);
+  BigInt feeToken = BigInt.from(1);
+  int nonce = 0;
+  int validUntil = 1982;
+  BigInt tokenId = BigInt.from(1);
+  BigInt amount = BigInt.from(0);
+  int tokenLocked = 0;
+
+  Signature signature = await signPayment(MinaHelper.reverse(sk), memo, feePayerAddress,
+      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, amount, tokenLocked, MAIN_NET_ID);
+  print('--signature rx=${signature.rx}--');
+  print('--signature s=${signature.s}--');
+  bool rxRet = signature.rx == '2513947176750206380362115494490521012831400999825619684642086442484338286314';
+  bool sRet = signature.s == '6575109597561262866928450913032619260620716321204676236042085098296838412249';
+  return rxRet && sRet;
+}
+
+Future<bool> mainSignDelegation0() async {
+  Uint8List sk = MinaHelper.hexToBytes('164244176fddb5d769b7de2027469d027ad428fadcc0c02396e6280142efb718');
+  String memo = 'Delewho?';
+  String feePayerAddress = 'B62qnzbXmRNo9q32n4SNu2mpB8e7FYYLH8NmaX6oFCBYjjQ8SbD7uzV';
+  String senderAddress = 'B62qnzbXmRNo9q32n4SNu2mpB8e7FYYLH8NmaX6oFCBYjjQ8SbD7uzV';
+  String receiverAddress = 'B62qicipYxyEHu7QjUqS7QvBipTs5CzgkYZZZkPoKVYBu6tnDUcE9Zt';
+  BigInt fee = BigInt.from(2000000000);
+  BigInt feeToken = BigInt.from(1);
+  int nonce = 16;
+  int validUntil = 1337;
+  BigInt tokenId = BigInt.from(1);
+  int tokenLocked = 0;
+
+  Signature signature = await signDelegation(MinaHelper.reverse(sk), memo, feePayerAddress,
+      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, tokenLocked, MAIN_NET_ID);
+  print('--signature rx=${signature.rx}--');
+  print('--signature s=${signature.s}--');
+  bool rxRet = signature.rx == '4079493345922437013544734232893713009946027422405119619807828044367531126861';
+  bool sRet = signature.s == '15016909233224383758361374699828494405097193358265722446915479177752111560831';
+  return rxRet && sRet;
+}
+
+Future<bool> mainSignDelegation1() async {
+  Uint8List sk = MinaHelper.hexToBytes('20f84123a26e58dd32b0ea3c80381f35cd01bc22a20346cc65b0a67ae48532ba');
+  String memo = '';
+  String feePayerAddress = 'B62qkiT4kgCawkSEF84ga5kP9QnhmTJEYzcfgGuk6okAJtSBfVcjm1M';
+  String senderAddress = 'B62qkiT4kgCawkSEF84ga5kP9QnhmTJEYzcfgGuk6okAJtSBfVcjm1M';
+  String receiverAddress = 'B62qnzbXmRNo9q32n4SNu2mpB8e7FYYLH8NmaX6oFCBYjjQ8SbD7uzV';
+  BigInt fee = BigInt.from(2000000000);
+  BigInt feeToken = BigInt.from(1);
+  int nonce = 0;
+  int validUntil = 4294967295;
+  BigInt tokenId = BigInt.from(1);
+  int tokenLocked = 0;
+
+  Signature signature = await signDelegation(MinaHelper.reverse(sk), memo, feePayerAddress,
+      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, tokenLocked, MAIN_NET_ID);
+  print('--signature rx=${signature.rx}--');
+  print('--signature s=${signature.s}--');
+  bool rxRet = signature.rx == '16295045662458645256049673300113882279169127446494668902608021687531718559908';
+  bool sRet = signature.s == '2995303183685111911004725305070264004508540876725167453918925100186314315388';
+  return rxRet && sRet;
+}
+
+Future<bool> mainSignDelegation2() async {
+  Uint8List sk = MinaHelper.hexToBytes('3414fc16e86e6ac272fda03cf8dcb4d7d47af91b4b726494dab43bf773ce1779');
+  String memo = 'more delegates, more fun........';
+  String feePayerAddress = 'B62qoG5Yk4iVxpyczUrBNpwtx2xunhL48dydN53A2VjoRwF8NUTbVr4';
+  String senderAddress = 'B62qoG5Yk4iVxpyczUrBNpwtx2xunhL48dydN53A2VjoRwF8NUTbVr4';
+  String receiverAddress = 'B62qkiT4kgCawkSEF84ga5kP9QnhmTJEYzcfgGuk6okAJtSBfVcjm1M';
+  BigInt fee = BigInt.from(42000000000);
+  BigInt feeToken = BigInt.from(1);
+  int nonce = 1;
+  int validUntil = 4294967295;
+  BigInt tokenId = BigInt.from(1);
+  int tokenLocked = 0;
+
+  Signature signature = await signDelegation(MinaHelper.reverse(sk), memo, feePayerAddress,
+      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, tokenLocked, MAIN_NET_ID);
+  print('--signature rx=${signature.rx}--');
+  print('--signature s=${signature.s}--');
+  bool rxRet = signature.rx == '24721813964473168508786773590810100324306191767694278295141405536668328789711';
+  bool sRet = signature.s == '19626948520802683954507013214341966051470067713223313257637442660050437716218';
+  return rxRet && sRet;
+}
+
+Future<bool> mainSignDelegation3() async {
+  Uint8List sk = MinaHelper.hexToBytes('336eb4a19b3d8905824b0f2254fb495573be302c17582748bf7e101965aa4774');
+  String memo = '';
+  String feePayerAddress = 'B62qrKG4Z8hnzZqp1AL8WsQhQYah3quN1qUj3SyfJA8Lw135qWWg1mi';
+  String senderAddress = 'B62qrKG4Z8hnzZqp1AL8WsQhQYah3quN1qUj3SyfJA8Lw135qWWg1mi';
+  String receiverAddress = 'B62qicipYxyEHu7QjUqS7QvBipTs5CzgkYZZZkPoKVYBu6tnDUcE9Zt';
+  BigInt fee = BigInt.from(1202056900);
+  BigInt feeToken = BigInt.from(1);
+  int nonce = 0;
+  int validUntil = 577216;
+  BigInt tokenId = BigInt.from(1);
+  int tokenLocked = 0;
+
+  Signature signature = await signDelegation(MinaHelper.reverse(sk), memo, feePayerAddress,
+      senderAddress, receiverAddress, fee, feeToken, nonce, validUntil, tokenId, tokenLocked, MAIN_NET_ID);
+  print('--signature rx=${signature.rx}--');
+  print('--signature s=${signature.s}--');
+  bool rxRet = signature.rx == '4183223972743909899650224424839708633712110568918231192345816608032538069504';
+  bool sRet = signature.s == '11976357804535955866232191132574418315646197511311702660746151929015152612757';
   return rxRet && sRet;
 }
 

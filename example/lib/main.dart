@@ -60,6 +60,15 @@ class _MyAppState extends State<MyApp> {
     testGetNanoNumByMinaStr9();
     testGetNanoNumByMinaStr10();
     testGetNanoNumByMinaStr11();
+
+    mainSignPayment0Async();
+    mainSignPayment1Async();
+    mainSignPayment2Async();
+    mainSignPayment3Async();
+    mainSignDelegation0Async();
+    mainSignDelegation1Async();
+    mainSignDelegation2Async();
+    mainSignDelegation3Async();
   }
 
   bool _testAccount0Ret = false;
@@ -188,6 +197,78 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  bool _mainSignPayment0Ret = false;
+  Future<void> mainSignPayment0Async() async {
+    bool mainSignPayment0Ret = await mainSignPayment0();
+    if (!mounted) return;
+    setState(() {
+      _mainSignPayment0Ret = mainSignPayment0Ret;
+    });
+  }
+
+  bool _mainSignPayment1Ret = false;
+  Future<void> mainSignPayment1Async() async {
+    bool mainSignPayment1Ret = await mainSignPayment1();
+    if (!mounted) return;
+    setState(() {
+      _mainSignPayment1Ret = mainSignPayment1Ret;
+    });
+  }
+
+  bool _mainSignPayment2Ret = false;
+  Future<void> mainSignPayment2Async() async {
+    bool mainSignPayment2Ret = await mainSignPayment2();
+    if (!mounted) return;
+    setState(() {
+      _mainSignPayment2Ret = mainSignPayment2Ret;
+    });
+  }
+
+  bool _mainSignPayment3Ret = false;
+  Future<void> mainSignPayment3Async() async {
+    bool mainSignPayment3Ret = await mainSignPayment3();
+    if (!mounted) return;
+    setState(() {
+      _mainSignPayment3Ret = mainSignPayment3Ret;
+    });
+  }
+
+  bool _mainSignDelegation0Ret = false;
+  Future<void> mainSignDelegation0Async() async {
+    bool mainSignDelegation0Ret = await mainSignDelegation0();
+    if (!mounted) return;
+    setState(() {
+      _mainSignDelegation0Ret = mainSignDelegation0Ret;
+    });
+  }
+
+  bool _mainSignDelegation1Ret = false;
+  Future<void> mainSignDelegation1Async() async {
+    bool mainSignDelegation1Ret = await mainSignDelegation1();
+    if (!mounted) return;
+    setState(() {
+      _mainSignDelegation1Ret = mainSignDelegation1Ret;
+    });
+  }
+
+  bool _mainSignDelegation2Ret = false;
+  Future<void> mainSignDelegation2Async() async {
+    bool mainSignDelegation2Ret = await mainSignDelegation2();
+    if (!mounted) return;
+    setState(() {
+      _mainSignDelegation2Ret = mainSignDelegation2Ret;
+    });
+  }
+
+  bool _mainSignDelegation3Ret = false;
+  Future<void> mainSignDelegation3Async() async {
+    bool mainSignDelegation3Ret = await mainSignDelegation3();
+    if (!mounted) return;
+    setState(() {
+      _mainSignDelegation3Ret = mainSignDelegation3Ret;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -211,6 +292,15 @@ class _MyAppState extends State<MyApp> {
             Text('testSignDelegation1 passed: $_testSignDelegation1Ret'),
             Text('testSignDelegation2 passed: $_testSignDelegation2Ret'),
             Text('testSignDelegation3 passed: $_testSignDelegation3Ret'),
+
+            Text('mainSignPayment0 passed: $_mainSignPayment0Ret'),
+            Text('mainSignPayment1 passed: $_mainSignPayment1Ret'),
+            Text('mainSignPayment2 passed: $_mainSignPayment2Ret'),
+            Text('mainSignPayment3 passed: $_mainSignPayment3Ret'),
+            Text('mainSignDelegation0 passed: $_mainSignDelegation0Ret'),
+            Text('mainSignDelegation1 passed: $_mainSignDelegation1Ret'),
+            Text('mainSignDelegation2 passed: $_mainSignDelegation2Ret'),
+            Text('mainSignDelegation3 passed: $_mainSignDelegation3Ret'),
           ],
         )
       ),

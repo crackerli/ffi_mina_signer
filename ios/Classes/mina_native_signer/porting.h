@@ -24,7 +24,8 @@ void native_sign_user_command(
     char *out_field,
     uint8_t *field_length,
     char *out_scalar,
-    uint8_t *scalar_length
+    uint8_t *scalar_length,
+    uint8_t network_id
 );
 
 void native_sign_user_command_montgomery(
@@ -44,7 +45,8 @@ void native_sign_user_command_montgomery(
     char *out_field,
     uint8_t *field_length,
     char *out_scalar,
-    uint8_t *scalar_length
+    uint8_t *scalar_length,
+    uint8_t network_id
 );
 
 void native_sign_user_command_non_montgomery(
@@ -64,7 +66,8 @@ void native_sign_user_command_non_montgomery(
     char *out_field,
     uint8_t *field_length,
     char *out_scalar,
-    uint8_t *scalar_length
+    uint8_t *scalar_length,
+    uint8_t network_id
 );
 
 const char* NATIVE_TAG = "MinaKeys";

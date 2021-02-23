@@ -141,7 +141,8 @@ void native_sign_user_command_non_montgomery(
     char *out_field,
     uint8_t *field_length,
     char *out_scalar,
-    uint8_t *scalar_length
+    uint8_t *scalar_length,
+    uint8_t networkId
 ) {
     // Convert sk to montgomery first
     uint64_t tmp[4];
@@ -163,10 +164,8 @@ void native_sign_user_command_non_montgomery(
     memcpy(&token_id64, token_id, sizeof(token_id));
     native_sign_user_command_montgomery(tmp, memo, fee_payer_address, sender_address,
       receiver_address, fee64, fee_token64, nonce, valid_until,
-      token_id64, amount64, token_locked, transaction_type, out_field, field_length, out_scalar, scalar_length);
+      token_id64, amount64, token_locked, transaction_type, out_field, field_length, out_scalar, scalar_length, networkId);
 }
-
-Scalar priv_key = { 0xca14d6eed923f6e3, 0x61185a1b5e29e6b2, 0xe26d38de9c30753b, 0x3fdf0efb0a5714 };
 
 void native_sign_user_command_montgomery(
     uint8_t *sk,
@@ -185,7 +184,8 @@ void native_sign_user_command_montgomery(
     char *out_field,
     uint8_t *field_length,
     char *out_scalar,
-    uint8_t *scalar_length
+    uint8_t *scalar_length,
+    uint8_t network_id
 ) {
     Transaction txn;
 
@@ -245,11 +245,11 @@ void native_sign_user_command_montgomery(
     scalar_copy(kp.priv, sk);
     generate_pubkey(&kp.pub, sk);
 
-    Compressed pub_compressed;
-    compress(&pub_compressed, &kp.pub);
+//    Compressed pub_compressed;
+//    compress(&pub_compressed, &kp.pub);
 
     Signature sig;
-    sign(&sig, &kp, &txn, 0);
+    sign(&sig, &kp, &txn, network_id);
 
     char field_str[DIGITS] = { 0 };
     char scalar_str[DIGITS] = { 0 };
