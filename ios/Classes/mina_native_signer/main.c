@@ -6,7 +6,7 @@
 #include "base10.h"
 #include <sys/resource.h>
 #include <inttypes.h>
-
+/*
 void read_public_key_compressed(Compressed* out, char* pubkeyBase58) {
   size_t pubkeyBytesLen = 40;
   unsigned char pubkeyBytes[40];
@@ -39,7 +39,7 @@ void prepare_memo(uint8_t* out, char* s) {
     out[i] = 0;
   }
 }
-
+*/
 #define DEFAULT_TOKEN_ID 1
 
 int main(int argc, char* argv[]) {
@@ -110,11 +110,11 @@ int main(int argc, char* argv[]) {
   compress(&pub_compressed, &kp.pub);
 
   Signature sig;
-  sign(&sig, &kp, &txn);
+//  sign(&sig, &kp, &txn);
 
-  if (!verify(&sig, &pub_compressed, &txn)) {
-    exit(1);
-  }
+//  if (!verify(&sig, &pub_compressed, &txn)) {
+//    exit(1);
+//  }
 
   char field_str[DIGITS] = { 0 };
   char scalar_str[DIGITS] = { 0 };
@@ -198,11 +198,11 @@ int main(int argc, char* argv[]) {
   del.token_locked = false;
   del.amount = 0;
 
-  sign(&sig, &kp, &del);
+//  sign(&sig, &kp, &del);
 
-  if (!verify(&sig, &pub_compressed, &del)) {
-    exit(1);
-  }
+//  if (!verify(&sig, &pub_compressed, &del)) {
+//    exit(1);
+//  }
 
   printf("\ndelegation signature only:\n");
 

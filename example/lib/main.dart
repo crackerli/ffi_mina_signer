@@ -18,6 +18,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+//    testSignTransaction();
     testAccount0Async();
     testAccount1Async();
     testAccount2Async();

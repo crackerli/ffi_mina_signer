@@ -7,17 +7,17 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#define INVALID_PARAMETER 1
+#define os_memcmp memcmp
 #define os_memcpy memcpy
 
 #define BIP32_PATH_LEN 5
 #define BIP32_HARDENED_OFFSET 0x80000000
 
 #define FIELD_BYTES   32
-#define SCALAR_BYTES  32
-#define SCALAR_BITS   256
-#define SCALAR_OFFSET 2   // Scalars have 254 used bits
 
 #define LIMBS_PER_FIELD 4
+#define LIMBS_PER_SCALAR 4
 
 #define FIELD_SIZE_IN_BITS 255
 
@@ -43,6 +43,9 @@ typedef uint8_t Memo[MEMO_BYTES];
 typedef bool Tag[3];
 #define TAG_BITS 3
 
+#define MAINNET_ID 1
+#define TESTNET_ID 0
+
 typedef uint8_t* PackedBits;
 
 typedef struct group_t {
@@ -51,17 +54,17 @@ typedef struct group_t {
     Field Z;
 } Group;
 
-typedef struct affine {
+typedef struct affine_t {
     Field x;
     Field y;
 } Affine;
 
-typedef struct compressed {
+typedef struct compressed_t {
     Field x;
     bool is_odd;
 } Compressed;
 
-typedef struct transaction {
+typedef struct transaction_t {
   // common
   Currency fee;
   TokenId fee_token;
@@ -78,17 +81,17 @@ typedef struct transaction {
   bool token_locked;
 } Transaction;
 
-typedef struct signature {
+typedef struct signature_t {
     Field rx;
     Scalar s;
 } Signature;
 
-typedef struct keypair {
+typedef struct keypair_t {
     Affine pub;
     Scalar priv;
 } Keypair;
 
-typedef struct roinput {
+typedef struct roinput_t {
   uint64_t* fields;
   PackedBits bits;
   size_t fields_len;
@@ -104,23 +107,32 @@ void roinput_add_bytes(ROInput *input, const uint8_t *bytes, size_t len);
 void roinput_add_uint32(ROInput *input, const uint32_t x);
 void roinput_add_uint64(ROInput *input, const uint64_t x);
 
-void scalar_copy(Scalar c, const Scalar a);
+void scalar_copy(Scalar b, const Scalar a);
+void scalar_from_words(Scalar a, const uint64_t words[4]);
+bool scalar_eq(const Scalar a, const Scalar b);
+void scalar_add(Scalar c, const Scalar a, const Scalar b);
+void scalar_mul(Scalar c, const Scalar a, const Scalar b);
+void scalar_negate(Scalar b, const Scalar a);
 
 void field_add(Field c, const Field a, const Field b);
 void field_copy(Field c, const Field a);
 void field_mul(Field c, const Field a, const Field b);
 void field_sq(Field c, const Field a);
-void group_add(Group *c, const Group *a, const Group *b);
-void group_dbl(Group *c, const Group *a);
-void group_scalar_mul(Group *r, const Scalar k, const Group *p);
+
+bool affine_eq(const Affine *p, const Affine *q);
+void affine_add(Affine *r, const Affine *p, const Affine *q);
+void affine_negate(Affine *q, const Affine *p);
 void affine_scalar_mul(Affine *r, const Scalar k, const Affine *p);
-void projective_to_affine(Affine *p, const Group *r);
+bool affine_is_on_curve(const Affine *p);
 
 void generate_keypair(Keypair *keypair, uint32_t account);
 void generate_pubkey(Affine *pub_key, const Scalar priv_key);
-int get_address(char *address, size_t len, const Affine *pub_key);
+bool generate_address(char *address, size_t len, const Affine *pub_key);
 
-void sign(Signature *sig, const Keypair *kp, const Transaction *transaction);
-bool verify(Signature *sig, const Compressed *pub, const Transaction *transaction);
+void sign(Signature *sig, const Keypair *kp, const Transaction *transaction, uint8_t network_id);
+bool verify(Signature *sig, const Compressed *pub, const Transaction *transaction, uint8_t network_id);
 
 void compress(Compressed *compressed, const Affine *pt);
+
+void read_public_key_compressed(Compressed *out, char *pubkeyBase58);
+void prepare_memo(uint8_t *out, char *s);

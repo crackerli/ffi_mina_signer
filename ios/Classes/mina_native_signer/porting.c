@@ -54,6 +54,7 @@ static void print_uint64_t(uint64_t w) {
 #endif
 }
 
+/*
 static void read_public_key_compressed(Compressed* out, char* pubkeyBase58) {
   size_t pubkeyBytesLen = 40;
   unsigned char pubkeyBytes[40];
@@ -74,7 +75,8 @@ static void read_public_key_compressed(Compressed* out, char* pubkeyBase58) {
   fiat_pasta_fp_to_montgomery(out->x, x_coord_non_montgomery);
   out->is_odd = (bool) pubkeyBytes[offset + 32];
 }
-
+*/
+/*
 static void prepare_memo(uint8_t* out, char* s) {
   size_t len = strlen(s);
   out[0] = 1;
@@ -86,6 +88,7 @@ static void prepare_memo(uint8_t* out, char* s) {
     out[i] = 0;
   }
 }
+*/
 
 void native_derive_public_key_montgomery(uint8_t *sk, uint8_t *x, uint8_t *isOdd) {
     uint64_t tmp[4];
@@ -163,6 +166,8 @@ void native_sign_user_command_non_montgomery(
       token_id64, amount64, token_locked, transaction_type, out_field, field_length, out_scalar, scalar_length);
 }
 
+Scalar priv_key = { 0xca14d6eed923f6e3, 0x61185a1b5e29e6b2, 0xe26d38de9c30753b, 0x3fdf0efb0a5714 };
+
 void native_sign_user_command_montgomery(
     uint8_t *sk,
     char *memo,
@@ -236,11 +241,15 @@ void native_sign_user_command_montgomery(
     txn.token_locked = false;
 
     Keypair kp;
+//    memcpy(sk, priv_key, sizeof(uint64_t) * 4);
     scalar_copy(kp.priv, sk);
     generate_pubkey(&kp.pub, sk);
 
+    Compressed pub_compressed;
+    compress(&pub_compressed, &kp.pub);
+
     Signature sig;
-    sign(&sig, &kp, &txn);
+    sign(&sig, &kp, &txn, 0);
 
     char field_str[DIGITS] = { 0 };
     char scalar_str[DIGITS] = { 0 };
