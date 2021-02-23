@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.6)
-# set(CMAKE_ANDROID_ARCH_ABI arm64-v8a)
+set(CMAKE_ANDROID_ARCH_ABI armeabi-v7a)
 
 # option (ANDROID_LIB "Build lib for android platform" ON)
 add_definitions(-D ANDROID_LIB)
