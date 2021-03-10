@@ -241,15 +241,26 @@ void native_sign_user_command_montgomery(
     txn.token_locked = false;
 
     Keypair kp;
-//    memcpy(sk, priv_key, sizeof(uint64_t) * 4);
     scalar_copy(kp.priv, sk);
     generate_pubkey(&kp.pub, sk);
 
-//    Compressed pub_compressed;
-//    compress(&pub_compressed, &kp.pub);
+    Compressed pub_compressed;
+    compress(&pub_compressed, &kp.pub);
 
     Signature sig;
     sign(&sig, &kp, &txn, network_id);
+
+    if(!verify(&sig, &pub_compressed, &txn, network_id)) {
+        char *invalid_sig = "Invalid Signature";
+        uint8_t sig_len = strlen(invalid_sig);
+        memcpy(out_field, invalid_sig, strlen(invalid_sig));
+        out_field[sig_len] = 0;
+        memcpy(out_scalar, invalid_sig, strlen(invalid_sig));
+        out_scalar[sig_len] = 0;
+        field_length[0] = sig_len;
+        scalar_length[0] = sig_len;
+        return;
+    }
 
     char field_str[DIGITS] = { 0 };
     char scalar_str[DIGITS] = { 0 };
