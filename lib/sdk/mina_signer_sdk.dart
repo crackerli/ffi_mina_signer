@@ -81,16 +81,16 @@ Uint8List generatePrivateKey(Uint8List seed, int account) {
 
 // Get compressed public key from secret key
 CompressedPublicKey getCompressedPubicKey(Uint8List sk) {
-  final x = allocate<Uint8>(count: 32);
-  final isOdd = allocate<Uint8>(count: 1);
+  final x = calloc<Uint8>(32);
+  final isOdd = calloc<Uint8>(1);
   final skPointer = MinaHelper.copyBytesToPointer(sk);
 
   publicKeyFunc(skPointer, x, isOdd);
 
   CompressedPublicKey rawPublicKey = CompressedPublicKey(x.asTypedList(32), isOdd.asTypedList(1));
-  free(x);
-  free(isOdd);
-  free(skPointer);
+  calloc.free(x);
+  calloc.free(isOdd);
+  calloc.free(skPointer);
   return rawPublicKey;
 }
 
@@ -197,10 +197,10 @@ Future<Signature> signDelegation (
 
 // Sign user command
 Signature _signUserCommand(Transaction transaction) {
-  final field = allocate<Uint8>(count: SIGNATURE_FIELD_LENGTH);
-  final fieldLength = allocate<Uint8>(count: 1);
-  final scalar = allocate<Uint8>(count: SIGNATURE_SCALAR_LENGTH);
-  final scalarLength = allocate<Uint8>(count: 1);
+  final field = calloc<Uint8>(SIGNATURE_FIELD_LENGTH);
+  final fieldLength = calloc<Uint8>(1);
+  final scalar = calloc<Uint8>(SIGNATURE_SCALAR_LENGTH);
+  final scalarLength = calloc<Uint8>(1);
   final skPointer = MinaHelper.copyBytesToPointer(transaction.sk);
   final memoPointer = MinaHelper.copyStringToPointer(MinaHelper.stringToBytesUtf8(transaction.memo));
   final feePayerPointer = MinaHelper.copyStringToPointer(MinaHelper.stringToBytesUtf8(transaction.feePayerAddress));
@@ -244,19 +244,19 @@ Signature _signUserCommand(Transaction transaction) {
   Uint8List scalarLengthList = scalarLength.asTypedList(1);
   String scalarStr = String.fromCharCodes(scalarList.sublist(0, scalarLengthList[0]));
 
-  free(field);
-  free(scalar);
-  free(skPointer);
-  free(memoPointer);
-  free(feePayerPointer);
-  free(senderPointer);
-  free(receiverPointer);
-  free(fieldLength);
-  free(scalarLength);
-  free(feePointer);
-  free(feeTokenPointer);
-  free(amountPointer);
-  free(tokenIdPointer);
+  calloc.free(field);
+  calloc.free(scalar);
+  calloc.free(skPointer);
+  calloc.free(memoPointer);
+  calloc.free(feePayerPointer);
+  calloc.free(senderPointer);
+  calloc.free(receiverPointer);
+  calloc.free(fieldLength);
+  calloc.free(scalarLength);
+  calloc.free(feePointer);
+  calloc.free(feeTokenPointer);
+  calloc.free(amountPointer);
+  calloc.free(tokenIdPointer);
 
   return Signature(fieldStr, scalarStr);
 }
