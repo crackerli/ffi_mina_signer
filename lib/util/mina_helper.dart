@@ -20,7 +20,7 @@ class MinaHelper {
 
   /// Convert string to byte array
   static Uint8List stringToBytesUtf8(String str) {
-    return utf8.encode(str);
+    return Uint8List.fromList(utf8.encode(str));
   }
 
   /// Convert byte array to string utf-8
@@ -80,17 +80,17 @@ class MinaHelper {
     return hexToBytes(bigInt.toRadixString(16).padLeft(16, "0"));
   }
 
-  static BigInt _fractionsToNanoMina(String fractions) {
-    BigInt tmp = BigInt.tryParse(fractions);
+  static BigInt? _fractionsToNanoMina(String fractions) {
+    BigInt? tmp = BigInt.tryParse(fractions);
     if(fractions.length < 9) {
       int padding = 9 - fractions.length;
       BigInt base = BigInt.from(10).pow(padding);
-      return (tmp * base);
+      return (tmp! * base);
     }
     return tmp;
   }
 
-  static String getMinaStrByNanoNum(BigInt number) {
+  static String getMinaStrByNanoNum(BigInt? number) {
     if(null == number) {
       return '';
     }
@@ -124,76 +124,28 @@ class MinaHelper {
       return '';
     }
 
-    BigInt number = BigInt.tryParse(src);
+    BigInt? number = BigInt.tryParse(src);
     return getMinaStrByNanoNum(number);
   }
-/*
-  static String getMinaStrByNanoStr(String src) {
-    if(null == src || src.isEmpty) {
-      return '';
-    }
 
-    // If src string is zero
-    if(BigInt.from(0) == BigInt.tryParse(src)) {
-      return '0';
-    }
-
-    // First, remove leading '0' chars
-    int firstNonZero = 0;
-    for(int i = 0; i < src.length; i++) {
-      if(src[i] == '0') {
-        continue;
-      } else {
-        firstNonZero = i;
-        break;
-      }
-    }
-
-    String tmpStr = src.substring(firstNonZero);
-
-    if(tmpStr.length <= 9) {
-      String fractions = tmpStr.padLeft(9, '0');
-      return '0.$fractions';
-    }
-
-    String intPart = tmpStr.substring(0, tmpStr.length - 9);
-    String fractionPart = tmpStr.substring(tmpStr.length - 9, tmpStr.length);
-    // proceed fraction part to remove '0' chars
-    if(BigInt.from(0) == BigInt.tryParse(fractionPart)) {
-      return '$intPart';
-    } else {
-      int zeroIndex = fractionPart.length;
-      for(int i = fractionPart.length - 1; i > 0; i--) {
-        if(fractionPart[i] == '0') {
-          continue;
-        } else {
-          zeroIndex = i;
-          break;
-        }
-      }
-      String trimmedFraction = fractionPart.substring(0, zeroIndex + 1);
-      return '$intPart.$trimmedFraction';
-    }
-  }
-*/
   static String getNanoStrByMinaStr(String src) {
     return getNanoNumByMinaStr(src).toString();
   }
 
-  static BigInt getNanoNumByMinaStr(String src) {
+  static BigInt? getNanoNumByMinaStr(String src) {
     if(null == src || src.isEmpty) {
       return BigInt.from(0);
     }
 
     // src is a integer
     if(!src.contains('.')) {
-      return (BigInt.tryParse(src) * BigInt.from(1000000000));
+      return (BigInt.tryParse(src)! * BigInt.from(1000000000));
     }
 
     int dotIndex = src.indexOf('.');
     // if src is a integer, and . at the end
     if(dotIndex == src.length - 1) {
-      return (BigInt.tryParse(src.substring(0, src.length - 1)) * BigInt.from(1000000000));
+      return (BigInt.tryParse(src.substring(0, src.length - 1))! * BigInt.from(1000000000));
     }
 
     if(dotIndex == 0) {
@@ -203,9 +155,9 @@ class MinaHelper {
 
     String intStr = src.substring(0, dotIndex);
     String fractionStr = src.substring(dotIndex + 1, src.length);
-    BigInt intPart = BigInt.tryParse(intStr) * BigInt.from(1000000000);
-    BigInt fractionPart = _fractionsToNanoMina(fractionStr);
-    return intPart + fractionPart;
+    BigInt intPart = BigInt.tryParse(intStr)! * BigInt.from(1000000000);
+    BigInt? fractionPart = _fractionsToNanoMina(fractionStr);
+    return intPart + fractionPart!;
   }
 
   /// Concatenates one or more byte arrays

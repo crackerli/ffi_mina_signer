@@ -11,7 +11,7 @@ import 'package:ffi_mina_signer/util/mina_helper.dart';
 /// there's no centralized database of key
 class Sha256KDF extends KDF {
   /// Gets the key and iv
-  KeyIV deriveKey(String password, {Uint8List salt}) {
+  KeyIV deriveKey(String password, {Uint8List? salt}) {
     Uint8List pwBytes = MinaHelper.stringToBytesUtf8(password);
     Uint8List saltBytes = salt == null ? Uint8List(1) : salt;
 

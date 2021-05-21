@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 
 class CompressedPublicKey {
-  Uint8List x; // 32 bytes list, little endian
-  Uint8List isOdd; // 1 byte list
+  late Uint8List x; // 32 bytes list, little endian
+  late Uint8List isOdd; // 1 byte list
 
   CompressedPublicKey(Uint8List xCoordinate, Uint8List parity) {
     x = Uint8List.fromList(xCoordinate);
@@ -11,8 +11,8 @@ class CompressedPublicKey {
 }
 
 class PublicKey {
-  Uint8List x; // 32 bytes list, little endian
-  Uint8List y; // 32 bytes list, little endian
+  late Uint8List x; // 32 bytes list, little endian
+  late Uint8List y; // 32 bytes list, little endian
 
   PublicKey(Uint8List xCoordinate, Uint8List yCoordinate) {
     x = Uint8List.fromList(xCoordinate);
