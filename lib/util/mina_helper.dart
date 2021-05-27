@@ -119,7 +119,7 @@ class MinaHelper {
     return '$intPart.$trimmedFractionStr';
   }
 
-  static String getMinaStrByNanoStr(String src) {
+  static String getMinaStrByNanoStr(String? src) {
     if(null == src || src.isEmpty) {
       return '';
     }
@@ -132,7 +132,7 @@ class MinaHelper {
     return getNanoNumByMinaStr(src).toString();
   }
 
-  static BigInt? getNanoNumByMinaStr(String src) {
+  static BigInt? getNanoNumByMinaStr(String? src) {
     if(null == src || src.isEmpty) {
       return BigInt.from(0);
     }

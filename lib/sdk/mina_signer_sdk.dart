@@ -116,7 +116,11 @@ String getAddressFromPublicKey(CompressedPublicKey compressedPublicKey) {
   return address;
 }
 
-String decodeBase58Check(String encoded) {
+String decodeBase58Check(String? encoded) {
+  if(null == encoded || encoded.isEmpty) {
+    return '';
+  }
+
   try {
     List<int> decodedBytes = Base58Codec(gBase58Alphabet).decode(encoded);
     if(null == decodedBytes || decodedBytes.length < 8) {
