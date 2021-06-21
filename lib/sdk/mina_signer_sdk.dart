@@ -157,7 +157,8 @@ String getAddressFromSecretKey(Uint8List sk) {
 
 // Get address from secret key
 Future<String> getAddressFromSecretKeyAsync(Uint8List sk) async {
-  return await compute(getAddressFromSecretKey, sk);
+//  return await compute(getAddressFromSecretKey, sk);
+  return getAddressFromSecretKey(sk);
 }
 
 Future<Signature> signPayment(
@@ -177,7 +178,8 @@ Future<Signature> signPayment(
   ) async {
   Transaction transaction = Transaction(sk, memo, feePayerAddress, senderAddress, receiverAddress,
     fee, feeToken, nonce, validUntil, tokenId, amount, TRANSACTION_TYPE, tokenLocked, networkId);
-  return await compute(_signUserCommand, transaction);
+//  return await compute(_signUserCommand, transaction);
+  return _signUserCommand(transaction);
 }
 
 Future<Signature> signDelegation (
@@ -196,7 +198,8 @@ Future<Signature> signDelegation (
   ) async {
   Transaction transaction = Transaction(sk, memo, feePayerAddress, senderAddress, receiverAddress,
     fee, feeToken, nonce, validUntil, tokenId, BigInt.from(0), DELEGATION_TYPE, tokenLocked, networkId);
-  return await compute(_signUserCommand, transaction);
+//  return await compute(_signUserCommand, transaction);
+  return _signUserCommand(transaction);
 }
 
 // Sign user command
