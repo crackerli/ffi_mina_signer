@@ -53,6 +53,7 @@ class MinaHelper {
     return result;
   }
 
+  // Convert seed from big-endian to little-endian
   static Uint8List reverse(Uint8List bytes) {
     Uint8List reversed = Uint8List(bytes.length);
     for (int i = bytes.length; i > 0; i--) {
@@ -90,6 +91,7 @@ class MinaHelper {
     return tmp;
   }
 
+  // eg. 1020000000 ==> "1.02"
   static String getMinaStrByNanoNum(BigInt? number) {
     if(null == number) {
       return '';
@@ -132,6 +134,7 @@ class MinaHelper {
     return getNanoNumByMinaStr(src).toString();
   }
 
+  // eg. "1.02" ==> 1020000000
   static BigInt? getNanoNumByMinaStr(String? src) {
     if(null == src || src.isEmpty) {
       return BigInt.from(0);
