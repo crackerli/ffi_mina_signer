@@ -151,17 +151,17 @@ void native_sign_user_command_non_montgomery(
     TokenId fee_token64;
     TokenId token_id64;
 
-    memset(tmp, 0, sizeof(tmp));
-    memset(&amount64, 0, sizeof(amount64));
-    memset(&fee64, 0, sizeof(fee64));
-    memset(&fee_token64, 0, sizeof(fee_token64));
-    memset(&token_id64, 0, sizeof(token_id64));
+    memset(tmp, 0, 8);
+    memset(&amount64, 0, 8);
+    memset(&fee64, 0, 8);
+    memset(&fee_token64, 0, 8);
+    memset(&token_id64, 0, 8);
 
     fiat_pasta_fq_to_montgomery(tmp, sk);
-    memcpy(&amount64, amount, sizeof(amount));
-    memcpy(&fee64, fee, sizeof(fee));
-    memcpy(&fee_token64, fee_token, sizeof(fee_token));
-    memcpy(&token_id64, token_id, sizeof(token_id));
+    memcpy(&amount64, amount, 8);
+    memcpy(&fee64, fee, 8);
+    memcpy(&fee_token64, fee_token, 8);
+    memcpy(&token_id64, token_id, 8);
     native_sign_user_command_montgomery(tmp, memo, fee_payer_address, sender_address,
       receiver_address, fee64, fee_token64, nonce, valid_until,
       token_id64, amount64, token_locked, transaction_type, out_field, field_length, out_scalar, scalar_length, networkId);
