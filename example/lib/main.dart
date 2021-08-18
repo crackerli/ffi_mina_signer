@@ -69,6 +69,8 @@ class _MyAppState extends State<MyApp> {
     mainSignDelegation1Async();
     mainSignDelegation2Async();
     mainSignDelegation3Async();
+    testSodium();
+    testPointyCastle();
   }
 
   bool _testAccount0Ret = false;

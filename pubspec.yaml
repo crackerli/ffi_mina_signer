@@ -16,6 +16,7 @@ dependencies:
   bitcoin_bip32:
     path: ../bitcoin_bip32/
   bip39: ^1.0.6
+  flutter_sodium: ^0.2.0
   flutter:
     sdk: flutter
 

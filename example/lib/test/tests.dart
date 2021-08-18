@@ -116,12 +116,12 @@ void testBIP44() async {
   // ExtendedPrivateKey key1 = chain1.forPath("m/44'/12586'/0'/0/0");
 
   // Encrypting and decrypting a seed
-  Uint8List encrypted = MinaCryptor.encrypt(seed, 'thisisastrongpassword');
+  Uint8List encrypted = await MinaCryptor.encrypt(seed, 'thisisastrongpassword', false);
   print('encrypted=$encrypted');
   // String representation:
   String encryptedSeedHex = MinaHelper.byteToHex(encrypted);
   // Decrypting (if incorrect password, will throw an exception)
-  Uint8List decrypted = MinaCryptor.decrypt(
+  Uint8List decrypted = await MinaCryptor.decrypt(
       MinaHelper.hexToBytes(encryptedSeedHex), 'thisisastrongpassword');
   print('decrypted = ${MinaHelper.byteToHex(decrypted)}');
   print('origin = ${MinaHelper.byteToHex(seedBytes)}');
@@ -727,4 +727,34 @@ testGetNanoNumByMinaStr11() {
   BigInt calculated = MinaHelper.getNanoNumByMinaStr('00.110');
   bool ret = expected == calculated;
   print('testGetNanoNumByMinaStr11: $ret');
+}
+
+testSodium() async {
+  final Uint8List test = Uint8List(10);
+  for(int i = 0; i < 10; i++) {
+    test[i] = i;
+  }
+  final cipherContent = await encryptSeed(test, 'WhoAmI?_', sodium: true);
+  final decryptedContent = await decryptSeed(cipherContent, 'WhoAmI?_');
+
+  String testString = MinaHelper.byteToHex(test);
+  print('plainString=$testString');
+
+  String decryptedString = MinaHelper.byteToHex(decryptedContent);
+  print('decryptedString=$decryptedString');
+}
+
+testPointyCastle() async {
+  final Uint8List test = Uint8List(10);
+  for(int i = 0; i < 10; i++) {
+    test[i] = i + 2;
+  }
+  final cipherContent = await encryptSeed(test, 'WhoAmI?_');
+  final decryptedContent = await decryptSeed(cipherContent, 'WhoAmI?_');
+
+  String testString = MinaHelper.byteToHex(test);
+  print('plainString=$testString');
+
+  String decryptedString = MinaHelper.byteToHex(decryptedContent);
+  print('decryptedString=$decryptedString');
 }

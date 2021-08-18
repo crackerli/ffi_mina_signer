@@ -29,16 +29,17 @@ bool validateMnemonic(String mnemonic) {
 }
 
 // Encrypt the seed, then we can store them in our disk space
-String encryptSeed(Uint8List seed, String password) {
-  Uint8List encrypted = MinaCryptor.encrypt(seed, password);
+Future<String> encryptSeed(Uint8List seed, String password, {bool? sodium}) async {
+  bool useSodium = sodium ?? false;
+  Uint8List encrypted = await MinaCryptor.encrypt(seed, password, useSodium);
   // String representation:
   String encryptedSeedHex = MinaHelper.byteToHex(encrypted);
   return encryptedSeedHex;
 }
 
-Uint8List decryptSeed(String encryptedSeedHex, String password) {
-  Uint8List decrypted = MinaCryptor.decrypt(
-      MinaHelper.hexToBytes(encryptedSeedHex), password);
+Future<Uint8List> decryptSeed(String encryptedSeedHex, String password) async {
+  Uint8List decrypted = await MinaCryptor.decrypt(
+    MinaHelper.hexToBytes(encryptedSeedHex), password);
 
   return decrypted;
 }
