@@ -28,10 +28,12 @@ bool validateMnemonic(String mnemonic) {
   return bip39.validateMnemonic(mnemonic);
 }
 
-// Encrypt the seed, then we can store them in our disk space
-Future<String> encryptSeed(Uint8List seed, String password, {bool? sodium}) async {
-  bool useSodium = sodium ?? false;
-  Uint8List encrypted = await MinaCryptor.encrypt(seed, password, useSodium);
+/// Encrypt the seed, then we can store them in our disk space
+/// @param sodium What lib will be used for cipher, if
+///        true: default sodium will be used with argon2id+XChaCha20Poly1305Ietf
+///        false: pointycastle will be used, however, this approach is deprecated.
+Future<String> encryptSeed(Uint8List seed, String password, { bool sodium = true }) async {
+  Uint8List encrypted = await MinaCryptor.encrypt(seed, password, sodium: sodium);
   // String representation:
   String encryptedSeedHex = MinaHelper.byteToHex(encrypted);
   return encryptedSeedHex;

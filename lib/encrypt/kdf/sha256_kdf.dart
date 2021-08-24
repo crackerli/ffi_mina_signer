@@ -9,6 +9,11 @@ import 'package:ffi_mina_signer/util/mina_helper.dart';
 /// It's not very anti-brute forceable, but it's fast which is an important feature
 /// Anti-brute forceable is a lower priority than speed, because key security is on the individual user
 /// there's no centralized database of key
+///
+/// Password hashing has moved to Argon2id(v13).
+/// This was only for the old users who has his data encrypted by old method.
+/// Any new users would discard this method.
+@deprecated
 class Sha256KDF extends KDF {
   /// Gets the key and iv
   KeyIV deriveKey(String password, {Uint8List? salt}) {

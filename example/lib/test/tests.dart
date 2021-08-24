@@ -116,7 +116,7 @@ void testBIP44() async {
   // ExtendedPrivateKey key1 = chain1.forPath("m/44'/12586'/0'/0/0");
 
   // Encrypting and decrypting a seed
-  Uint8List encrypted = await MinaCryptor.encrypt(seed, 'thisisastrongpassword', false);
+  Uint8List encrypted = await MinaCryptor.encrypt(seed, 'thisisastrongpassword', sodium: false);
   print('encrypted=$encrypted');
   // String representation:
   String encryptedSeedHex = MinaHelper.byteToHex(encrypted);
@@ -734,7 +734,7 @@ testSodium() async {
   for(int i = 0; i < 10; i++) {
     test[i] = i;
   }
-  final cipherContent = await encryptSeed(test, 'WhoAmI?_', sodium: true);
+  final cipherContent = await encryptSeed(test, 'WhoAmI?_');
   final decryptedContent = await decryptSeed(cipherContent, 'WhoAmI?_');
 
   String testString = MinaHelper.byteToHex(test);
@@ -749,7 +749,7 @@ testPointyCastle() async {
   for(int i = 0; i < 10; i++) {
     test[i] = i + 2;
   }
-  final cipherContent = await encryptSeed(test, 'WhoAmI?_');
+  final cipherContent = await encryptSeed(test, 'WhoAmI?_', sodium: false);
   final decryptedContent = await decryptSeed(cipherContent, 'WhoAmI?_');
 
   String testString = MinaHelper.byteToHex(test);

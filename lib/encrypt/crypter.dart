@@ -13,20 +13,14 @@ const SODIUM_PREFIX = 'Sodium__';
 
 const XCHACHA20_ADDITIONAL_DATA = 'StakingPower';
 
-// Temp class for Dart compute usage
-class CipherSource {
-  late String password;
-  late Uint8List source;
-  bool? sodium;
-}
-
 /// Utility for encrypting and decrypting
 class MinaCryptor {
 
-  /// Decrypts a value with a password using AES/CBC/PKCS7
-  /// KDF is Sha256KDF if not specified
+  /// Decrypts a value with a password.
+  /// The old AES/CBC/PKCS7 approach is deprecated, now it only serve for the old users who has used it to generate cipher content.
+  /// Default argon2+XChaCha20Poly1305Ietf provided by sodium will be used.
+  /// The cihper content has no prefix 'Sodium__' will use old AES/CBC/PKCS7
   static Future<Uint8List> decrypt(dynamic value, String password, {KDF? kdf}) async {
-    kdf = kdf ?? Sha256KDF();
     Uint8List valBytes;
     if (value is String) {
       valBytes = MinaHelper.hexToBytes(value);
@@ -42,6 +36,8 @@ class MinaCryptor {
       return await _decryptXChaCha(valBytes, password);
     }
 
+    kdf = kdf ?? Sha256KDF();
+
     Uint8List salt = valBytes.sublist(8, 16);
     KeyIV key = kdf.deriveKey(password, salt: salt);
 
@@ -51,10 +47,10 @@ class MinaCryptor {
     return AesCbcPkcs7.decrypt(encData, key: key.key, iv: key.iv);
   }
 
-  /// Encrypts a value using AES/CBC/PKCS7
-  /// KDF is Sha256KDF if not specified
-  static Future<Uint8List> encrypt(dynamic value, String password, bool sodium, {KDF? kdf}) async {
-    kdf = kdf ?? Sha256KDF();
+  /// Encrypts a value with a password.
+  /// The old AES/CBC/PKCS7 approach is deprecated, now it only serve for the old users who has used it to generate cipher content.
+  /// Default argon2+XChaCha20Poly1305Ietf provided by sodium will be used.
+  static Future<Uint8List> encrypt(dynamic value, String password, {bool sodium = true, KDF? kdf}) async {
     Uint8List valBytes;
     if (value is String) {
       valBytes = MinaHelper.hexToBytes(value);
@@ -67,6 +63,8 @@ class MinaCryptor {
     if(sodium) {
       return await _encryptXChaCha(valBytes, password);
     }
+
+    kdf = kdf ?? Sha256KDF();
 
     // Generate a random salt
     Uint8List salt = Uint8List(8);
@@ -84,8 +82,14 @@ class MinaCryptor {
         [MinaHelper.stringToBytesUtf8("Salted__"), salt, seedEncrypted]);
   }
 
-  /// Encrypts a value using XChaCha20Poly1305Ietf with attached mode
+  /// Encrypts a value using XChaCha20Poly1305Ietf with attached mode.
+  /// Concat all the necessary data and convert it to utf8 string.
   /// KDF is Argon2id
+  /// Result:
+  ///   [0, 8]: Prefix to identify this string, if "Sodium__", use pointycastle apis to decryt, otherwise use sodium apis
+  ///   [8, 24]: 128 bits salt
+  ///   [24, 48]: 192 bits nonce
+  ///   [48, end]: generated cipher content
   static Future<Uint8List> _encryptXChaCha(Uint8List bytes, String password) async {
     // Generate a salt with 128 bits
     final salt = PasswordHash.randomSalt();
@@ -101,6 +105,8 @@ class MinaCryptor {
       [MinaHelper.stringToBytesUtf8(SODIUM_PREFIX), salt, nonce, cipherContent]);
   }
 
+  /// Decrypts a value using XChaCha20Poly1305Ietf with attached mode
+  /// KDF is Argon2id
   static Future<Uint8List> _decryptXChaCha(Uint8List bytes, String password) async {
     final Uint8List salt = bytes.sublist(8, 24);
     final Uint8List nonce = bytes.sublist(24, 48);
